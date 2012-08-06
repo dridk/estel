@@ -1,7 +1,7 @@
 # http://www.gnu.org/software/automake
 
 Makefile.in
-
+estel.pro.user
 # http://www.gnu.org/software/autoconf
 
 /autom4te.cache
