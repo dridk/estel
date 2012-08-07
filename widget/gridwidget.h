@@ -16,6 +16,8 @@ public:
     void mousePressEvent(QMouseEvent *);
     void switchOn(int x,int y, const QColor& color);
     void switchOff(int x, int y);
+    void clear();
+
 
 
 

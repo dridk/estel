@@ -79,7 +79,7 @@ bool Life::step(LifeEngine *engine)
     {
 
         Life * child = new Life(muted());
-       child->setPos(x()+qrand()%10, y()+qrand()%10);
+       child->setPos(x()+qrand()%2, y()+qrand()%2);
        engine->addLife(child);
 
 

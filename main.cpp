@@ -9,7 +9,7 @@
 #include "lifeengine.h"
 #include <QGraphicsView>
 #include <QGraphicsScene>
-
+#include "lifeengineview.h"
 
 
 int main(int argc, char *argv[])
@@ -19,30 +19,33 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
+    Life * life = new Life(0,0);
+    Gene g1("g1");
+    Gene g2("g2");
 
-      Life * life = new Life(5,5);
+    g1.setMutationProbability(0.5);
+    g2.setMutationProbability(0.2);
+    g1.setVariance(5);
+    g2.setVariance(20);
 
-      life->addGene(Gene("taux"));
-      life->addGene(Gene("color"));
-      life->addGene(Gene("radius"));
-
-
-
-      life->gene("taux").setMutationProbability(0.9);
-      life->gene("taux").setVariance(1);
-
-
-
-
-      LifeEngine engine(100,100);
-
-      engine.addLife(life);
-
-     engine.run(10);
+    life->addGene(g1);
+    life->addGene(g2);
 
 
 
+  LifeEngine engine(100,100);
 
+//    engine.addLife(life);
+//    engine.run(1000);
+
+
+
+    engine.load("experimentA-10.json");
+
+    LifeEngineView * view = new LifeEngineView(&engine);
+
+
+    view->show();
 
 
 

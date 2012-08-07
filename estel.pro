@@ -19,7 +19,10 @@ SOURCES += main.cpp\
     projectfile.cpp \
     metapolygonitem.cpp \
     shapewidget.cpp \
-    core/project.cpp
+    core/project.cpp \
+    widget/lifeengineview.cpp \
+    widget/gridwidget.cpp \
+    widget/gridview.cpp
 
 HEADERS  += gene.h \
     core/genom.h \
@@ -29,9 +32,12 @@ HEADERS  += gene.h \
     projectfile.h \
     metapolygonitem.h \
     shapewidget.h \
-    core/project.h
+    core/project.h \
+    widget/lifeengineview.h \
+    widget/gridwidget.h \
+    widget/gridview.h
 
-INCLUDEPATH+= core qxtjson
+INCLUDEPATH+= core qxtjson widget
 
 FORMS += \
     shapewidget.ui

@@ -53,8 +53,8 @@ void GridWidget::mousePressEvent(QMouseEvent * event)
     int X = event->x() / mSquareSize;
     int Y = event->y() / mSquareSize;
 
-    qDebug()<<"press"<<X<<" "<<Y;
-    switchOn(X,Y, Qt::blue);
+//    qDebug()<<"press"<<X<<" "<<Y;
+//    switchOn(X,Y, Qt::blue);
 
     update(QRegion(X*mSquareSize,Y*mSquareSize,mSquareSize,mSquareSize));
 
@@ -74,6 +74,11 @@ void GridWidget::switchOff(int x, int y)
     int index =  mColumnCount * y  + x;
     mColors.remove(index);
 
+}
+
+void GridWidget::clear()
+{
+    mColors.clear();
 }
 
 

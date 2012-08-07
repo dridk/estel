@@ -67,6 +67,8 @@ void Project::writeData(LifeEngine *engine)
             QVariantHash gMap;
             gMap.insert("name",gene.name());
             gMap.insert("value",gene.value());
+            gMap.insert("min",gene.min());
+            gMap.insert("max",gene.max());
             gMap.insert("proba",gene.mutationProbability());
             gMap.insert("variance",gene.variance());
             geneList.append(gMap);
@@ -125,15 +127,18 @@ void Project::readData(const QString &filename, LifeEngine *engine)
             int variance = geneMap.toMap().value("variance").toInt();
             QString name = geneMap.toMap().value("name").toString();
 
-//            Gene * gene = new Gene(name);
-//            gene->setValue(value);
-//            gene->setLimit(min,max);
-//            gene->setMutationProbability(proba);
-//            gene->setName(name);
-//            gene->setVariance(variance);
+            Gene gene(name);
 
-//            life->addGene(gene);
+            gene.setValue(value);
 
+            //           gene.setLimit(min,max);
+            gene.setMutationProbability(proba);
+            gene.setVariance(variance);
+
+            life->addGene(gene);
+
+
+            qDebug()<<life->genom().count();
 
         }
 

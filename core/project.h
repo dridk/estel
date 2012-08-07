@@ -18,7 +18,6 @@ public:
     
 
 private:
-QDateTime mDateTime;
 QString mName;
 QString mSummary;
 QString mAuthor;

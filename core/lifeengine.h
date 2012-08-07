@@ -9,6 +9,7 @@ class LifeEngine
 {
 public:
     LifeEngine(int rows, int columns);
+    ~LifeEngine();
     void addLife(Life * life);
     void addLifes(QList<Life*> lifes);
     void remLife(int x, int y);

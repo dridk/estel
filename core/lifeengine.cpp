@@ -6,6 +6,11 @@ LifeEngine::LifeEngine(int rows, int columns)
     mColumns = columns;
 }
 
+LifeEngine::~LifeEngine()
+{
+    mLifeList.clear();
+}
+
 void LifeEngine::addLife(Life *life)
 {
 
@@ -67,7 +72,7 @@ void LifeEngine::run(int iteration)
         mCurrentStep++;
     }
 
-
+    qDebug()<<"end of simulation";
 
 }
 
