@@ -9,20 +9,19 @@ public:
     Genom muted() const;
     void mutate();
 
-    void add(Gene * gene);
-    void rem(Gene * gene);
-    const QList<Gene*> genes()const{return mGenes;}
+    void add(Gene gene);
+    void rem(Gene gene);
+    const QList<Gene> genes()const{return mGenes.values();}
+    Gene& gene(const QString& name);
     int count() const;
     int varianceSum() const;
     double mutationProbabilitySum() const;
 
     void clear();
-    Gene * gene(int index) const;
-    Gene *	operator[] ( int index ) ;
     void debug() const;
 
 private:
-    QList<Gene*> mGenes;
+    QHash<QString,Gene> mGenes;
 };
 
 #endif // GENOM_H

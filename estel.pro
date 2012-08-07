@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     qxtjson/qxtjson.cpp \
     projectfile.cpp \
     metapolygonitem.cpp \
-    shapewidget.cpp
+    shapewidget.cpp \
+    core/project.cpp
 
 HEADERS  += gene.h \
     core/genom.h \
@@ -27,7 +28,8 @@ HEADERS  += gene.h \
     qxtjson/qxtjson.h \
     projectfile.h \
     metapolygonitem.h \
-    shapewidget.h
+    shapewidget.h \
+    core/project.h
 
 INCLUDEPATH+= core qxtjson
 

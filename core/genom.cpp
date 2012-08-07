@@ -13,19 +13,29 @@ Genom Genom::muted() const
 
 void Genom::mutate()
 {
-    foreach (Gene  * g , genes()){
-        g->mutate();
+    foreach (QString key, mGenes.keys()){
+      mGenes[key].mutate();
     }
 }
 
-void Genom::add(Gene * gene)
+void Genom::add(Gene gene)
 {
-    mGenes.append(gene);
+    if ( mGenes.contains(gene.name()))
+    {
+        qDebug()<<"gene "<<gene.name()<<" already exists in genom";
+        return;
+    }
+    mGenes.insert(gene.name(),gene);
 }
 
-void Genom::rem(Gene *gene)
+void Genom::rem(Gene gene)
 {
-    mGenes.removeOne(gene);
+    mGenes.remove(gene.name());
+}
+
+Gene& Genom::gene(const QString &name)
+{
+    return mGenes[name];
 }
 int Genom::count() const
 {
@@ -35,8 +45,8 @@ int Genom::count() const
 int Genom::varianceSum() const
 {
     int sum = 0;
-    foreach (Gene  *g, mGenes)
-        sum+= g->variance();
+    foreach (Gene  g, mGenes.values())
+        sum+= g.variance();
     return sum;
 
 }
@@ -44,8 +54,8 @@ int Genom::varianceSum() const
 double Genom::mutationProbabilitySum() const
 {
     double sum = 0;
-    foreach (Gene * g, mGenes){
-        sum+= g->mutationProbability();
+    foreach (Gene  g, mGenes.values()){
+        sum+= g.mutationProbability();
     }
     return sum;
 }
@@ -54,21 +64,13 @@ void Genom::clear()
     mGenes.clear();
 }
 
-Gene * Genom::gene(int index) const
-{
-    return mGenes.at(index);
-}
 
-Gene * Genom::operator [](int index)
-{
-    return mGenes.at(index);
-}
 
 void Genom::debug() const
 {
 
-    foreach (Gene *gene, genes())
-        gene->debug();
+    foreach (Gene gene, genes())
+        gene.debug();
 
 }
 

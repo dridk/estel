@@ -9,27 +9,40 @@
 #include "lifeengine.h"
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include "shapewidget.h"
+
+
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-    ShapeWidget * widget = new ShapeWidget;
-    widget->show();
-    //    LifeEngine engine(100,100);
-    //    Life * b = new Life;
+
+
+      Life * life = new Life(5,5);
+
+      life->addGene(Gene("taux"));
+      life->addGene(Gene("color"));
+      life->addGene(Gene("radius"));
+
+
+
+      life->gene("taux").setMutationProbability(0.9);
+      life->gene("taux").setVariance(1);
 
 
 
 
-    //    engine.addLife(b);
-    //    engine.setFileName("simulationTest.json");
+      LifeEngine engine(100,100);
 
-    //    qDebug()<<engine.count();
-    //    engine.run(20);
-    //    qDebug()<<engine.count();
+      engine.addLife(life);
+
+     engine.run(10);
+
+
+
+
 
 
 

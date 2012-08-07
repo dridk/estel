@@ -2,7 +2,7 @@
 #define LIFEENGINE_H
 #include <QList>
 #include "life.h"
-#include "projectfile.h"
+#include "project.h"
 class Life;
 class LifeEngine;
 class LifeEngine
@@ -17,16 +17,14 @@ public:
     void clear();
     void run(int iteration = 100);
     void step();
-    int count();
+    int population();
     void setFileName(const QString& file);
     const QString& filename() const;
     void load(const QString& filename);
 
     int rows() const;
     int columns() const;
-
-
-
+    int currentStep() const;
 
 
 
@@ -36,7 +34,8 @@ private:
     int mColumns;
     QString mFilename;
     QVariant mDatas;
-    ProjectFile mProject;
+    Project mProject;
+    int mCurrentStep;
 
 };
 

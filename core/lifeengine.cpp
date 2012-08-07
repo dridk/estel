@@ -50,18 +50,22 @@ void LifeEngine::clear()
 
 void LifeEngine::run(int iteration)
 {
-    int index = 0;
+    mCurrentStep = 0;
 
-    mProject.open("simulation.json");
 
-    while (index < iteration)
+    mProject.setName("experimentA");
+    mProject.setAuthor("sacha schutz");
+    mProject.setSummary("beta testing simulation");
+
+    while (mCurrentStep < iteration)
     {
-        step();
-        mProject.writeData(index,this);
-        index++;
-    }
+        qDebug()<<population();
+        mProject.writeData(this);
 
-    mProject.close();
+        step();
+
+        mCurrentStep++;
+    }
 
 
 
@@ -70,38 +74,21 @@ void LifeEngine::run(int iteration)
 void LifeEngine::step()
 {
     QHash<int,Life*> ::iterator i = mLifeList.begin();
-
-    //FIRST LOOP
     while (i != mLifeList.end()) {
 
         Life * currentLife = mLifeList[i.key()];
-        currentLife->clearChilds();
-         currentLife->step(this);
-         currentLife->makeOlder();
+        bool isLive = currentLife->step(this);
 
-
-
-         Life::Status status =  currentLife->status();
-        if (status == Life::Dead){
-            delete currentLife;
+        if (!isLive){
             i = mLifeList.erase(i);
+            delete currentLife;
+
         }
         else i++;
     }
-
-    //SECOND LOOP
-    for (int j=0, c=mLifeList.values().count(); j<c; ++j)
-    {
-        if (mLifeList.values()[j]->status() == Life::Replicate)
-            addLifes(mLifeList.values()[j]->childs());
-
-    }
-
-    qDebug()<<"================";
-
 }
 
-int LifeEngine::count()
+int LifeEngine::population()
 {
     return mLifeList.count();
 }
@@ -119,6 +106,7 @@ const QString &LifeEngine::filename() const
 void LifeEngine::load(const QString &filename)
 {
     mLifeList.clear();
+    mProject.readData(filename, this);
 
 }
 
@@ -130,6 +118,11 @@ int LifeEngine::rows() const
 int LifeEngine::columns() const
 {
     return mColumns;
+}
+
+int LifeEngine::currentStep() const
+{
+    return mCurrentStep;
 }
 
 

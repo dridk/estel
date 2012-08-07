@@ -13,18 +13,12 @@ class ProjectFile : public QObject
     Q_OBJECT
 public:
     explicit ProjectFile(QObject *parent = 0);
-    void writeStep(int population, int time);
-    void writeLife(Life * life);
-    void writeData(int time, LifeEngine * engine );
-    void open(const QString& filename);
-    void close();
+//    void writeStep(int population, int time);
+//    void writeLife(Life * life);
+    void writeData(int time,    LifeEngine * engine );
     
 
 private:
-    QVariantList mRoot;
-    QVariantHash mSteps;
-    QFile mFiles;
-    QTextStream mOut;
     QxtJSON mJson;
 
     

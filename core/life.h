@@ -8,8 +8,7 @@ class LifeEngine;
 class Life
 {
 public:
-    enum Status {Replicate, Dead, Live};
-    Life();
+    Life(int x, int y , int age = 0);
     void setPos(const QPoint& pos);
     void setPos(int x, int y);
     void setAge(int age);
@@ -21,13 +20,13 @@ public:
     int y() const;
     int age() const;
     const Genom & genom() const;
-    virtual void step(LifeEngine * engine);
-    QList<Life*> childs() const;
-    void makeOlder(int add=1);
-    Status status();
-    void setStatus(Status s);
+    virtual bool step(LifeEngine * engine);
+    void addGene(Gene  gene);
+    void remGene(Gene  gene);
+    Gene & gene(const QString& name);
+    void debug();
 
-    void clearChilds();
+
 
 
 
@@ -36,11 +35,8 @@ private:
     Genom mGenom;
     int mAge;
     QPoint mPos;
-    QList<Life*> mChilds;
-    Status mStatus;
 
-    Gene mA;
-    Gene mB;
+
 };
 
 #endif // LIFE_H

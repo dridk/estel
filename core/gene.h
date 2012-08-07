@@ -11,7 +11,7 @@ class Gene;
 class Gene
 {
 public:
-    Gene(int val, int min, int max, int var,double proba);
+    Gene(const QString& name, int val=50, int min=0, int max=100, int var=0,double proba=0);
     Gene(int val = 1);
     Gene(const Gene&);
     Gene muted() const;

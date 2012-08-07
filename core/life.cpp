@@ -1,15 +1,10 @@
 #include "life.h"
 
-Life::Life()
+Life::Life(int x, int y, int age)
 {
-    mAge = 0;
-    mPos = QPoint(0,0);
+    mAge = age;
+    mPos = QPoint(x,y);
 
-    mA = 4;
-    mB = 6;
-
-    mGenom.add(&mA);
-    mGenom.add(&mB);
 
 }
 
@@ -37,13 +32,15 @@ const QPoint &Life::pos() const
 Life Life::muted() const
 {
     Life newLife = *this;
+    newLife.setAge(0);
     newLife.mutate();
     return newLife;
 }
 
 void Life::mutate()
 {
-    mGenom.mutate();
+ mGenom.mutate();
+
 }
 
 int Life::x() const
@@ -69,52 +66,49 @@ const Genom &Life::genom() const
 
 
 
-void Life::step(LifeEngine *engine)
+bool Life::step(LifeEngine *engine)
 {
 
+    mAge++;
 
-    if (mAge > 10){
-        qDebug()<<"kill";
-        setStatus(Life::Dead);
-        return;
-    }
+    if ( mAge > 10)
+        return false;
 
-    if (mAge % 3 )
+
+    if (mAge%2 && mAge != 1)
     {
-        Life * newLife = new Life(*this);
-        newLife->setPos(qrand()%engine->rows(), y()+1);
-        newLife->setAge(0);
-        mChilds.append(newLife);
-        setStatus(Life::Replicate);
-        return;
+
+        Life * child = new Life(muted());
+       child->setPos(x()+qrand()%10, y()+qrand()%10);
+       engine->addLife(child);
+
+
     }
 
-    setStatus(Life::Live);
+    return true;
+
+
+
 }
 
-QList<Life*> Life::childs() const
+void Life::addGene(Gene gene)
 {
-    return mChilds;
+    mGenom.add(gene);
 }
 
-void Life::makeOlder(int add)
+void Life::remGene(Gene gene)
 {
-    mAge+=add;
+    mGenom.rem(gene);
 }
 
-Life::Status Life::status()
+Gene& Life::gene(const QString &name)
 {
-    return mStatus;
+    return mGenom.gene(name);
 }
 
-void Life::setStatus(Life::Status s)
+void Life::debug()
 {
-    mStatus = s;
-}
-
-void Life::clearChilds()
-{
-    mChilds.clear();
+    qDebug()<<x()<<"-"<<y()<<" age = "<<age();
 }
 
 

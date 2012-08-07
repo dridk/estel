@@ -1,9 +1,9 @@
 #include "gene.h"
 #include <QDebug>
-Gene::Gene(int val, int min, int max, int var, double proba)
+Gene::Gene(const QString& name, int val, int min, int max, int var, double proba)
 
 {
-    mName = "unknown-gene";
+    mName = name;
     setLimit(min,max);
     setVariance(var);
     setMutationProbability(proba);
@@ -19,7 +19,7 @@ Gene::Gene(int val)
 }
 Gene::Gene(const Gene & other)
 {
-    mName = "unknown-gene";
+    setName(other.name());
     setMutationProbability(other.mutationProbability());
     setLimit(other.min(),other.max());
     setVariance(other.variance());
@@ -36,6 +36,10 @@ void Gene::mutate()
 {
     if (!mutationProbability())
         return;
+
+    if (!variance())
+        return;
+
 
     //get the random value between 0 and 1/probability
     if (!(qrand()%mutationRate()))
@@ -114,7 +118,7 @@ void Gene::setMutationProbability(double proba)
 }
 void Gene::debug()
 {
-    qDebug()<<value()<<"["<<min()<<"-"<<max()<<"] {"<<mutationProbability()<<"?"<<variance()<<"}";
+    qDebug()<<name()<<"="<<value()<<"["<<min()<<"-"<<max()<<"] {"<<mutationProbability()<<"?"<<variance()<<"}";
 }
 
 const QColor &Gene::color() const
