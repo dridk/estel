@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui script
 
 TARGET = estel
 TEMPLATE = app
@@ -22,7 +22,12 @@ SOURCES += main.cpp\
     core/project.cpp \
     widget/lifeengineview.cpp \
     widget/gridwidget.cpp \
-    widget/gridview.cpp
+    widget/gridview.cpp \
+    widget/lifedialog.cpp \
+    script/scriptlife.cpp \
+    mainwindow.cpp \
+    widget/simulationdialog.cpp \
+    widget/lifetypewidget.cpp
 
 HEADERS  += gene.h \
     core/genom.h \
@@ -35,9 +40,17 @@ HEADERS  += gene.h \
     core/project.h \
     widget/lifeengineview.h \
     widget/gridwidget.h \
-    widget/gridview.h
+    widget/gridview.h \
+    widget/lifedialog.h \
+    script/scriptlife.h \
+    mainwindow.h \
+    widget/simulationdialog.h \
+    widget/lifetypewidget.h
 
-INCLUDEPATH+= core qxtjson widget
+INCLUDEPATH+= core qxtjson widget script
 
 FORMS += \
-    shapewidget.ui
+    shapewidget.ui \
+    widget/lifedialog.ui \
+    mainwindow.ui \
+    widget/simulationdialog.ui

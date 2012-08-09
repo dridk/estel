@@ -5,7 +5,7 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
     QWidget(parent)
 {
     mEngine = engine;
-    mGridView = new GridView(100,100);
+    mGridView = new GridView(1000,1000);
     mPopLabel = new QLabel;
     mComboBox = new QComboBox;
     mSlider = new QSlider(Qt::Horizontal);
@@ -14,8 +14,8 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
 
     toolbar->addWidget(mComboBox);
     toolbar->addSeparator();
-    toolbar->addWidget(mPopLabel);
     toolbar->addWidget(mSlider);
+    toolbar->addWidget(mPopLabel);
 
 
     QVBoxLayout * layout =new QVBoxLayout;
@@ -86,6 +86,7 @@ void LifeEngineView::loadGeneList()
 void LifeEngineView::loadFile()
 {
     mEngine->load("experimentA-"+QString::number(mSlider->value())+".json");
+    mPopLabel->setText("Population "+QString::number(mEngine->population()));
     load();
 
 }

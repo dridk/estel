@@ -10,8 +10,10 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include "lifeengineview.h"
-
-
+#include "shapewidget.h"
+#include "lifedialog.h"
+#include "scriptlife.h"
+#include "lifetypewidget.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -20,34 +22,45 @@ int main(int argc, char *argv[])
 
 
     Life * life = new Life(0,0);
-    Gene g1("g1");
-    Gene g2("g2");
 
-    g1.setMutationProbability(0.5);
-    g2.setMutationProbability(0.2);
-    g1.setVariance(5);
-    g2.setVariance(20);
-
-    life->addGene(g1);
-    life->addGene(g2);
+    life->addGene( Gene("test"));
+    life->addGene( Gene("taux"));
+    life->addGene( Gene("g1"));
+    life->addGene( Gene("g2"));
+    life->addGene( Gene("g3"));
+    life->addGene( Gene("g4"));
 
 
+    life->gene("test").setValue(2);
+  life->gene("taux").setValue(16);
 
-  LifeEngine engine(100,100);
-
-//    engine.addLife(life);
-//    engine.run(1000);
+ qDebug()<< life->genom().identity();
 
 
 
-    engine.load("experimentA-10.json");
 
-    LifeEngineView * view = new LifeEngineView(&engine);
-
-
-    view->show();
+//    engine.run(5);
 
 
+
+    //    engine.load("experimentA-14.json");
+
+    //    LifeEngineView * view = new LifeEngineView(&engine);
+
+
+    //    view->show();
+
+
+    //  LifeDialog * dialog = new LifeDialog(life);
+
+    //  dialog->exec();
+
+
+    //  life->genom().debug();
+
+    //ShapeWidget * w = new ShapeWidget;
+
+    //w->show();
 
     
     return a.exec();

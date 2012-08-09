@@ -1,6 +1,8 @@
 #include "lifeengine.h"
 #include <QDebug>
 LifeEngine::LifeEngine(int rows, int columns)
+    :QObject()
+
 {
     mRows = rows;
     mColumns = columns;
@@ -18,12 +20,12 @@ void LifeEngine::addLife(Life *life)
 
     if (mLifeList.keys().contains(index))
     {
-        qDebug()<<"life already set for this position "<<life->pos();
+//        qDebug()<<"life already set for this position "<<life->pos();
         return;
     }
 
     if (index >= mRows * mColumns){
-        qDebug()<<"life position out of range";
+//        qDebug()<<"life position out of range";
         return;
     }
 
@@ -42,6 +44,7 @@ void LifeEngine::remLife(int x, int y)
     if (mLifeList.keys().contains(index))
         mLifeList.remove(index);
 }
+
 
 QList<Life*> LifeEngine::lifes() const
 {
@@ -64,10 +67,10 @@ void LifeEngine::run(int iteration)
 
     while (mCurrentStep < iteration)
     {
-        qDebug()<<population();
         mProject.writeData(this);
 
         step();
+        qDebug()<<mCurrentStep;
 
         mCurrentStep++;
     }

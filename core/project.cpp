@@ -138,7 +138,6 @@ void Project::readData(const QString &filename, LifeEngine *engine)
             life->addGene(gene);
 
 
-            qDebug()<<life->genom().count();
 
         }
 

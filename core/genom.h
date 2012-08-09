@@ -19,6 +19,7 @@ public:
 
     void clear();
     void debug() const;
+    QString identity() const;
 
 private:
     QHash<QString,Gene> mGenes;

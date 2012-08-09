@@ -4,10 +4,6 @@
 #include <QColor>
 #include <QDebug>
 class Gene;
-
-
-
-
 class Gene
 {
 public:

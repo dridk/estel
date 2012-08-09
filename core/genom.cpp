@@ -1,5 +1,6 @@
 #include "genom.h"
 #include <QDebug>
+#include <cmath>
 Genom::Genom()
 {
 
@@ -14,7 +15,7 @@ Genom Genom::muted() const
 void Genom::mutate()
 {
     foreach (QString key, mGenes.keys()){
-      mGenes[key].mutate();
+        mGenes[key].mutate();
     }
 }
 
@@ -73,4 +74,22 @@ void Genom::debug() const
         gene.debug();
 
 }
+
+QString Genom::identity() const
+{
+
+    QString retour="";
+    long key;
+
+    for (int i=0; i<count(); ++i)
+        key += pow(10,i)*mGenes.values()[i].value();
+
+    qDebug()<<key;
+    QString hex = QString::number(key,16);
+
+    return hex;
+}
+
+
+
 
