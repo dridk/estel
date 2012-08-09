@@ -21,6 +21,7 @@ public:
     Q_INVOKABLE int rows() const;
     Q_INVOKABLE int columns() const;
     Q_INVOKABLE int currentStep() const;
+    Q_INVOKABLE bool hasLife(int x, int y) const;
 
     void setFileName(const QString& file);
     const QString& filename() const;

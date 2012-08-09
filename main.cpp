@@ -28,14 +28,25 @@ int main(int argc, char *argv[])
     l->setScript("lifescript.js");
 
 
+    int i=0;
+
+//    while ( i < 1000)
+//    {
+
+//        qDebug()<<l->genom().identity();
+//        l->mutate();
+
+//        ++i;
+//    }
+
+
 
     LifeEngine engine(100,100);
     engine.addLife(l);
-    engine.addLife(l2);
 
 //    engine.addLife(l->muted());
 //    engine.addLife(l->muted());
-    engine.run(10);
+    engine.run(20000);
 
 
 

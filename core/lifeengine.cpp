@@ -31,6 +31,7 @@ void LifeEngine::addLife(Life *life)
 
     mLifeList.insert(index,life);
     life->setEngine(this);
+    life->init();
 }
 
 void LifeEngine::addLifes(QList<Life*> lifes)
@@ -66,9 +67,6 @@ void LifeEngine::run(int iteration)
     mProject.setAuthor("sacha schutz");
     mProject.setSummary("beta testing simulation");
 
-    foreach ( Life * life, lifes())
-        life->init();
-
     while (mCurrentStep < iteration)
     {
         mProject.writeData(this);
@@ -93,7 +91,6 @@ void LifeEngine::step()
 
         if (!isLive){
             i = mLifeList.erase(i);
-//            delete currentLife;
 
         }
         else i++;
@@ -135,6 +132,15 @@ int LifeEngine::columns() const
 int LifeEngine::currentStep() const
 {
     return mCurrentStep;
+}
+
+bool LifeEngine::hasLife(int x, int y) const
+{
+ int index =  mColumns * x + y;
+    if (mLifeList.contains(index))
+        return true;
+    return false;
+
 }
 
 
