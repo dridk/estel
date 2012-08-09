@@ -22,18 +22,20 @@ int main(int argc, char *argv[])
 
 
 
-    Life * l = new Life;
+    ScriptLife * l = new ScriptLife;
     l->addGene(Gene("g1",50,0,100,2,0.5));
     l->addGene(Gene("g2",50,0,100,2,0.5));
-
-    qDebug()<<l->genom().identity();
-    Life * l2 = l->muted();
-    qDebug()<<l2->genom().identity();
+    l->setScript("lifescript.js");
 
 
 
+    LifeEngine engine(100,100);
+    engine.addLife(l);
+    engine.addLife(l2);
 
-//    engine.run(5);
+//    engine.addLife(l->muted());
+//    engine.addLife(l->muted());
+    engine.run(10);
 
 
 

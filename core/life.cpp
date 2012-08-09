@@ -7,6 +7,7 @@ Life::Life(int x, int y, int age)
     mAge = age;
     mPos = QPoint(x,y);
     mName = "Life";
+    mEngine = NULL;
 
 
 }
@@ -108,8 +109,13 @@ bool Life::step()
 
 //    return true;
 
+    return true;
 
 
+}
+
+void Life::init()
+{
 }
 
 void Life::addGene(Gene gene)

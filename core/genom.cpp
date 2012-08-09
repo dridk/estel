@@ -60,6 +60,11 @@ double Genom::mutationProbabilitySum() const
     }
     return sum;
 }
+
+bool Genom::contains(const QString &key) const
+{
+    return mGenes.contains(key);
+}
 void Genom::clear()
 {
     mGenes.clear();

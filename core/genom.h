@@ -16,6 +16,7 @@ public:
     int count() const;
     int varianceSum() const;
     double mutationProbabilitySum() const;
+    bool contains(const QString& key) const;
 
     void clear();
     void debug() const;

@@ -25,6 +25,7 @@ public:
     const Genom & genom() const;
     void setGenom(const Genom& genom);
     virtual bool step();
+    virtual void init();
     void addGene(Gene  gene);
     void remGene(Gene  gene);
     Gene & gene(const QString& name);
@@ -33,6 +34,8 @@ public:
     const QString& name() const;
     void setEngine(LifeEngine * engine);
     LifeEngine * engine() ;
+
+
 
 
 

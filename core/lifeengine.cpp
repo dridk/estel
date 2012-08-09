@@ -66,12 +66,15 @@ void LifeEngine::run(int iteration)
     mProject.setAuthor("sacha schutz");
     mProject.setSummary("beta testing simulation");
 
+    foreach ( Life * life, lifes())
+        life->init();
+
     while (mCurrentStep < iteration)
     {
         mProject.writeData(this);
 
         step();
-        qDebug()<<mCurrentStep;
+        qDebug()<<mCurrentStep<<" pop"<<population();
 
         mCurrentStep++;
     }
@@ -90,7 +93,7 @@ void LifeEngine::step()
 
         if (!isLive){
             i = mLifeList.erase(i);
-            delete currentLife;
+//            delete currentLife;
 
         }
         else i++;
