@@ -23,9 +23,7 @@ int main(int argc, char *argv[])
 
 
 
-    LifeTypeWidget * w = new LifeTypeWidget;
 
-    w->show();
 
 //    engine.run(5);
 

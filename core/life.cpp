@@ -79,7 +79,7 @@ const Genom &Life::genom() const
 
 
 
-bool Life::step(LifeEngine *engine)
+bool Life::step()
 {
 
     mAge++;
@@ -96,7 +96,7 @@ bool Life::step(LifeEngine *engine)
         Life * child = new Life(muted());
        child->setPos(x()+(qrand()%3)-1, y()+(qrand()%3)-1);
 //       qDebug()<<child->pos();
-       engine->addLife(child);
+       engine()->addLife(child);
 
 
     }
@@ -135,6 +135,16 @@ void Life::setName(const QString &name)
 const QString &Life::name() const
 {
     return mName;
+}
+
+void Life::setEngine(LifeEngine *engine)
+{
+    mEngine = engine;
+}
+
+LifeEngine *Life::engine()
+{
+    return mEngine;
 }
 
 

@@ -30,6 +30,7 @@ void LifeEngine::addLife(Life *life)
     }
 
     mLifeList.insert(index,life);
+    life->setEngine(this);
 }
 
 void LifeEngine::addLifes(QList<Life*> lifes)
@@ -85,7 +86,7 @@ void LifeEngine::step()
     while (i != mLifeList.end()) {
 
         Life * currentLife = mLifeList[i.key()];
-        bool isLive = currentLife->step(this);
+        bool isLive = currentLife->step();
 
         if (!isLive){
             i = mLifeList.erase(i);

@@ -23,13 +23,15 @@ public:
     int y() const;
     int age() const;
     const Genom & genom() const;
-    virtual bool step(LifeEngine * engine);
+    virtual bool step();
     void addGene(Gene  gene);
     void remGene(Gene  gene);
     Gene & gene(const QString& name);
     void debug();
     void setName(const QString& name);
     const QString& name() const;
+    void setEngine(LifeEngine * engine);
+    LifeEngine * engine() ;
 
 
 
@@ -41,6 +43,7 @@ private:
     int mAge;
     QPoint mPos;
     QString mName;
+    LifeEngine * mEngine;
 
 
 };
