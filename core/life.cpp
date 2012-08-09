@@ -42,11 +42,11 @@ const QPoint &Life::pos() const
     return mPos;
 }
 
-Life Life::muted() const
+Life * Life::muted() const
 {
-    Life newLife = *this;
-    newLife.setAge(0);
-    newLife.mutate();
+    Life * newLife = new Life(x(),y(),0);
+    newLife->setGenom(genom());
+    newLife->mutate();
     return newLife;
 }
 
@@ -76,32 +76,37 @@ const Genom &Life::genom() const
     return mGenom;
 }
 
+void Life::setGenom(const Genom &genom)
+{
+    mGenom = Genom(genom);
+}
+
 
 
 
 bool Life::step()
 {
 
-    mAge++;
+//    mAge++;
 
-//    if ( mAge > 10)
-//        return false;
-
-
-    if (mAge%2 && mAge != 1)
-    {
+////    if ( mAge > 10)
+////        return false;
 
 
-
-        Life * child = new Life(muted());
-       child->setPos(x()+(qrand()%3)-1, y()+(qrand()%3)-1);
-//       qDebug()<<child->pos();
-       engine()->addLife(child);
+//    if (mAge%2 && mAge != 1)
+//    {
 
 
-    }
 
-    return true;
+//        Life * child = new Life(muted());
+//       child->setPos(x()+(qrand()%3)-1, y()+(qrand()%3)-1);
+////       qDebug()<<child->pos();
+//       engine()->addLife(child);
+
+
+//    }
+
+//    return true;
 
 
 

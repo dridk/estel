@@ -22,6 +22,14 @@ int main(int argc, char *argv[])
 
 
 
+    Life * l = new Life;
+    l->addGene(Gene("g1",50,0,100,2,0.5));
+    l->addGene(Gene("g2",50,0,100,2,0.5));
+
+    qDebug()<<l->genom().identity();
+    Life * l2 = l->muted();
+    qDebug()<<l2->genom().identity();
+
 
 
 

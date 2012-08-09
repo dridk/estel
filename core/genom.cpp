@@ -78,13 +78,11 @@ void Genom::debug() const
 QString Genom::identity() const
 {
 
-    QString retour="";
-    long key;
+    long key=0;
 
     for (int i=0; i<count(); ++i)
         key += pow(10,i)*mGenes.values()[i].value();
 
-    qDebug()<<key;
     QString hex = QString::number(key,16);
 
     return hex;

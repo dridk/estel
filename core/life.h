@@ -9,20 +9,21 @@ class LifeEngine;
 class Life
 {
 public:
-    Life(int x, int y , int age = 0);
+    Life(int x=0, int y=0 , int age = 0);
     void setPos(const QPoint& pos);
     void setPos(int x, int y);
     void setX(int x);
     void setY(int y);
     void setAge(int age);
     const QPoint& pos() const;
-    Life muted() const;
+    Life * muted() const;
     void mutate();
 
     int x() const;
     int y() const;
     int age() const;
     const Genom & genom() const;
+    void setGenom(const Genom& genom);
     virtual bool step();
     void addGene(Gene  gene);
     void remGene(Gene  gene);
