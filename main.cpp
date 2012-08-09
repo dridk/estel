@@ -21,23 +21,11 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
-    Life * life = new Life(0,0);
-
-    life->addGene( Gene("test"));
-    life->addGene( Gene("taux"));
-    life->addGene( Gene("g1"));
-    life->addGene( Gene("g2"));
-    life->addGene( Gene("g3"));
-    life->addGene( Gene("g4"));
 
 
-    life->gene("test").setValue(2);
-  life->gene("taux").setValue(16);
+    LifeTypeWidget * w = new LifeTypeWidget;
 
- qDebug()<< life->genom().identity();
-
-
-
+    w->show();
 
 //    engine.run(5);
 

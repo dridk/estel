@@ -6,6 +6,7 @@ Life::Life(int x, int y, int age)
 {
     mAge = age;
     mPos = QPoint(x,y);
+    mName = "Life";
 
 
 }
@@ -124,6 +125,16 @@ Gene& Life::gene(const QString &name)
 void Life::debug()
 {
     qDebug()<<x()<<"-"<<y()<<" age = "<<age();
+}
+
+void Life::setName(const QString &name)
+{
+    mName = name;
+}
+
+const QString &Life::name() const
+{
+    return mName;
 }
 
 

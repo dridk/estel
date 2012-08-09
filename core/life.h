@@ -28,6 +28,8 @@ public:
     void remGene(Gene  gene);
     Gene & gene(const QString& name);
     void debug();
+    void setName(const QString& name);
+    const QString& name() const;
 
 
 
@@ -38,7 +40,7 @@ private:
     Genom mGenom;
     int mAge;
     QPoint mPos;
-    QString mStepScript;
+    QString mName;
 
 
 };
