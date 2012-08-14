@@ -13,23 +13,16 @@
 #include "shapewidget.h"
 #include "lifedialog.h"
 #include "lifetypewidget.h"
+#include "lifeeditor.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-    Life * life = new Life(0,0);
+    LifeEditor * editor = new LifeEditor;
 
-    life->addGene(Gene("g1"));
-    life->addGene(Gene("g2"));
-    life->loadScript("/home/sacha/devel/estel/life.js");
-
-    LifeEngine engine(100,100);
-    engine.addLife(life);
-
-
-     engine.run(100);
+    editor->show();
 
 //    engine.addLife(l->muted());
 //    engine.addLife(l->muted());

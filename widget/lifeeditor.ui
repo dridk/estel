@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LifeEditor</class>
+ <widget class="QMainWindow" name="LifeEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>877</width>
+    <height>497</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QTextEdit" name="scriptEdit"/>
+      <widget class="QTextEdit" name="debugTextEdit">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>877</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuLife">
+    <property name="title">
+     <string>Life</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+   </widget>
+   <widget class="QMenu" name="menuGenom">
+    <property name="title">
+     <string>Genom</string>
+    </property>
+    <addaction name="actionNewGene"/>
+    <addaction name="actionEditGene"/>
+    <addaction name="actionRemGene"/>
+   </widget>
+   <widget class="QMenu" name="menuSimulation">
+    <property name="title">
+     <string>Simulation</string>
+    </property>
+    <addaction name="actionSimReset"/>
+    <addaction name="actionSimStep"/>
+   </widget>
+   <addaction name="menuLife"/>
+   <addaction name="menuGenom"/>
+   <addaction name="menuSimulation"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="separator"/>
+   <addaction name="actionNewGene"/>
+   <addaction name="actionEditGene"/>
+   <addaction name="actionRemGene"/>
+   <addaction name="separator"/>
+   <addaction name="actionSimReset"/>
+   <addaction name="actionSimStep"/>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget">
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QTreeWidget" name="geneTreeWidget">
+       <column>
+        <property name="text">
+         <string>gene</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>value</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionNew">
+   <property name="text">
+    <string>new</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>open</string>
+   </property>
+  </action>
+  <action name="actionNewGene">
+   <property name="text">
+    <string>newGene</string>
+   </property>
+  </action>
+  <action name="actionEditGene">
+   <property name="text">
+    <string>editGene</string>
+   </property>
+  </action>
+  <action name="actionRemGene">
+   <property name="text">
+    <string>remGene</string>
+   </property>
+  </action>
+  <action name="actionSimReset">
+   <property name="text">
+    <string>simReset</string>
+   </property>
+  </action>
+  <action name="actionSimStep">
+   <property name="text">
+    <string>simStep</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>save</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
