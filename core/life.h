@@ -8,6 +8,11 @@ class Life;
 class LifeEngine;
 class Life : public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY (int age READ age WRITE setAge )
+    Q_PROPERTY (int x READ x WRITE setX )
+    Q_PROPERTY (int y READ y WRITE setY )
+
 public:
     Life(int x=0, int y=0 , int age = 0);
     void setPos(const QPoint& pos);
@@ -22,27 +27,29 @@ public:
     int x() const;
     int y() const;
     int age() const;
+
     const Genom & genom() const;
-    void setGenom(const Genom& genom);
-    virtual bool step();
-    virtual void init();
+    const QString& name() const;
+    const QString& script()const;
+
+    Gene & gene(const QString& name);
+    int geneValue(const QString& name);
+    LifeEngine * engine();
+
     void addGene(Gene  gene);
     void remGene(Gene  gene);
-    Gene & gene(const QString& name);
-    void debug();
+
+    void setGenom(const Genom& genom);
     void setName(const QString& name);
-    const QString& name() const;
     void setEngine(LifeEngine * engine);
-    LifeEngine * engine();
     void setScript(const QString& script);
-    const QString& script();
     void loadScript(const QString& filename);
 
+    virtual bool step();
+    virtual void init();
 
 
-
-
-
+    void debug();
 
 
 private:
