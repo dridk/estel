@@ -34,6 +34,9 @@ public:
     const QString& name() const;
     void setEngine(LifeEngine * engine);
     LifeEngine * engine();
+    void setScript(const QString& script);
+    const QString& script();
+    void loadScript(const QString& filename);
 
 
 
@@ -47,6 +50,8 @@ private:
     int mAge;
     QPoint mPos;
     QString mName;
+    QString mScript;
+
     LifeEngine * mEngine;
 
 

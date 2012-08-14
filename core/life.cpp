@@ -1,4 +1,5 @@
 #include "life.h"
+#include <QFile>
 
 Life::Life(int x, int y, int age)
 
@@ -156,6 +157,28 @@ void Life::setEngine(LifeEngine *engine)
 LifeEngine *Life::engine()
 {
     return mEngine;
+}
+
+void Life::setScript(const QString &script)
+{
+    mScript = script;
+}
+
+const QString &Life::script()
+{
+    return mScript;
+}
+
+void Life::loadScript(const QString &filename)
+{
+    QFile file(filename);
+       if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+           return;
+
+      mScript = file.readAll();
+
+      file.close();
+
 }
 
 
