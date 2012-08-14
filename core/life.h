@@ -33,7 +33,7 @@ public:
     void setName(const QString& name);
     const QString& name() const;
     void setEngine(LifeEngine * engine);
-    LifeEngine * engine() ;
+    LifeEngine * engine();
 
 
 

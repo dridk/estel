@@ -24,7 +24,7 @@ SOURCES += main.cpp\
     widget/gridwidget.cpp \
     widget/gridview.cpp \
     widget/lifedialog.cpp \
-    script/scriptlife.cpp \
+#    script/scriptlife.cpp \
     mainwindow.cpp \
     widget/simulationdialog.cpp \
     widget/lifetypewidget.cpp
@@ -42,7 +42,7 @@ HEADERS  += gene.h \
     widget/gridwidget.h \
     widget/gridview.h \
     widget/lifedialog.h \
-    script/scriptlife.h \
+#    script/scriptlife.h \
     mainwindow.h \
     widget/simulationdialog.h \
     widget/lifetypewidget.h

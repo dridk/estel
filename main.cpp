@@ -12,7 +12,6 @@
 #include "lifeengineview.h"
 #include "shapewidget.h"
 #include "lifedialog.h"
-#include "scriptlife.h"
 #include "lifetypewidget.h"
 int main(int argc, char *argv[])
 {
@@ -22,13 +21,13 @@ int main(int argc, char *argv[])
 
 
 
-    ScriptLife * l = new ScriptLife;
-    l->addGene(Gene("g1",50,0,100,2,0.5));
-    l->addGene(Gene("g2",50,0,100,2,0.5));
-    l->setScript("lifescript.js");
+//    ScriptLife * l = new ScriptLife;
+//    l->addGene(Gene("g1",50,0,100,2,0.5));
+//    l->addGene(Gene("g2",50,0,100,2,0.5));
+//    l->setScript("lifescript.js");
 
 
-    int i=0;
+
 
 //    while ( i < 1000)
 //    {
@@ -41,12 +40,12 @@ int main(int argc, char *argv[])
 
 
 
-    LifeEngine engine(100,100);
-    engine.addLife(l);
+//    LifeEngine engine(100,100);
+//    engine.addLife(l);
 
 //    engine.addLife(l->muted());
 //    engine.addLife(l->muted());
-    engine.run(20000);
+//    engine.run(20000);
 
 
 
