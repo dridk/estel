@@ -28,11 +28,13 @@ public:
     int y() const;
     int age() const;
 
+    Q_INVOKABLE Gene & gene(const QString& name);
+    Q_INVOKABLE void replicate(int x, int y);
+
     const Genom & genom() const;
     const QString& name() const;
     const QString& script()const;
 
-    Gene & gene(const QString& name);
     int geneValue(const QString& name);
     LifeEngine * engine();
 

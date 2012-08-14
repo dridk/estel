@@ -95,6 +95,11 @@ void LifeEngine::step()
         mScriptEngine.evaluate(currentLife->script());
         QScriptValue runFunction = mScriptEngine.globalObject().property("step");
 
+        QScriptValue lifeObj = mScriptEngine.newQObject(currentLife);
+        mScriptEngine.globalObject().setProperty("life",lifeObj);
+
+
+
 //        bool isLive = runFunction.call().toBool();
         qDebug()<<"return from js "<<runFunction.call().toString();
 

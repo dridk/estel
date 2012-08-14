@@ -49,6 +49,8 @@ Life * Life::muted() const
 {
     Life * newLife = new Life(x(),y(),0);
     newLife->setGenom(genom());
+    newLife->setScript(script());
+    newLife->setName(name());
     newLife->mutate();
     return newLife;
 }
@@ -135,6 +137,23 @@ Gene& Life::gene(const QString &name)
     return mGenom.gene(name);
 }
 
+void Life::replicate(int x, int y)
+{
+    if (!engine()->hasLife(x,y))
+    {
+        Life * child = muted();
+        child->setPos(x,y);
+        child->setAge(0);
+        engine()->addLife(child);
+    }
+
+}
+
+int Life::geneValue(const QString &name)
+{
+    return mGenom.gene(name).value();
+}
+
 void Life::debug()
 {
     qDebug()<<x()<<"-"<<y()<<" age = "<<age();
@@ -165,7 +184,7 @@ void Life::setScript(const QString &script)
     mScript = script;
 }
 
-const QString &Life::script()
+const QString &Life::script() const
 {
     return mScript;
 }

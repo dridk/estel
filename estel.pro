@@ -27,7 +27,6 @@ SOURCES += main.cpp\
 #    script/scriptlife.cpp \
     mainwindow.cpp \
     widget/simulationdialog.cpp \
-    widget/lifetypewidget.cpp
 
 HEADERS  += gene.h \
     core/genom.h \
@@ -45,7 +44,6 @@ HEADERS  += gene.h \
 #    script/scriptlife.h \
     mainwindow.h \
     widget/simulationdialog.h \
-    widget/lifetypewidget.h
 
 INCLUDEPATH+= core qxtjson widget script
 

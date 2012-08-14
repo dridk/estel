@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     engine.addLife(life);
 
 
-
+engine.run(500);
 
 //    engine.addLife(l->muted());
 //    engine.addLife(l->muted());
