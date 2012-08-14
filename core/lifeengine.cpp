@@ -99,11 +99,10 @@ void LifeEngine::step()
         mScriptEngine.globalObject().setProperty("life",lifeObj);
 
 
+       bool isLive = runFunction.call().toBool();
+//        qDebug()<<"return from js "<<runFunction.call().toString();
 
-//        bool isLive = runFunction.call().toBool();
-        qDebug()<<"return from js "<<runFunction.call().toString();
-
-                bool isLive = currentLife->step();
+//                bool isLive = currentLife->step();
 
         if (!isLive){
             i = mLifeList.erase(i);
