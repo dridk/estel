@@ -6,7 +6,7 @@
 #include "lifeengine.h"
 class Life;
 class LifeEngine;
-class Life
+class Life : public QObject
 {
 public:
     Life(int x=0, int y=0 , int age = 0);

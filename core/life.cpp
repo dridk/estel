@@ -2,6 +2,7 @@
 #include <QFile>
 
 Life::Life(int x, int y, int age)
+    :QObject()
 
 
 {
