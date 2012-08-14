@@ -19,29 +19,17 @@ int main(int argc, char *argv[])
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
+    Life * life = new Life(0,0);
 
+    life->addGene(Gene("g1"));
+    life->addGene(Gene("g2"));
+    life->loadScript("/home/sacha/devel/estel/life.js");
 
-//    ScriptLife * l = new ScriptLife;
-//    l->addGene(Gene("g1",50,0,100,2,0.5));
-//    l->addGene(Gene("g2",50,0,100,2,0.5));
-//    l->setScript("lifescript.js");
-
-
-
-
-//    while ( i < 1000)
-//    {
-
-//        qDebug()<<l->genom().identity();
-//        l->mutate();
-
-//        ++i;
-//    }
+    LifeEngine engine(100,100);
+    engine.addLife(life);
 
 
 
-//    LifeEngine engine(100,100);
-//    engine.addLife(l);
 
 //    engine.addLife(l->muted());
 //    engine.addLife(l->muted());

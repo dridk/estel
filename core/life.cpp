@@ -172,10 +172,13 @@ const QString &Life::script()
 void Life::loadScript(const QString &filename)
 {
     QFile file(filename);
-       if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+       if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+           qDebug()<<"cannot load file "<<filename;
            return;
+       }
 
       mScript = file.readAll();
+
 
       file.close();
 

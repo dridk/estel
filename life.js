@@ -3,6 +3,6 @@ function step()
 {
 
 
-return true;
+return engine.currentStep();
 
 }

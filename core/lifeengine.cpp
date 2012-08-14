@@ -6,6 +6,12 @@ LifeEngine::LifeEngine(int rows, int columns)
 {
     mRows = rows;
     mColumns = columns;
+    mFilename =QString();
+    mCurrentStep = 0;
+
+    QScriptValue object = mScriptEngine.newQObject(this);
+    mScriptEngine.globalObject().setProperty("engine",object);
+
 }
 
 LifeEngine::~LifeEngine()
@@ -20,12 +26,12 @@ void LifeEngine::addLife(Life *life)
 
     if (mLifeList.keys().contains(index))
     {
-//        qDebug()<<"life already set for this position "<<life->pos();
+        //        qDebug()<<"life already set for this position "<<life->pos();
         return;
     }
 
     if (index >= mRows * mColumns){
-//        qDebug()<<"life position out of range";
+        //        qDebug()<<"life position out of range";
         return;
     }
 
@@ -61,8 +67,6 @@ void LifeEngine::clear()
 void LifeEngine::run(int iteration)
 {
     mCurrentStep = 0;
-
-
     mProject.setName("experimentA");
     mProject.setAuthor("sacha schutz");
     mProject.setSummary("beta testing simulation");
@@ -87,7 +91,14 @@ void LifeEngine::step()
     while (i != mLifeList.end()) {
 
         Life * currentLife = mLifeList[i.key()];
-        bool isLive = currentLife->step();
+
+        mScriptEngine.evaluate(currentLife->script());
+        QScriptValue runFunction = mScriptEngine.globalObject().property("step");
+
+//        bool isLive = runFunction.call().toBool();
+        qDebug()<<"return from js "<<runFunction.call().toString();
+
+                bool isLive = currentLife->step();
 
         if (!isLive){
             i = mLifeList.erase(i);
@@ -136,7 +147,7 @@ int LifeEngine::currentStep() const
 
 bool LifeEngine::hasLife(int x, int y) const
 {
- int index =  mColumns * x + y;
+    int index =  mColumns * x + y;
     if (mLifeList.contains(index))
         return true;
     return false;

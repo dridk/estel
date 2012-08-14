@@ -2,6 +2,7 @@
 #define LIFEENGINE_H
 #include <QList>
 #include <QObject>
+#include <QtScript>
 #include "life.h"
 #include "project.h"
 class Life;
@@ -39,6 +40,7 @@ private:
     QVariant mDatas;
     Project mProject;
     int mCurrentStep;
+    QScriptEngine mScriptEngine;
 
 };
 
