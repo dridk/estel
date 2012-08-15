@@ -185,11 +185,11 @@ void Life::setScript(const QString &script)
     mScript = script;
 }
 
-void Life::loadFile(const QString &filename)
+bool Life::loadFile(const QString &filename)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
+        return false;
 
     Life * tmpLife = Life::parse(file.readAll());
 
@@ -202,27 +202,31 @@ void Life::loadFile(const QString &filename)
     delete tmpLife;
 
     file.close();
+
+    return true;
 }
 
-void Life::saveFile(const QString &filename)
+bool Life::saveFile(const QString &filename)
 {
     //========= save script ============
     QFileInfo fileInfo(filename);
     setName(fileInfo.baseName());
     QFile scriptFile(name()+"_script.js");
     if (!scriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
+        return false;
     scriptFile.write(script().toUtf8());
     scriptFile.close();
 
     //========== save life =============
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
+        return false;
 
     QString data = Life::serialize(this);
     file.write(data.toUtf8());
     file.close();
+
+    return true;
 
 }
 

@@ -22,20 +22,12 @@ int main(int argc, char *argv[])
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-//    LifeEditor * editor = new LifeEditor;
+    LifeEditor * editor = new LifeEditor;
 
-//    editor->show();
+    editor->show();
 
 //    SimMainWindow * w = new SimMainWindow;
 //    w->show();
-
-    Life * life = new Life(0,0);
-    life->loadFile("saveLife.life");
-
-    qDebug()<<life->x();
-    qDebug()<<life->genom().count();
-    qDebug()<<life->script();
-
 
 
 //    engine.addLife(l->muted());

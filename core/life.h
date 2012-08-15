@@ -45,8 +45,8 @@ public:
     void setName(const QString& name);
     void setEngine(LifeEngine * engine);
     void setScript(const QString& script);
-    void loadFile(const QString& filename);
-    void saveFile(const QString& filename);
+    bool loadFile(const QString& filename);
+    bool saveFile(const QString& filename);
     static  QString serialize(Life * life);
     static  Life * parse(const QString& json);
 

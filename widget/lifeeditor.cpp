@@ -12,6 +12,7 @@ LifeEditor::LifeEditor(QWidget *parent) :
 {
     ui->setupUi(this);
     mEngine = new LifeEngine;
+    mCurrentLife = new Life;
     setWindowTitle("no name");
     canBeSaved(false);
     connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
@@ -30,6 +31,7 @@ void LifeEditor::on_actionNew_triggered()
     ui->geneTreeWidget->clear();
     ui->scriptEdit->clear();
 
+
 }
 
 void LifeEditor::on_actionOpen_triggered()
@@ -38,52 +40,16 @@ void LifeEditor::on_actionOpen_triggered()
             QFileDialog::getOpenFileName(this,
                                          tr("Open Life script"), "", tr("Life Script (*.json *.life"));
 
-
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-
-    QVariant data = QxtJSON::parse(file.readAll());
-
-
-    QVariantList genom = data.toMap().value("genom").toList();
-    mGenes.clear();
-    foreach (QVariant geneData, genom)
+    if (!mCurrentLife->loadFile(fileName))
     {
-        Gene gene;
-        gene.setName(geneData.toMap().value("name").toString());
-        gene.setValue(geneData.toMap().value("value").toInt());
-        gene.setLimit(geneData.toMap().value("min").toInt(),
-                      geneData.toMap().value("max").toInt());
-        gene.setVariance(geneData.toMap().value("variance").toInt());
-        gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
-
-        mGenes.add(gene);
-
+        qDebug()<<"cannot load life";
+        return;
     }
 
-
-
-    QString scriptFileName = data.toMap().value("script").toString();
-
-    QFile scriptFile(scriptFileName);
-    if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-
-    ui->scriptEdit->setPlainText(scriptFile.readAll());
-
-
-    scriptFile.close();
-    file.close();
+    ui->scriptEdit->setPlainText(mCurrentLife->script());
     refresh();
-    setWindowTitle(file.fileName());
+    setWindowTitle(fileName);
     canBeSaved(false);
-
-
-
-
 }
 
 void LifeEditor::on_actionSave_triggered()
@@ -96,45 +62,12 @@ void LifeEditor::on_actionSave_triggered()
 
     }
 
-    QFile descFile(fileName);
-    if (!descFile.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
-
-    QFileInfo fileInfo(fileName);
-
-    QVariantMap dataMap;
-    dataMap.insert("name", fileInfo.baseName());
-    dataMap.insert("script", fileInfo.baseName()+"_script.js");
-
-    QVariantList geneList;
-    foreach (Gene  gene, mGenes.genes())
+    mCurrentLife->setScript(ui->scriptEdit->toPlainText());
+    if(!mCurrentLife->saveFile(fileName))
     {
-        QVariantHash gMap;
-        gMap.insert("name",gene.name());
-        gMap.insert("value",gene.value());
-        gMap.insert("min",gene.min());
-        gMap.insert("max",gene.max());
-        gMap.insert("proba",gene.mutationProbability());
-        gMap.insert("variance",gene.variance());
-        geneList.append(gMap);
-    }
-
-    dataMap.insert("genom", geneList);
-
-    QString data = QxtJSON::stringify(dataMap);
-    descFile.write(data.toUtf8());
-    descFile.close();
-
-    //========= save script ============
-
-    QString scriptFileName = fileInfo.path()+QDir::separator()+fileInfo.baseName()+"_script.js";
-    qDebug()<<"script saved"<<scriptFileName;
-    QFile scriptFile(scriptFileName);
-    if (!scriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        qDebug()<<"cannot save life...";
         return;
-
-    scriptFile.write(ui->scriptEdit->toPlainText().toUtf8());
-    scriptFile.close();
+    }
     setWindowTitle(fileName);
     canBeSaved(false);
 
@@ -148,9 +81,7 @@ void LifeEditor::on_actionNewGene_triggered()
     {
         qDebug()<<"Accepted";
         Gene g = dialog->gene();
-        mGenes.add(g);
-        canBeSaved();
-        refresh();
+        mCurrentLife->addGene(g);
     }
 
 }
@@ -161,9 +92,7 @@ void LifeEditor::on_actionEditGene_triggered()
 
 void LifeEditor::on_actionRemGene_triggered()
 {
-    foreach (QTreeWidgetItem * item, ui->geneTreeWidget->selectedItems())
-        mGenes.rem(item->text(0));
-    refresh();
+
 }
 
 void LifeEditor::on_actionSimReset_triggered()
@@ -177,20 +106,18 @@ void LifeEditor::on_actionSimReset_triggered()
 
 void LifeEditor::on_actionSimStep_triggered()
 {
-
     if (mEngine->population() == 0)
     {
-        Life * life = new Life;
-        life->setScript(ui->scriptEdit->toPlainText());
-        life->setGenom(mGenes);
-        mEngine->addLife(life);
+       mCurrentLife->setAge(0);
+       mCurrentLife->setPos(0,0);
+       mEngine->addLife(mCurrentLife);
     }
 
     mEngine->step();
 
     ui->errorTextEdit->appendPlainText(mEngine->lastError());
     ui->debugTextEdit->appendHtml("<b>==Step:"+QString::number(mEngine->currentStep())+"=="
-                                       "Pop :"+QString::number(mEngine->population())+"==</b>");
+                                  "Pop :"+QString::number(mEngine->population())+"==</b>");
 
     ui->debugTextEdit->appendPlainText(mEngine->lastDebug());
 
@@ -208,7 +135,7 @@ void LifeEditor::canBeSaved(bool enable)
 void LifeEditor::refresh()
 {
     ui->geneTreeWidget->clear();
-    foreach (Gene g, mGenes.genes())
+    foreach (Gene g, mCurrentLife->genom().genes())
     {
 
         QTreeWidgetItem * item = new QTreeWidgetItem;

@@ -39,6 +39,7 @@ private:
     Ui::LifeEditor *ui;
     Genom mGenes;
     LifeEngine * mEngine;
+    Life * mCurrentLife;
 };
 
 #endif // LIFEEDITOR_H
