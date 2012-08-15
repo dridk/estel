@@ -26,8 +26,16 @@ int main(int argc, char *argv[])
 
 //    editor->show();
 
-    SimMainWindow * w = new SimMainWindow;
-    w->show();
+//    SimMainWindow * w = new SimMainWindow;
+//    w->show();
+
+    Life * life = new Life(0,0);
+    life->loadFile("saveLife.life");
+
+    qDebug()<<life->x();
+    qDebug()<<life->genom().count();
+    qDebug()<<life->script();
+
 
 
 //    engine.addLife(l->muted());

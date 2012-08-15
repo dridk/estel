@@ -36,7 +36,6 @@ public:
     const QString& name() const;
     const QString& script()const;
 
-    int geneValue(const QString& name);
     LifeEngine * engine();
 
     void addGene(Gene  gene);
@@ -46,7 +45,10 @@ public:
     void setName(const QString& name);
     void setEngine(LifeEngine * engine);
     void setScript(const QString& script);
-    void loadScript(const QString& filename);
+    void loadFile(const QString& filename);
+    void saveFile(const QString& filename);
+    static  QString serialize(Life * life);
+    static  Life * parse(const QString& json);
 
     virtual bool step();
     virtual void init();

@@ -1,6 +1,6 @@
 #include "life.h"
 #include <QFile>
-
+#include "qxtjson.h"
 Life::Life(int x, int y, int age)
     :QObject()
 
@@ -57,7 +57,7 @@ Life * Life::muted() const
 
 void Life::mutate()
 {
- mGenom.mutate();
+    mGenom.mutate();
 
 }
 
@@ -92,26 +92,26 @@ void Life::setGenom(const Genom &genom)
 bool Life::step()
 {
 
-//    mAge++;
+    //    mAge++;
 
-////    if ( mAge > 10)
-////        return false;
-
-
-//    if (mAge%2 && mAge != 1)
-//    {
+    ////    if ( mAge > 10)
+    ////        return false;
 
 
-
-//        Life * child = new Life(muted());
-//       child->setPos(x()+(qrand()%3)-1, y()+(qrand()%3)-1);
-////       qDebug()<<child->pos();
-//       engine()->addLife(child);
+    //    if (mAge%2 && mAge != 1)
+    //    {
 
 
-//    }
 
-//    return true;
+    //        Life * child = new Life(muted());
+    //       child->setPos(x()+(qrand()%3)-1, y()+(qrand()%3)-1);
+    ////       qDebug()<<child->pos();
+    //       engine()->addLife(child);
+
+
+    //    }
+
+    //    return true;
 
     return true;
 
@@ -154,10 +154,6 @@ void Life::replicate(int x, int y)
 
 }
 
-int Life::geneValue(const QString &name)
-{
-    return mGenom.gene(name).value();
-}
 
 void Life::debug()
 {
@@ -189,25 +185,120 @@ void Life::setScript(const QString &script)
     mScript = script;
 }
 
+void Life::loadFile(const QString &filename)
+{
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    Life * tmpLife = Life::parse(file.readAll());
+
+    setName(tmpLife->name());
+    setAge(tmpLife->age());
+    setPos(tmpLife->pos());
+    setGenom(tmpLife->genom());
+    setScript(tmpLife->script());
+
+    delete tmpLife;
+
+    file.close();
+}
+
+void Life::saveFile(const QString &filename)
+{
+    //========= save script ============
+    QFileInfo fileInfo(filename);
+    setName(fileInfo.baseName());
+    QFile scriptFile(name()+"_script.js");
+    if (!scriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    scriptFile.write(script().toUtf8());
+    scriptFile.close();
+
+    //========== save life =============
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+    QString data = Life::serialize(this);
+    file.write(data.toUtf8());
+    file.close();
+
+}
+
+ QString Life::serialize(Life *life)
+{
+    QVariantMap dataMap;
+    dataMap.insert("name", life->name());
+    dataMap.insert("x", life->x());
+    dataMap.insert("y", life->y());
+    dataMap.insert("age", life->age());
+    dataMap.insert("script", life->name()+"_script.js");
+
+    QVariantList geneList;
+    foreach (Gene  gene,life->genom().genes())
+    {
+        QVariantHash gMap;
+        gMap.insert("name",gene.name());
+        gMap.insert("value",gene.value());
+        gMap.insert("min",gene.min());
+        gMap.insert("max",gene.max());
+        gMap.insert("proba",gene.mutationProbability());
+        gMap.insert("variance",gene.variance());
+        geneList.append(gMap);
+    }
+
+    dataMap.insert("genom", geneList);
+
+    QString result = QxtJSON::stringify(dataMap);
+
+    return result;
+
+ }
+
+  Life * Life::parse(const QString &json)
+ {
+     Life * newLife = new Life;
+     QVariant data = QxtJSON::parse(json);
+
+     newLife->setName(data.toMap().value("name").toString());
+     newLife->setAge(data.toMap().value("age").toInt());
+     newLife->setX(data.toMap().value("x").toInt());
+     newLife->setY(data.toMap().value("y").toInt());
+
+     QVariantList genomData = data.toMap().value("genom").toList();
+
+     foreach (QVariant geneData, genomData)
+     {
+         Gene gene;
+         gene.setName(geneData.toMap().value("name").toString());
+         gene.setValue(geneData.toMap().value("value").toInt());
+         gene.setLimit(geneData.toMap().value("min").toInt(),
+                       geneData.toMap().value("max").toInt());
+         gene.setVariance(geneData.toMap().value("variance").toInt());
+         gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
+         newLife->addGene(gene);
+     }
+
+     //=== load script
+     QString scriptFileName = data.toMap().value("script").toString();
+     QFile scriptFile(scriptFileName);
+     if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
+         return newLife;
+
+     newLife->setScript(scriptFile.readAll());
+
+     scriptFile.close();
+
+     return newLife;
+ }
+
 const QString &Life::script() const
 {
     return mScript;
 }
 
-void Life::loadScript(const QString &filename)
-{
-    QFile file(filename);
-       if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-           qDebug()<<"cannot load file "<<filename;
-           return;
-       }
 
-      mScript = file.readAll();
-
-
-      file.close();
-
-}
 
 
 
