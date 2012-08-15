@@ -14,6 +14,7 @@
 #include "lifedialog.h"
 #include "lifetypewidget.h"
 #include "lifeeditor.h"
+#include "jsedit.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -23,6 +24,8 @@ int main(int argc, char *argv[])
     LifeEditor * editor = new LifeEditor;
 
     editor->show();
+
+
 
 //    engine.addLife(l->muted());
 //    engine.addLife(l->muted());

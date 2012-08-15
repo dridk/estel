@@ -20,7 +20,7 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QTextEdit" name="scriptEdit"/>
+      <widget class="JSEdit" name="scriptEdit"/>
       <widget class="QTabWidget" name="tabWidget">
        <property name="tabPosition">
         <enum>QTabWidget::South</enum>
@@ -204,6 +204,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>JSEdit</class>
+   <extends>QTextEdit</extends>
+   <header>jsedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
