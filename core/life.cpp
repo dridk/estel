@@ -132,12 +132,13 @@ void Life::remGene(Gene gene)
     mGenom.rem(gene);
 }
 
-int Life::gene(const QString &name)
+Gene& Life::gene(const QString &name)
 {
-    qDebug()<<name;
-    qDebug()<<mGenom.gene(name).value();
-    qDebug()<<"count"<<mGenom.count();
-    mGenom.gene(name).debug();
+    return mGenom.gene(name);
+}
+
+int Life::g(const QString &name)
+{
     return mGenom.gene(name).value();
 }
 

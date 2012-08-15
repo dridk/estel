@@ -15,16 +15,19 @@
 #include "lifetypewidget.h"
 #include "lifeeditor.h"
 #include "jsedit.h"
+#include "simmainwindow.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-    LifeEditor * editor = new LifeEditor;
+//    LifeEditor * editor = new LifeEditor;
 
-    editor->show();
+//    editor->show();
 
+    SimMainWindow * w = new SimMainWindow;
+    w->show();
 
 
 //    engine.addLife(l->muted());

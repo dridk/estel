@@ -28,7 +28,8 @@ public:
     int y() const;
     int age() const;
 
-    Q_INVOKABLE int gene(const QString& name);
+    Gene & gene(const QString& name);
+    Q_INVOKABLE int g(const QString& name);
     Q_INVOKABLE void replicate(int x, int y);
 
     const Genom & genom() const;
