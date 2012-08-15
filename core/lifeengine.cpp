@@ -62,8 +62,8 @@ QList<Life*> LifeEngine::lifes() const
 
 void LifeEngine::clear()
 {
+    qDeleteAll(mLifeList);
 }
-
 void LifeEngine::run(int iteration)
 {
     mCurrentStep = 0;

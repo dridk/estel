@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QFile>
+#include "lifeengine.h"
 #include "gene.h"
+#include "life.h"
+#include "genom.h"
 #include "genedialog.h"
 namespace Ui {
 class LifeEditor;
@@ -24,13 +27,18 @@ public slots:
     void on_actionNewGene_triggered();
     void on_actionEditGene_triggered();
     void on_actionRemGene_triggered();
+    void on_actionSimReset_triggered();
+    void on_actionSimStep_triggered();
+
+    void canBeSaved(bool enable = true);
 
 protected:
     void refresh();
 
 private:
     Ui::LifeEditor *ui;
-    QMap<QString,Gene> mGenes;
+    Genom mGenes;
+    LifeEngine * mEngine;
 };
 
 #endif // LIFEEDITOR_H

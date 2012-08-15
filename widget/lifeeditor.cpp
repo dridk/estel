@@ -11,8 +11,10 @@ LifeEditor::LifeEditor(QWidget *parent) :
     ui(new Ui::LifeEditor)
 {
     ui->setupUi(this);
+    mEngine = new LifeEngine;
     setWindowTitle("no name");
-
+    canBeSaved(false);
+    connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
 
 }
 
@@ -57,7 +59,7 @@ void LifeEditor::on_actionOpen_triggered()
         gene.setVariance(geneData.toMap().value("variance").toInt());
         gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
 
-        mGenes.insert(gene.name(), gene);
+        mGenes.add(gene);
 
     }
 
@@ -77,6 +79,7 @@ void LifeEditor::on_actionOpen_triggered()
     file.close();
     refresh();
     setWindowTitle(file.fileName());
+    canBeSaved(false);
 
 
 
@@ -85,11 +88,11 @@ void LifeEditor::on_actionOpen_triggered()
 
 void LifeEditor::on_actionSave_triggered()
 {
-     QString fileName = windowTitle();
+    QString fileName = windowTitle();
     if (!QFile::exists(fileName))
     {
-      fileName = QFileDialog::getSaveFileName(this,
-                                             tr("Save Life script"), "", tr("Life Script (*.json *.life"));
+        fileName = QFileDialog::getSaveFileName(this,
+                                                tr("Save Life script"), "", tr("Life Script (*.json *.life"));
 
     }
 
@@ -104,7 +107,7 @@ void LifeEditor::on_actionSave_triggered()
     dataMap.insert("script", fileInfo.baseName()+"_script.js");
 
     QVariantList geneList;
-    foreach (Gene  gene, mGenes.values())
+    foreach (Gene  gene, mGenes.genes())
     {
         QVariantHash gMap;
         gMap.insert("name",gene.name());
@@ -133,6 +136,7 @@ void LifeEditor::on_actionSave_triggered()
     scriptFile.write(ui->scriptEdit->toPlainText().toUtf8());
     scriptFile.close();
     setWindowTitle(fileName);
+    canBeSaved(false);
 
 }
 
@@ -144,9 +148,8 @@ void LifeEditor::on_actionNewGene_triggered()
     {
         qDebug()<<"Accepted";
         Gene g = dialog->gene();
-        g.debug();
-        mGenes.insert(g.name(),g);
-
+        mGenes.add(g);
+        canBeSaved();
         refresh();
     }
 
@@ -158,12 +161,43 @@ void LifeEditor::on_actionEditGene_triggered()
 
 void LifeEditor::on_actionRemGene_triggered()
 {
+  foreach (QTreeWidgetItem * item, ui->geneTreeWidget->selectedItems())
+    mGenes.rem(item->text(0));
+  refresh();
+}
+
+void LifeEditor::on_actionSimReset_triggered()
+{
+    qDebug()<<"RESET"<<mEngine->population();
+    mEngine->clear();
+}
+
+void LifeEditor::on_actionSimStep_triggered()
+{
+
+    if (mEngine->population() == 0)
+    {
+        Life * life = new Life;
+        life->setScript(ui->scriptEdit->toPlainText());
+        mEngine->addLife(life);
+    }
+
+    qDebug()<<"population "<<mEngine->population();
+    mEngine->lifes().first()->debug();
+    mEngine->step();
+
+
+}
+
+void LifeEditor::canBeSaved(bool enable)
+{
+    ui->actionSave->setEnabled(enable);
 }
 
 void LifeEditor::refresh()
 {
     ui->geneTreeWidget->clear();
-    foreach (Gene g, mGenes.values())
+    foreach (Gene g, mGenes.genes())
     {
 
         QTreeWidgetItem * item = new QTreeWidgetItem;
@@ -177,6 +211,8 @@ void LifeEditor::refresh()
         ui->geneTreeWidget->addTopLevelItem(item);
 
     }
+
+    ui->dockWidget->setWindowTitle("genom id :"+mGenes.identity());
 
 }
 

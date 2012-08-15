@@ -11,7 +11,7 @@ class LifeEngine : public QObject
 {
     Q_OBJECT
 public:
-    LifeEngine(int rows, int columns);
+    LifeEngine(int rows =100 , int columns=100);
     ~LifeEngine();
     Q_INVOKABLE void addLife(Life * life);
     Q_INVOKABLE void addLifes(QList<Life*> lifes);

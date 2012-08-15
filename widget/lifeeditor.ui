@@ -152,6 +152,9 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>save</string>
    </property>
