@@ -30,9 +30,6 @@ protected:
 
 private:
     Ui::LifeEditor *ui;
-    QString mCurrentName;
-    QFile mDescFile;
-    QFile mScriptFile;
     QMap<QString,Gene> mGenes;
 };
 

@@ -4,13 +4,16 @@
 #include <QInputDialog>
 #include <QFile>
 #include <QMessageBox>
+#include <QFileDialog>
 #include "qxtjson.h"
 LifeEditor::LifeEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LifeEditor)
 {
     ui->setupUi(this);
-    mCurrentName ="";
+    setWindowTitle("no name");
+
+
 }
 
 LifeEditor::~LifeEditor()
@@ -21,31 +24,84 @@ LifeEditor::~LifeEditor()
 void LifeEditor::on_actionNew_triggered()
 {
 
-    QString n = QInputDialog::getText(this,"life name", "type a name");
-    mCurrentName = n;
-    setWindowTitle(mCurrentName);
+    setWindowTitle("no name");
+    ui->geneTreeWidget->clear();
+    ui->scriptEdit->clear();
 
 }
 
 void LifeEditor::on_actionOpen_triggered()
 {
+    QString fileName =
+            QFileDialog::getOpenFileName(this,
+                                         tr("Open Life script"), "", tr("Life Script (*.json *.life"));
+
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+
+    QVariant data = QxtJSON::parse(file.readAll());
+
+
+    QVariantList genom = data.toMap().value("genom").toList();
+    mGenes.clear();
+    foreach (QVariant geneData, genom)
+    {
+        Gene gene;
+        gene.setName(geneData.toMap().value("name").toString());
+        gene.setValue(geneData.toMap().value("value").toInt());
+        gene.setLimit(geneData.toMap().value("min").toInt(),
+                      geneData.toMap().value("max").toInt());
+        gene.setVariance(geneData.toMap().value("variance").toInt());
+        gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
+
+        mGenes.insert(gene.name(), gene);
+
+    }
+
+
+
+    QString scriptFileName = data.toMap().value("script").toString();
+
+    QFile scriptFile(scriptFileName);
+    if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+
+    ui->scriptEdit->setPlainText(scriptFile.readAll());
+
+
+    scriptFile.close();
+    file.close();
+    refresh();
+    setWindowTitle(file.fileName());
+
+
+
+
 }
 
 void LifeEditor::on_actionSave_triggered()
 {
-    if (mCurrentName.isEmpty())
+     QString fileName = windowTitle();
+    if (!QFile::exists(fileName))
     {
-        qDebug()<<"cannot save, create a file first";
-        return;
+      fileName = QFileDialog::getSaveFileName(this,
+                                             tr("Save Life script"), "", tr("Life Script (*.json *.life"));
+
     }
 
-    mDescFile.setFileName(mCurrentName+".json");
-    if (!mDescFile.open(QIODevice::WriteOnly | QIODevice::Text))
-          return;
+    QFile descFile(fileName);
+    if (!descFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+    QFileInfo fileInfo(fileName);
 
     QVariantMap dataMap;
-    dataMap.insert("name", mCurrentName);
-    dataMap.insert("script", mCurrentName+"_script.js");
+    dataMap.insert("name", fileInfo.baseName());
+    dataMap.insert("script", fileInfo.baseName()+"_script.js");
 
     QVariantList geneList;
     foreach (Gene  gene, mGenes.values())
@@ -63,18 +119,20 @@ void LifeEditor::on_actionSave_triggered()
     dataMap.insert("genom", geneList);
 
     QString data = QxtJSON::stringify(dataMap);
-    mDescFile.write(data.toUtf8());
-    mDescFile.close();
+    descFile.write(data.toUtf8());
+    descFile.close();
 
     //========= save script ============
 
-    mScriptFile.setFileName(mCurrentName+"_script.js");
-    if (!mScriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
-          return;
+    QString scriptFileName = fileInfo.path()+QDir::separator()+fileInfo.baseName()+"_script.js";
+    qDebug()<<"script saved"<<scriptFileName;
+    QFile scriptFile(scriptFileName);
+    if (!scriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
 
-    mScriptFile.write(ui->scriptEdit->toPlainText().toUtf8());
-
-    mScriptFile.close();
+    scriptFile.write(ui->scriptEdit->toPlainText().toUtf8());
+    scriptFile.close();
+    setWindowTitle(fileName);
 
 }
 
