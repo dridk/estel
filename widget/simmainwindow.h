@@ -29,6 +29,8 @@ public slots:
     void showLifeEditor();
     void startSimulation();
 
+protected:
+    void updateGrid();
 
 protected slots:
     void clicked(QPoint pos);

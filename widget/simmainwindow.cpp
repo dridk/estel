@@ -66,7 +66,7 @@ void SimMainWindow::saveSim()
     }
 
     if(mEngine->save(fileName))
-       setWindowTitle(fileName);
+        setWindowTitle(fileName);
     else qDebug()<<"Cannot save Simulation";
 
 }
@@ -102,6 +102,7 @@ void SimMainWindow::refresh()
         list.append(data);
     }
     mLifeModel->setStringList(list);
+    updateGrid();
 }
 
 void SimMainWindow::showLifeEditor()
@@ -125,10 +126,22 @@ void SimMainWindow::startSimulation()
 
 
     SimulationDialog * dialog = new SimulationDialog(mEngine);
-
     dialog->exec();
 
+    refresh();
 
+
+}
+
+void SimMainWindow::updateGrid()
+{
+    mView->grid()->clear();
+    foreach (Life * life, mEngine->lifes())
+    {
+        mView->grid()->switchOn(life->x(),life->y(),Qt::black);
+
+    }
+    mView->update();
 }
 
 void SimMainWindow::clicked(QPoint pos)
