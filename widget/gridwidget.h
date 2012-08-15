@@ -24,6 +24,8 @@ public:
 protected:
     void createGrid();
 
+signals:
+    void squareClicked(QPoint pos);
 
 
 private:

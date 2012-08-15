@@ -5,6 +5,7 @@
 #include "gridview.h"
 #include <QStringListModel>
 #include <QApplication>
+#include "lifeengine.h"
 namespace Ui {
 class SimMainWindow;
 }
@@ -18,12 +19,17 @@ public:
     ~SimMainWindow();
 public slots:
     void loadLifeFile(const QString& path = QString());
+    void loadLife();
+
+protected slots:
+    void clicked(QPoint pos);
     
 private:
     Ui::SimMainWindow *ui;
     GridView * mView;
     QStringListModel * mFileModel;
     QStringListModel * mLifeModel;
+    LifeEngine * mEngine;
 
 };
 

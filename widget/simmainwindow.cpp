@@ -7,7 +7,8 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     ui(new Ui::SimMainWindow)
 {
     ui->setupUi(this);
-    mView = new GridView(100,100);
+    mEngine = new LifeEngine(100,100);
+    mView = new GridView(mEngine->rows(),mEngine->columns());
     mFileModel = new QStringListModel(this);
     mLifeModel = new QStringListModel(this);
 
@@ -15,6 +16,8 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     ui->lifeListView->setModel(mLifeModel);
 
     setCentralWidget(mView);
+
+    connect(mView->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
 
     loadLifeFile();
 
@@ -40,8 +43,42 @@ void SimMainWindow::loadLifeFile(const QString &path)
 
     QStringList list;
     foreach (QFileInfo fileInfo, dir.entryInfoList())
-    list.append(fileInfo.fileName());
+        list.append(fileInfo.fileName());
 
     mFileModel->setStringList(list);
+
+}
+
+void SimMainWindow::loadLife()
+{
+    QStringList list;
+    foreach (Life * life, mEngine->lifes())
+    {
+        QString data = life->name();
+        data.append(life->genom().identity());
+        list.append(data);
+    }
+    mLifeModel->setStringList(list);
+}
+
+void SimMainWindow::clicked(QPoint pos)
+{
+    if (mEngine->hasLife(pos.x(),pos.y()))
+        return;
+
+    Life * life = new Life(pos.x(),pos.y());
+
+    mEngine->addLife(life);
+
+    if (mEngine->hasLife(pos.x(),pos.y())){
+    mView->grid()->switchOn(pos.x(),pos.y(),Qt::black);
+    mView->grid()->update();
+    loadLife();
+   }
+
+
+
+    loadLife();
+
 
 }
