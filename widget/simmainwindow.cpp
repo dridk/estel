@@ -18,7 +18,8 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     setCentralWidget(mView);
 
     connect(mView->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
-
+    connect(ui->fileListView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showLifeEditor()));
+    connect(ui->actionRun,SIGNAL(triggered()),this,SLOT(startSimulation()));
     loadLifeFile();
 
 }
@@ -61,23 +62,69 @@ void SimMainWindow::loadLife()
     mLifeModel->setStringList(list);
 }
 
+void SimMainWindow::showLifeEditor()
+{
+   LifeEditor * editor = new LifeEditor;
+
+
+//    editor->setWindowModality(Qt::ApplicationModal);
+    editor->show();
+//    editor->set
+//    connect(editor, SIGNAL(destroyed()), &loop, SLOT(quit()));
+//    loop.exec();
+
+//    qDebug()<<"end";
+
+
+}
+
+void SimMainWindow::startSimulation()
+{
+
+
+    SimulationDialog * dialog = new SimulationDialog(mEngine);
+
+    dialog->exec();
+
+
+}
+
 void SimMainWindow::clicked(QPoint pos)
 {
     if (mEngine->hasLife(pos.x(),pos.y()))
         return;
 
-    Life * life = new Life(pos.x(),pos.y());
+    if (ui->fileListView->selectionModel()->selectedIndexes().count() <= 0)
+        return;
 
+    QString fileName = mFileModel->stringList().at(
+                ui->fileListView->selectionModel()->selectedRows().first().row());
+
+    qDebug()<<fileName;
+
+
+    Life * life = new Life;
+    //====== load file....
+    if (!life->loadFile(fileName))
+    {
+        delete life;
+        qDebug()<<"cannot load life file...";
+        return;
+    }
+    //====== Test if position is avaible....
+
+    if (mEngine->hasLife(pos.x(),pos.y()))
+    {
+        delete life;
+        qDebug()<<"cannot add life on this position";
+        return;
+    }
+
+    life->setPos(pos);
+    life->setAge(0);
     mEngine->addLife(life);
-
-    if (mEngine->hasLife(pos.x(),pos.y())){
     mView->grid()->switchOn(pos.x(),pos.y(),Qt::black);
     mView->grid()->update();
-    loadLife();
-   }
-
-
-
     loadLife();
 
 

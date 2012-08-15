@@ -6,6 +6,8 @@
 #include <QStringListModel>
 #include <QApplication>
 #include "lifeengine.h"
+#include "lifeeditor.h"
+#include "simulationdialog.h"
 namespace Ui {
 class SimMainWindow;
 }
@@ -20,9 +22,13 @@ public:
 public slots:
     void loadLifeFile(const QString& path = QString());
     void loadLife();
+    void showLifeEditor();
+    void startSimulation();
+
 
 protected slots:
     void clicked(QPoint pos);
+
     
 private:
     Ui::SimMainWindow *ui;

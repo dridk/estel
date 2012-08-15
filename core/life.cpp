@@ -144,12 +144,14 @@ int Life::g(const QString &name)
 
 void Life::replicate(int x, int y)
 {
+    qDebug()<<"replicate "<<x<<" "<<y;
     if (!engine()->hasLife(x,y))
     {
         Life * child = muted();
         child->setPos(x,y);
         child->setAge(0);
         engine()->addLife(child);
+
     }
 
 }

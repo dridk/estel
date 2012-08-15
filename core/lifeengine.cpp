@@ -120,7 +120,6 @@ bool LifeEngine::evaluateLife(Life *life)
     mScriptEngine.globalObject().setProperty("life",lifeObj);
 
     //evaluate script
-    qDebug()<<"before evaluate";
 
     QScriptValue result = mScriptEngine.evaluate(life->script());
     if (result.isError())
