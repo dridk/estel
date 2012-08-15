@@ -6,7 +6,6 @@ LifeEngine::LifeEngine(int rows, int columns)
 {
     mRows = rows;
     mColumns = columns;
-    mFilename =QString();
     mCurrentStep = 0;
 
     QScriptValue object = mScriptEngine.newQObject(this);
@@ -66,14 +65,9 @@ void LifeEngine::clear()
 void LifeEngine::run(int iteration)
 {
     mCurrentStep = 0;
-    mProject.setName("experimentA");
-    mProject.setAuthor("sacha schutz");
-    mProject.setSummary("beta testing simulation");
 
     while (mCurrentStep < iteration)
     {
-        mProject.writeData(this);
-
         step();
         qDebug()<<mCurrentStep<<" pop"<<population();
 
@@ -105,10 +99,7 @@ int LifeEngine::population()
     return mLifeList.count();
 }
 
-void LifeEngine::setFileName(const QString &file)
-{
-    mFilename = file;
-}
+
 
 bool LifeEngine::evaluateLife(Life *life)
 {
@@ -145,15 +136,22 @@ bool LifeEngine::evaluateLife(Life *life)
 
 
 
-const QString &LifeEngine::filename() const
-{
-    return mFilename;
-}
 
-void LifeEngine::load(const QString &filename)
+
+bool LifeEngine::load(const QString &filename)
 {
     mLifeList.clear();
-    mProject.readData(filename, this);
+
+}
+
+bool LifeEngine::save(const QString &filename)
+{
+
+
+
+
+
+
 
 }
 

@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QtScript>
 #include "life.h"
-#include "project.h"
 class Life;
 class LifeEngine;
 class LifeEngine : public QObject
@@ -30,12 +29,12 @@ public:
     const QString& lastError() const;
 
 
-    void setFileName(const QString& file);
     bool evaluateLife(Life * life);
-    const QString& filename() const;
-    void load(const QString& filename);
+    bool load(const QString& filename);
+    bool save(const QString& filename);
     void run(int iteration = 100);
     void step();
+
 
 
 
@@ -43,9 +42,7 @@ private:
     QHash<int,Life*> mLifeList;
     int mRows;
     int mColumns;
-    QString mFilename;
     QVariant mDatas;
-    Project mProject;
     int mCurrentStep;
     QScriptEngine mScriptEngine;
     QString mLastError;
