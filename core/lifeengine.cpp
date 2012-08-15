@@ -1,5 +1,7 @@
 #include "lifeengine.h"
 #include <QDebug>
+#include <QFile>
+#include "qxtjson.h"
 LifeEngine::LifeEngine(int rows, int columns)
     :QObject()
 
@@ -141,15 +143,71 @@ bool LifeEngine::evaluateLife(Life *life)
 bool LifeEngine::load(const QString &filename)
 {
     mLifeList.clear();
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    clear();
+
+    QVariant data = QxtJSON::parse(file.readAll());
+
+    QVariantList lifeList = data.toMap().value("lifes").toList();
+
+    foreach (QVariant lifeData, lifeList)
+    {
+
+        Life * life = Life::parse(QxtJSON::stringify(lifeData));
+        addLife(life);
+
+    }
+
+    file.close();
+    return true;
+
+
 
 }
 
 bool LifeEngine::save(const QString &filename)
 {
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+    QVariantList lifeList;
+    foreach (Life * l, lifes()){
+        QVariantMap dataMap;
+        dataMap.insert("name", l->name());
+        dataMap.insert("x", l->x());
+        dataMap.insert("y", l->y());
+        dataMap.insert("age", l->age());
+        dataMap.insert("script", l->name()+"_script.js");
 
+        QVariantList geneList;
+        foreach (Gene  gene,l->genom().genes())
+        {
+            QVariantHash gMap;
+            gMap.insert("name",gene.name());
+            gMap.insert("value",gene.value());
+            gMap.insert("min",gene.min());
+            gMap.insert("max",gene.max());
+            gMap.insert("proba",gene.mutationProbability());
+            gMap.insert("variance",gene.variance());
+            geneList.append(gMap);
+        }
+        dataMap.insert("genom", geneList);
+        lifeList.append(dataMap);
 
+    }
 
+    QVariantMap globalMap;
+    globalMap.insert("date",QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm"));
+    globalMap.insert("lifes", lifeList);
 
+    file.write(QxtJSON::stringify(globalMap).toUtf8());
+
+    file.close();
+
+    return true;
 
 
 

@@ -20,8 +20,12 @@ public:
     explicit SimMainWindow(QWidget *parent = 0);
     ~SimMainWindow();
 public slots:
+    void newSim();
+    void openSim();
+    void saveSim();
+
     void loadLifeFile(const QString& path = QString());
-    void loadLife();
+    void refresh();
     void showLifeEditor();
     void startSimulation();
 

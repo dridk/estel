@@ -2,6 +2,7 @@
 #include "ui_simmainwindow.h"
 #include <QDir>
 #include <QDebug>
+#include <QFileDialog>
 SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SimMainWindow)
@@ -20,6 +21,9 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(mView->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
     connect(ui->fileListView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showLifeEditor()));
     connect(ui->actionRun,SIGNAL(triggered()),this,SLOT(startSimulation()));
+    connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveSim()));
+    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
+
     loadLifeFile();
 
 }
@@ -27,6 +31,44 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 SimMainWindow::~SimMainWindow()
 {
     delete ui;
+}
+
+void SimMainWindow::newSim()
+{
+}
+
+void SimMainWindow::openSim()
+{
+    QString fileName =
+            QFileDialog::getOpenFileName(this,
+                                         tr("Open Simulation"), "", tr("Estel Simulation (*.estel"));
+
+    if(mEngine->load(fileName)){
+        setWindowTitle(fileName);
+        refresh();
+    }
+
+    else qDebug()<<"cannot open simulation";
+
+
+
+
+
+}
+
+void SimMainWindow::saveSim()
+{
+    QString fileName = windowTitle();
+    if (!QFile::exists(windowTitle()))
+    {
+        fileName = QFileDialog::getSaveFileName(this,
+                                                tr("Save Simulation"), "", tr("Estel Simulation (*.estel"));
+    }
+
+    if(mEngine->save(fileName))
+       setWindowTitle(fileName);
+    else qDebug()<<"Cannot save Simulation";
+
 }
 
 void SimMainWindow::loadLifeFile(const QString &path)
@@ -50,7 +92,7 @@ void SimMainWindow::loadLifeFile(const QString &path)
 
 }
 
-void SimMainWindow::loadLife()
+void SimMainWindow::refresh()
 {
     QStringList list;
     foreach (Life * life, mEngine->lifes())
@@ -64,16 +106,16 @@ void SimMainWindow::loadLife()
 
 void SimMainWindow::showLifeEditor()
 {
-   LifeEditor * editor = new LifeEditor;
+    LifeEditor * editor = new LifeEditor;
 
 
-//    editor->setWindowModality(Qt::ApplicationModal);
+    //    editor->setWindowModality(Qt::ApplicationModal);
     editor->show();
-//    editor->set
-//    connect(editor, SIGNAL(destroyed()), &loop, SLOT(quit()));
-//    loop.exec();
+    //    editor->set
+    //    connect(editor, SIGNAL(destroyed()), &loop, SLOT(quit()));
+    //    loop.exec();
 
-//    qDebug()<<"end";
+    //    qDebug()<<"end";
 
 
 }
@@ -125,7 +167,7 @@ void SimMainWindow::clicked(QPoint pos)
     mEngine->addLife(life);
     mView->grid()->switchOn(pos.x(),pos.y(),Qt::black);
     mView->grid()->update();
-    loadLife();
+    refresh();
 
 
 }
