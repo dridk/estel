@@ -23,8 +23,15 @@ public:
     Q_INVOKABLE int columns() const;
     Q_INVOKABLE int currentStep() const;
     Q_INVOKABLE bool hasLife(int x, int y) const;
+    Q_INVOKABLE void debug(const QString& msg);
+    Q_INVOKABLE void error(const QString& msg);
+
+    const QString& lastDebug() const;
+    const QString& lastError() const;
+
 
     void setFileName(const QString& file);
+    bool evaluateLife(Life * life);
     const QString& filename() const;
     void load(const QString& filename);
     void run(int iteration = 100);
@@ -41,6 +48,8 @@ private:
     Project mProject;
     int mCurrentStep;
     QScriptEngine mScriptEngine;
+    QString mLastError;
+    QString mLastDebug;
 
 };
 

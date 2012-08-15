@@ -161,15 +161,18 @@ void LifeEditor::on_actionEditGene_triggered()
 
 void LifeEditor::on_actionRemGene_triggered()
 {
-  foreach (QTreeWidgetItem * item, ui->geneTreeWidget->selectedItems())
-    mGenes.rem(item->text(0));
-  refresh();
+    foreach (QTreeWidgetItem * item, ui->geneTreeWidget->selectedItems())
+        mGenes.rem(item->text(0));
+    refresh();
 }
 
 void LifeEditor::on_actionSimReset_triggered()
 {
     qDebug()<<"RESET"<<mEngine->population();
     mEngine->clear();
+    ui->debugTextEdit->clear();
+    ui->errorTextEdit->clear();
+
 }
 
 void LifeEditor::on_actionSimStep_triggered()
@@ -179,12 +182,20 @@ void LifeEditor::on_actionSimStep_triggered()
     {
         Life * life = new Life;
         life->setScript(ui->scriptEdit->toPlainText());
+        life->setGenom(mGenes);
         mEngine->addLife(life);
     }
 
-    qDebug()<<"population "<<mEngine->population();
-    mEngine->lifes().first()->debug();
     mEngine->step();
+
+    ui->errorTextEdit->appendPlainText(mEngine->lastError());
+    ui->debugTextEdit->appendHtml("<b>==Step:"+QString::number(mEngine->currentStep())+"=="
+                                       "Pop :"+QString::number(mEngine->population())+"==</b>");
+
+    ui->debugTextEdit->appendPlainText(mEngine->lastDebug());
+
+
+
 
 
 }

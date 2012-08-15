@@ -59,10 +59,9 @@ QList<Life*> LifeEngine::lifes() const
     return mLifeList.values();
 }
 
-
 void LifeEngine::clear()
 {
-    qDeleteAll(mLifeList);
+    mLifeList.clear();
 }
 void LifeEngine::run(int iteration)
 {
@@ -78,7 +77,6 @@ void LifeEngine::run(int iteration)
         step();
         qDebug()<<mCurrentStep<<" pop"<<population();
 
-        mCurrentStep++;
     }
 
     qDebug()<<"end of simulation";
@@ -91,25 +89,15 @@ void LifeEngine::step()
     while (i != mLifeList.end()) {
 
         Life * currentLife = mLifeList[i.key()];
-
-        mScriptEngine.evaluate(currentLife->script());
-        QScriptValue runFunction = mScriptEngine.globalObject().property("step");
-
-        QScriptValue lifeObj = mScriptEngine.newQObject(currentLife);
-        mScriptEngine.globalObject().setProperty("life",lifeObj);
-
-
-       bool isLive = runFunction.call().toBool();
-//        qDebug()<<"return from js "<<runFunction.call().toString();
-
-//                bool isLive = currentLife->step();
+        bool isLive = evaluateLife(currentLife);
 
         if (!isLive){
             i = mLifeList.erase(i);
-
         }
         else i++;
     }
+    mCurrentStep++;
+
 }
 
 int LifeEngine::population()
@@ -121,6 +109,42 @@ void LifeEngine::setFileName(const QString &file)
 {
     mFilename = file;
 }
+
+bool LifeEngine::evaluateLife(Life *life)
+{
+    mLastError.clear();
+    mLastDebug.clear();
+
+    // Set context Property ....
+    QScriptValue lifeObj = mScriptEngine.newQObject(life);
+    mScriptEngine.globalObject().setProperty("life",lifeObj);
+
+    //evaluate script
+    qDebug()<<"before evaluate";
+
+    QScriptValue result = mScriptEngine.evaluate(life->script());
+    if (result.isError())
+    {
+        error("Error in script("
+              +result.property("lineNumber").toString()+"):"
+              +result.property("message").toString());
+        qDebug()<<"script error";
+        return true;
+    }
+    //evaluate function
+    QScriptValue runFunction = mScriptEngine.globalObject().property("step");
+    if (!runFunction.isFunction())
+    {
+        qDebug()<<"cannot find step function";
+        error("cannot find step function");
+    }
+
+
+    qDebug()<<lastError();
+    return runFunction.call().toBool();
+}
+
+
 
 const QString &LifeEngine::filename() const
 {
@@ -156,6 +180,26 @@ bool LifeEngine::hasLife(int x, int y) const
         return true;
     return false;
 
+}
+
+void LifeEngine::debug(const QString &msg)
+{
+    mLastDebug.append(msg);
+}
+
+void LifeEngine::error(const QString &msg)
+{
+    mLastError.append(msg);
+}
+
+const QString &LifeEngine::lastDebug() const
+{
+    return mLastDebug;
+}
+
+const QString &LifeEngine::lastError() const
+{
+    return mLastError;
 }
 
 
