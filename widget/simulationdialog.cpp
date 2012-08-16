@@ -31,11 +31,15 @@ void SimulationDialog::run()
         time.fromTime_t(beginTime.toTime_t()-QDateTime::currentDateTime().toTime_t());
 
         ui->popLabel->setText(QString::number(mEngine->population()));
-//        ui->timeLabel->setText(time.toString("mm:ss:zzz"));
         ui->sizeLabel->setText(QString::number(sizeof(Life) * mEngine->population()));
-
-
         mEngine->step();
+
+        QString filename=beginTime.toString("MMyy-hhmm")
+                +QString::number(i)+".estel";
+
+        if(mEngine->save(filename))
+            ui->plainTextEdit->appendPlainText(filename+" saved");
+
         ++i;
         ui->progressBar->setValue(i);
 
