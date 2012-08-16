@@ -5,6 +5,7 @@
 #include "gridview.h"
 #include <QStringListModel>
 #include <QApplication>
+#include <QComboBox>
 #include "lifeengine.h"
 #include "lifeeditor.h"
 #include "simulationdialog.h"
@@ -29,12 +30,13 @@ public slots:
     void showLifeEditor();
     void startSimulation();
 
-protected:
-    void updateGrid();
+
 
 protected slots:
     void clicked(QPoint pos);
-
+    void updateGrid();
+    void updateCombo();
+    void updateGeneCombo();
     
 private:
     Ui::SimMainWindow *ui;
@@ -42,6 +44,8 @@ private:
     QStringListModel * mFileModel;
     QStringListModel * mLifeModel;
     LifeEngine * mEngine;
+    QComboBox * mLifeTypeCombo;
+    QComboBox * mGeneCombo;
 
 };
 

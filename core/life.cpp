@@ -191,7 +191,10 @@ bool Life::loadFile(const QString &filename)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug()<<"err"<<file.errorString();
         return false;
+    }
 
     Life * tmpLife = Life::parse(file.readAll());
 
