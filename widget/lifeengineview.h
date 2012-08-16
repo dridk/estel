@@ -14,7 +14,7 @@ public:
     ~LifeEngineView();
     void refresh();
 
-protected:
+protected slots:
     void updateLifeCombo();
     void updateGeneCombo();
 
