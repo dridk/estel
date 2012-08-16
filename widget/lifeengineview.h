@@ -12,18 +12,20 @@ class LifeEngineView : public QWidget
 public:
     explicit LifeEngineView(LifeEngine * engine, QWidget *parent = 0);
     ~LifeEngineView();
+    void refresh();
 
-public slots:
-    void load() ;
-    void loadGeneList();
-    void loadFile();
+protected:
+    void updateLifeCombo();
+    void updateGeneCombo();
+
 
 private:
     LifeEngine * mEngine;
     GridView * mGridView;
-    QLabel * mPopLabel;
-    QComboBox * mComboBox;
-    QSlider * mSlider;
+    QComboBox * mLifeComboBox;
+    QComboBox * mGeneCombBox;
+    QMap<QString, Genom> mComboData;
+
     
 };
 

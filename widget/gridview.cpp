@@ -4,10 +4,8 @@
 GridView::GridView(int row, int column, QWidget *parent):
     QScrollArea(parent)
 {
-
     mGridWidget = new GridWidget(row,column);
-
-setWidget(mGridWidget);
+    setWidget(mGridWidget);
 
 
 }

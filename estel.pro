@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     widget/lifeeditor.cpp \
     widget/genedialog.cpp \
     jsedit/jsedit.cpp \
-    widget/simmainwindow.cpp
+    widget/simmainwindow.cpp \
+    widget/animmainwindow.cpp
 
 HEADERS  += gene.h \
     core/genom.h \
@@ -49,7 +50,8 @@ HEADERS  += gene.h \
     widget/lifeeditor.h \
     widget/genedialog.h \
     jsedit/jsedit.h \
-    widget/simmainwindow.h
+    widget/simmainwindow.h \
+    widget/animmainwindow.h
 
 INCLUDEPATH+= core qxtjson widget script jsedit
 
@@ -60,7 +62,8 @@ FORMS += \
     widget/simulationdialog.ui \
     widget/lifeeditor.ui \
     widget/genedialog.ui \
-    widget/simmainwindow.ui
+    widget/simmainwindow.ui \
+    widget/animmainwindow.ui
 
 RESOURCES += \
     jsedit/testeditor.qrc

@@ -5,17 +5,18 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
     QWidget(parent)
 {
     mEngine = engine;
-    mGridView = new GridView(1000,1000);
-    mPopLabel = new QLabel;
-    mComboBox = new QComboBox;
-    mSlider = new QSlider(Qt::Horizontal);
-    mSlider->setRange(0,500);
+    mGridView = new GridView(engine->rows(),engine->columns());
+    mLifeComboBox = new QComboBox;
+    mGeneCombBox = new QComboBox;
+
     QToolBar * toolbar = new QToolBar(this);
 
-    toolbar->addWidget(mComboBox);
-    toolbar->addSeparator();
-    toolbar->addWidget(mSlider);
-    toolbar->addWidget(mPopLabel);
+    QWidget* spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    toolbar->addWidget(spacer);
+    toolbar->addWidget(mLifeComboBox);
+    toolbar->addWidget(mGeneCombBox);
 
 
     QVBoxLayout * layout =new QVBoxLayout;
@@ -25,68 +26,42 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
     setLayout(layout);
 
 
-    mPopLabel->setText("Population "+QString::number(engine->population()));
-
-    loadGeneList();
-    load();
-
-    connect(mComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(load()));
-    connect(mSlider,SIGNAL(valueChanged(int)),this,SLOT(loadFile()));
+    refresh();
 
 }
 
 LifeEngineView::~LifeEngineView()
 {
     delete mGridView;
-    delete mPopLabel;
-    delete mComboBox;
+    delete mLifeComboBox;
+    delete mGeneCombBox;
+
 
 
 }
 
-void LifeEngineView::load()
+void LifeEngineView::refresh()
 {
-    mGridView->grid()->clear();
 
-
-    QString currentGene = mComboBox->currentText();
-
-
-    foreach ( Life * life, mEngine->lifes())
+    foreach (Life * life, mEngine->lifes())
     {
-
-
-        mGridView->grid()->switchOn(life->x(),life->y(),life->gene(currentGene).color());
-
-
-
+        mGridView->grid()->switchOn(life->x(),life->y(),Qt::black);
+        mComboData[life->name()] = life->genom();
     }
 
-    mGridView->grid()->repaint();
+
+
+
 }
 
-void LifeEngineView::loadGeneList()
+void LifeEngineView::updateLifeCombo()
 {
-    if (!mEngine->population())
-        return;
-
-
-    mComboBox->clear();
-
-    foreach (Gene gene, mEngine->lifes().first()->genom().genes())
-        mComboBox->addItem(gene.name());
-
-
-
-
-
 
 }
 
-void LifeEngineView::loadFile()
+void LifeEngineView::updateGeneCombo()
 {
-    mEngine->load("experimentA-"+QString::number(mSlider->value())+".json");
-    mPopLabel->setText("Population "+QString::number(mEngine->population()));
-    load();
 
 }
+
+

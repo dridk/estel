@@ -63,7 +63,7 @@ void SimMainWindow::openSim()
 {
     QString fileName =
             QFileDialog::getOpenFileName(this,
-                                         tr("Open Simulation"), "", tr("Estel Simulation (*.estel"));
+                                         tr("Open Simulation"), "",  tr("Estel (*.estel)"));
 
     if(mEngine->load(fileName)){
         setWindowTitle(fileName);
@@ -230,16 +230,17 @@ void SimMainWindow::updateCombo()
 
 void SimMainWindow::updateGeneCombo()
 {
-//    Life * lifeTemp = new Life;
-//    if ( mLifeTypeCombo->currentText()=="all")
-//        mGeneCombo->setEnabled(false);
-//    else mGeneCombo->setEnabled(true);
-//    lifeTemp->loadFile(mLifeTypeCombo->currentText()+".json");
+    Life * lifeTemp = new Life;
+    if ( mLifeTypeCombo->currentText()=="all")
+        mGeneCombo->setEnabled(false);
+    else mGeneCombo->setEnabled(true);
 
 
-//    mGeneCombo->clear();
-//    foreach (Gene gene, lifeTemp->genom().genes())
-//        mGeneCombo->addItem(gene.name());
+    lifeTemp->loadFile(mLifeTypeCombo->currentText()+".life");
+
+    mGeneCombo->clear();
+    foreach (Gene gene, lifeTemp->genom().genes())
+        mGeneCombo->addItem(gene.name());
 
 
 }
