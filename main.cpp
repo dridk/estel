@@ -26,12 +26,15 @@ int main(int argc, char *argv[])
 
 //    editor->show();
 
+    SimMainWindow * m  = new SimMainWindow;
+    m->show();
 
-    LifeEngine * engine =new LifeEngine(100,100);
-    engine->load("calibre.estel");
-    LifeEngineView * view = new LifeEngineView(engine);
 
-    view->show();
+//    LifeEngine * engine =new LifeEngine(100,100);
+//    engine->load("calibre.estel");
+//    LifeEngineView * view = new LifeEngineView(engine);
+
+//    view->show();
 
 
 

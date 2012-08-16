@@ -10,28 +10,17 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     mEngine = new LifeEngine(100,100);
-    mView = new GridView(mEngine->rows(),mEngine->columns());
+    mView = new LifeEngineView(mEngine);
     mFileModel = new QStringListModel(this);
     mLifeModel = new QStringListModel(this);
-    mLifeTypeCombo  = new QComboBox;
-    mGeneCombo = new QComboBox;
 
     ui->fileListView->setModel(mFileModel);
     ui->lifeListView->setModel(mLifeModel);
 
     setCentralWidget(mView);
 
-    QWidget* spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    ui->toolBar2->addWidget(spacer);
-    ui->toolBar2->addWidget(mLifeTypeCombo);
-    ui->toolBar2->addWidget(mGeneCombo);
-
-    connect(mView->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
-    connect(mLifeTypeCombo,SIGNAL(activated(int)),this,SLOT(updateGeneCombo()));
-    connect(mLifeTypeCombo,SIGNAL(activated(int)),this,SLOT(updateGrid()));
-    connect(mGeneCombo,SIGNAL(activated(int)),this,SLOT(updateGrid()));
+    connect(mView->gridView()->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
 
     connect(ui->fileListView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showLifeEditor()));
     connect(ui->actionRun,SIGNAL(triggered()),this,SLOT(startSimulation()));
@@ -50,8 +39,6 @@ SimMainWindow::~SimMainWindow()
     delete ui;
     delete mEngine;
     delete mView;
-    delete mLifeTypeCombo;
-    delete mGeneCombo;
 
 }
 
@@ -119,14 +106,13 @@ void SimMainWindow::updateLifeList()
         list.append(data);
     }
     mLifeModel->setStringList(list);
-    updateCombo();
 
 }
 
 void SimMainWindow::refresh()
 {
     updateLifeList();
-    updateGrid();
+    mView->refresh();
 }
 
 void SimMainWindow::showLifeEditor()
@@ -164,9 +150,7 @@ void SimMainWindow::editLife()
     LifeDialog * dialog = new LifeDialog(life);
     dialog->exec();
 
-    updateGrid();
-
-
+    refresh();
 }
 
 void SimMainWindow::remLife()
@@ -180,69 +164,7 @@ void SimMainWindow::remLife()
         mEngine->remLife(pos.x(),pos.y());
     }
 
-    updateLifeList();
-    updateGrid();
-
-
-
-
-
-}
-
-void SimMainWindow::updateGrid()
-{
-    qDebug()<<"update grid";
-    mView->grid()->clear();
-    QString currentType = mLifeTypeCombo->currentText();
-    QString currentGene = mGeneCombo->currentText();
-
-
-    foreach (Life * life, mEngine->lifes())
-    {
-        if (life->name() == currentType)
-        {
-
-            mView->grid()->switchOn(life->x(),life->y(),
-                                    life->gene(currentGene).color());
-
-        }
-
-        if ( currentType == "all")
-            mView->grid()->switchOn(life->x(),life->y(),Qt::black);
-    }
-    mView->grid()->update();
-}
-
-void SimMainWindow::updateCombo()
-{
-    QStringList names;
-    mLifeTypeCombo->clear();
-    mLifeTypeCombo->addItem("all");
-    foreach (Life * life, mEngine->lifes())
-    {
-        if (!names.contains(life->name()))
-            names.append(life->name());
-
-    }
-    mLifeTypeCombo->addItems(names);
-    updateGeneCombo();
-}
-
-void SimMainWindow::updateGeneCombo()
-{
-    Life * lifeTemp = new Life;
-    if ( mLifeTypeCombo->currentText()=="all")
-        mGeneCombo->setEnabled(false);
-    else mGeneCombo->setEnabled(true);
-
-
-    lifeTemp->loadFile(mLifeTypeCombo->currentText()+".life");
-
-    mGeneCombo->clear();
-    foreach (Gene gene, lifeTemp->genom().genes())
-        mGeneCombo->addItem(gene.name());
-
-
+    refresh();
 }
 
 void SimMainWindow::clicked(QPoint pos)

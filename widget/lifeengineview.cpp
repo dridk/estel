@@ -41,25 +41,32 @@ LifeEngineView::~LifeEngineView()
 
 void LifeEngineView::refresh()
 {
-    mComboData.clear();
     foreach (Life * life, mEngine->lifes())
     {
-        mGridView->grid()->switchOn(life->x(),life->y(),Qt::black);
-        mComboData[life->name()] = life->genom();
+        if (life->name() == mLifeComboBox->currentText())
+        {
+            QColor color = life->gene(mGeneCombBox->currentText()).color();
+            mGridView->grid()->switchOn(life->x(),life->y(),color);
+        }
+        else
+            mGridView->grid()->switchOn(life->x(),life->y(),Qt::black);
     }
 
+    mGridView->grid()->update();
+    updateComboData();
+}
 
-    updateLifeCombo();
-
+GridView *LifeEngineView::gridView()
+{
+    return mGridView;
 }
 
 void LifeEngineView::updateLifeCombo()
 {
+
     mLifeComboBox->clear();
     mLifeComboBox->addItem("All");
     mLifeComboBox->addItems(mComboData.keys());
-
-
 }
 
 void LifeEngineView::updateGeneCombo()
@@ -71,7 +78,13 @@ void LifeEngineView::updateGeneCombo()
 
     foreach (Gene gene, mComboData[mLifeComboBox->currentText()].genes())
         mGeneCombBox->addItem(gene.name());
+}
 
+void LifeEngineView::updateComboData()
+{
+    mComboData.clear();
+    foreach (Life * life, mEngine->lifes())
+        mComboData[life->name()] = life->genom();
 
 
 }

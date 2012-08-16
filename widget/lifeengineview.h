@@ -12,11 +12,17 @@ class LifeEngineView : public QWidget
 public:
     explicit LifeEngineView(LifeEngine * engine, QWidget *parent = 0);
     ~LifeEngineView();
+    GridView * gridView();
+
+public slots:
     void refresh();
+
+
 
 protected slots:
     void updateLifeCombo();
     void updateGeneCombo();
+    void updateComboData();
 
 
 private:
