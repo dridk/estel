@@ -25,15 +25,18 @@ public slots:
     void openSim();
     void saveSim();
 
-    void loadLifeFile(const QString& path = QString());
     void refresh();
     void showLifeEditor();
     void startSimulation();
+    void editLife();
+    void remLife();
 
 
 
 protected slots:
     void clicked(QPoint pos);
+    void updateLifeFile(const QString& path = QString());
+    void updateLifeList();
     void updateGrid();
     void updateCombo();
     void updateGeneCombo();

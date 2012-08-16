@@ -15,6 +15,7 @@ public:
     Q_INVOKABLE void addLife(Life * life);
     Q_INVOKABLE void addLifes(QList<Life*> lifes);
     Q_INVOKABLE void remLife(int x, int y);
+
     Q_INVOKABLE QList<Life*> lifes() const;
     Q_INVOKABLE void clear();
     Q_INVOKABLE int population();

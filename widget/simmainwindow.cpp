@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QFileDialog>
+#include "lifedialog.h"
 SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SimMainWindow)
@@ -27,9 +28,9 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     ui->toolBar2->addWidget(mLifeTypeCombo);
     ui->toolBar2->addWidget(mGeneCombo);
 
-
     connect(mView->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
     connect(mLifeTypeCombo,SIGNAL(activated(int)),this,SLOT(updateGeneCombo()));
+    connect(mLifeTypeCombo,SIGNAL(activated(int)),this,SLOT(updateGrid()));
     connect(mGeneCombo,SIGNAL(activated(int)),this,SLOT(updateGrid()));
 
     connect(ui->fileListView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showLifeEditor()));
@@ -37,8 +38,10 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveSim()));
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
 
+    connect(ui->actionEditLife,SIGNAL(triggered()),this,SLOT(editLife()));
+    connect(ui->actionRemLife,SIGNAL(triggered()),this,SLOT(remLife()));
 
-    loadLifeFile();
+    updateLifeFile();
 
 }
 
@@ -68,11 +71,6 @@ void SimMainWindow::openSim()
     }
 
     else qDebug()<<"cannot open simulation";
-
-
-
-
-
 }
 
 void SimMainWindow::saveSim()
@@ -90,7 +88,7 @@ void SimMainWindow::saveSim()
 
 }
 
-void SimMainWindow::loadLifeFile(const QString &path)
+void SimMainWindow::updateLifeFile(const QString &path)
 {
     QString currentDir = path;
     if ( path.isEmpty())
@@ -111,7 +109,7 @@ void SimMainWindow::loadLifeFile(const QString &path)
 
 }
 
-void SimMainWindow::refresh()
+void SimMainWindow::updateLifeList()
 {
     QStringList list;
     foreach (Life * life, mEngine->lifes())
@@ -121,8 +119,14 @@ void SimMainWindow::refresh()
         list.append(data);
     }
     mLifeModel->setStringList(list);
-    updateGrid();
     updateCombo();
+
+}
+
+void SimMainWindow::refresh()
+{
+    updateLifeList();
+    updateGrid();
 }
 
 void SimMainWindow::showLifeEditor()
@@ -143,37 +147,77 @@ void SimMainWindow::showLifeEditor()
 
 void SimMainWindow::startSimulation()
 {
-
-
     SimulationDialog * dialog = new SimulationDialog(mEngine);
     dialog->exec();
-
     refresh();
+}
+
+void SimMainWindow::editLife()
+{
+    if ( ui->lifeListView->selectionModel()->selectedRows().count() <=0)
+        return;
+
+    int row = ui->lifeListView->selectionModel()->selectedRows().first().row();
+
+    Life * life = mEngine->lifes().value(row);
+
+    LifeDialog * dialog = new LifeDialog(life);
+    dialog->exec();
+
+    updateGrid();
+
+
+}
+
+void SimMainWindow::remLife()
+{
+    if ( ui->lifeListView->selectionModel()->selectedRows().count() <=0)
+        return;
+
+    foreach (QModelIndex index, ui->lifeListView->selectionModel()->selectedRows())
+    {
+        QPoint pos = mEngine->lifes().value(index.row())->pos();
+        mEngine->remLife(pos.x(),pos.y());
+    }
+
+    updateLifeList();
+    updateGrid();
+
+
+
 
 
 }
 
 void SimMainWindow::updateGrid()
 {
+    qDebug()<<"update grid";
     mView->grid()->clear();
+    QString currentType = mLifeTypeCombo->currentText();
+    QString currentGene = mGeneCombo->currentText();
+
+
     foreach (Life * life, mEngine->lifes())
     {
-        qDebug()<<life->name();
-        qDebug()<<mLifeTypeCombo->currentText();
+        if (life->name() == currentType)
+        {
 
-            mView->grid()->switchOn(life->x(),life->y(), Qt::black);
+            mView->grid()->switchOn(life->x(),life->y(),
+                                    life->gene(currentGene).color());
 
+        }
 
-
-
+        if ( currentType == "all")
+            mView->grid()->switchOn(life->x(),life->y(),Qt::black);
     }
-    mView->update();
+    mView->grid()->update();
 }
 
 void SimMainWindow::updateCombo()
 {
     QStringList names;
     mLifeTypeCombo->clear();
+    mLifeTypeCombo->addItem("all");
     foreach (Life * life, mEngine->lifes())
     {
         if (!names.contains(life->name()))
@@ -187,16 +231,16 @@ void SimMainWindow::updateCombo()
 void SimMainWindow::updateGeneCombo()
 {
     Life * lifeTemp = new Life;
+    if ( mLifeTypeCombo->currentText()=="all")
+        mGeneCombo->setEnabled(false);
+    else mGeneCombo->setEnabled(true);
     lifeTemp->loadFile(mLifeTypeCombo->currentText()+".json");
 
 
     mGeneCombo->clear();
     foreach (Gene gene, lifeTemp->genom().genes())
-    {
-        QPixmap pix(16,16);
-        pix.fill(gene.color());
-        mGeneCombo->addItem(QIcon(pix),QString::number(gene.value()));
-    }
+        mGeneCombo->addItem(gene.name());
+
 
 }
 
@@ -210,9 +254,6 @@ void SimMainWindow::clicked(QPoint pos)
 
     QString fileName = mFileModel->stringList().at(
                 ui->fileListView->selectionModel()->selectedRows().first().row());
-
-    qDebug()<<fileName;
-
 
     Life * life = new Life;
     //====== load file....
@@ -234,9 +275,6 @@ void SimMainWindow::clicked(QPoint pos)
     life->setPos(pos);
     life->setAge(0);
     mEngine->addLife(life);
-    mView->grid()->switchOn(pos.x(),pos.y(),Qt::black);
-    mView->grid()->update();
+
     refresh();
-
-
 }
