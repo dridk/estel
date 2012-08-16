@@ -40,6 +40,8 @@ void SimulationDialog::run()
         if(mEngine->save(filename))
             ui->plainTextEdit->appendPlainText(filename+" saved");
 
+
+
         ++i;
         ui->progressBar->setValue(i);
 

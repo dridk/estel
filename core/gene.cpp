@@ -40,13 +40,15 @@ void Gene::mutate()
     if (!variance())
         return;
 
-
     //get the random value between 0 and 1/probability
-    if (!(qrand()%mutationRate()))
+
+    int R = qrand()%mutationRate();
+    qDebug()<<"R"<<R;
+
+    if (!R)
     {
-        int  corr =(qrand()%variance()) + 1;
         bool sign = qrand()%2;
-        int newval  = sign ? value() - corr : value() + corr;
+        int newval  = sign ? value() - variance() : value() + variance();
         setValue(newval);
     }
 }
@@ -86,7 +88,7 @@ double Gene::mutationProbability() const
 }
 void Gene::setValue(int val)
 {
-    mValue = val;
+    mValue = qBound(min(),val,max());
     generateColor();
 }
 
