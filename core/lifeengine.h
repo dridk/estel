@@ -21,7 +21,6 @@ public:
     Q_INVOKABLE int population();
     Q_INVOKABLE int rows() const;
     Q_INVOKABLE int columns() const;
-    Q_INVOKABLE int currentStep() const;
     Q_INVOKABLE bool hasLife(int x, int y) const;
     Q_INVOKABLE void debug(const QString& msg);
     Q_INVOKABLE void error(const QString& msg);
@@ -44,7 +43,6 @@ private:
     int mRows;
     int mColumns;
     QVariant mDatas;
-    int mCurrentStep;
     QScriptEngine mScriptEngine;
     QString mLastError;
     QString mLastDebug;

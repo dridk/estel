@@ -40,6 +40,7 @@ private:
     Genom mGenes;
     LifeEngine * mEngine;
     Life * mCurrentLife;
+    int mCurrentStep;
 };
 
 #endif // LIFEEDITOR_H

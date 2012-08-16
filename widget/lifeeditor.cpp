@@ -13,6 +13,7 @@ LifeEditor::LifeEditor(QWidget *parent) :
     ui->setupUi(this);
     mEngine = new LifeEngine;
     mCurrentLife = new Life;
+    mCurrentStep = 0;
     setWindowTitle("no name");
     canBeSaved(false);
     connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
@@ -84,6 +85,9 @@ void LifeEditor::on_actionNewGene_triggered()
         mCurrentLife->addGene(g);
     }
 
+    refresh();
+
+
 }
 
 void LifeEditor::on_actionEditGene_triggered()
@@ -101,6 +105,7 @@ void LifeEditor::on_actionSimReset_triggered()
     mEngine->clear();
     ui->debugTextEdit->clear();
     ui->errorTextEdit->clear();
+    mCurrentStep=0;
 
 }
 
@@ -114,9 +119,10 @@ void LifeEditor::on_actionSimStep_triggered()
     }
 
     mEngine->step();
+    mCurrentStep++;
 
     ui->errorTextEdit->appendPlainText(mEngine->lastError());
-    ui->debugTextEdit->appendHtml("<b>==Step:"+QString::number(mEngine->currentStep())+"=="
+    ui->debugTextEdit->appendHtml("<b>==Step:"+QString::number(mCurrentStep)+"=="
                                   "Pop :"+QString::number(mEngine->population())+"==</b>");
 
     ui->debugTextEdit->appendPlainText(mEngine->lastDebug());

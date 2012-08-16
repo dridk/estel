@@ -8,7 +8,6 @@ LifeEngine::LifeEngine(int rows, int columns)
 {
     mRows = rows;
     mColumns = columns;
-    mCurrentStep = 0;
 
     QScriptValue object = mScriptEngine.newQObject(this);
     mScriptEngine.globalObject().setProperty("engine",object);
@@ -66,12 +65,13 @@ void LifeEngine::clear()
 }
 void LifeEngine::run(int iteration)
 {
-    mCurrentStep = 0;
+   int currentStep = 0;
 
-    while (mCurrentStep < iteration)
+    while (currentStep < iteration)
     {
         step();
-        qDebug()<<mCurrentStep<<" pop"<<population();
+        qDebug()<<currentStep<<" pop"<<population();
+        currentStep++;
 
     }
 
@@ -92,7 +92,6 @@ void LifeEngine::step()
         }
         else i++;
     }
-    mCurrentStep++;
 
 }
 
@@ -223,10 +222,7 @@ int LifeEngine::columns() const
     return mColumns;
 }
 
-int LifeEngine::currentStep() const
-{
-    return mCurrentStep;
-}
+
 
 bool LifeEngine::hasLife(int x, int y) const
 {

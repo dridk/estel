@@ -230,16 +230,16 @@ void SimMainWindow::updateCombo()
 
 void SimMainWindow::updateGeneCombo()
 {
-    Life * lifeTemp = new Life;
-    if ( mLifeTypeCombo->currentText()=="all")
-        mGeneCombo->setEnabled(false);
-    else mGeneCombo->setEnabled(true);
-    lifeTemp->loadFile(mLifeTypeCombo->currentText()+".json");
+//    Life * lifeTemp = new Life;
+//    if ( mLifeTypeCombo->currentText()=="all")
+//        mGeneCombo->setEnabled(false);
+//    else mGeneCombo->setEnabled(true);
+//    lifeTemp->loadFile(mLifeTypeCombo->currentText()+".json");
 
 
-    mGeneCombo->clear();
-    foreach (Gene gene, lifeTemp->genom().genes())
-        mGeneCombo->addItem(gene.name());
+//    mGeneCombo->clear();
+//    foreach (Gene gene, lifeTemp->genom().genes())
+//        mGeneCombo->addItem(gene.name());
 
 
 }

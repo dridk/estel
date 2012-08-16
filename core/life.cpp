@@ -83,7 +83,11 @@ const Genom &Life::genom() const
 
 void Life::setGenom(const Genom &genom)
 {
-    mGenom = Genom(genom);
+    mGenom.clear();
+    foreach (Gene g, genom.genes())
+        mGenom.add(g);
+
+
 }
 
 
@@ -235,7 +239,7 @@ bool Life::saveFile(const QString &filename)
 
 }
 
- QString Life::serialize(Life *life)
+QString Life::serialize(Life *life)
 {
     QVariantMap dataMap;
     dataMap.insert("name", life->name());
@@ -263,44 +267,44 @@ bool Life::saveFile(const QString &filename)
 
     return result;
 
- }
+}
 
-  Life * Life::parse(const QString &json)
- {
-     Life * newLife = new Life;
-     QVariant data = QxtJSON::parse(json);
+Life * Life::parse(const QString &json)
+{
+    Life * newLife = new Life;
+    QVariant data = QxtJSON::parse(json);
 
-     newLife->setName(data.toMap().value("name").toString());
-     newLife->setAge(data.toMap().value("age").toInt());
-     newLife->setX(data.toMap().value("x").toInt());
-     newLife->setY(data.toMap().value("y").toInt());
+    newLife->setName(data.toMap().value("name").toString());
+    newLife->setAge(data.toMap().value("age").toInt());
+    newLife->setX(data.toMap().value("x").toInt());
+    newLife->setY(data.toMap().value("y").toInt());
 
-     QVariantList genomData = data.toMap().value("genom").toList();
+    QVariantList genomData = data.toMap().value("genom").toList();
 
-     foreach (QVariant geneData, genomData)
-     {
-         Gene gene;
-         gene.setName(geneData.toMap().value("name").toString());
-         gene.setValue(geneData.toMap().value("value").toInt());
-         gene.setLimit(geneData.toMap().value("min").toInt(),
-                       geneData.toMap().value("max").toInt());
-         gene.setVariance(geneData.toMap().value("variance").toInt());
-         gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
-         newLife->addGene(gene);
-     }
+    foreach (QVariant geneData, genomData)
+    {
+        Gene gene;
+        gene.setName(geneData.toMap().value("name").toString());
+        gene.setValue(geneData.toMap().value("value").toInt());
+        gene.setLimit(geneData.toMap().value("min").toInt(),
+                      geneData.toMap().value("max").toInt());
+        gene.setVariance(geneData.toMap().value("variance").toInt());
+        gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
+        newLife->addGene(gene);
+    }
 
-     //=== load script
-     QString scriptFileName = data.toMap().value("script").toString();
-     QFile scriptFile(scriptFileName);
-     if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
-         return newLife;
+    //=== load script
+    QString scriptFileName = data.toMap().value("script").toString();
+    QFile scriptFile(scriptFileName);
+    if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        return newLife;
 
-     newLife->setScript(scriptFile.readAll());
+    newLife->setScript(scriptFile.readAll());
 
-     scriptFile.close();
+    scriptFile.close();
 
-     return newLife;
- }
+    return newLife;
+}
 
 const QString &Life::script() const
 {
