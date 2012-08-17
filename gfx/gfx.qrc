@@ -6,5 +6,11 @@
         <file>brick_edit.png</file>
         <file>file_extension_bat.png</file>
         <file>molecule.png</file>
+        <file>lightning.png</file>
+        <file>save_as.png</file>
+        <file>folder.png</file>
+        <file>disk.png</file>
+        <file>cog_go.png</file>
+        <file>page_white_add.png</file>
     </qresource>
 </RCC>

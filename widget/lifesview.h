@@ -3,6 +3,7 @@
 #include "actionlistview.h"
 #include "lifeengine.h"
 #include <QStandardItemModel>
+#include "lifedialog.h"
 class LifesView : public ActionListView
 {
     Q_OBJECT
@@ -11,6 +12,7 @@ public:
 
     void refresh();
     void remove();
+    void edit();
 
     
 

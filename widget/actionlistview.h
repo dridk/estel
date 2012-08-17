@@ -14,6 +14,7 @@ public:
     QTreeView * view() const;
     int selectionCount() const;
     int currentRow() const;
+    QList<QAction*> actions() const;
 
 
 public slots:

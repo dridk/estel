@@ -55,3 +55,14 @@ void LifesView::remove()
     }
     refresh();
 }
+
+void LifesView::edit()
+{
+    if (!selectionCount())
+        return;
+
+    Life * life = mEngine->lifes().at(currentRow());
+    LifeDialog * dialog = new LifeDialog(life);
+    dialog->exec();
+
+}

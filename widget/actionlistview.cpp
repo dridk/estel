@@ -77,3 +77,16 @@ int ActionListView::currentRow() const
         return -1;
     return view()->selectionModel()->selectedRows().first().row();
 }
+
+QList<QAction*> ActionListView::actions() const
+{
+    QList<QAction*> actions;
+    foreach (QAction * action, mToolBar->actions())
+    {
+        if (!action->text().isEmpty())
+            actions.append(action);
+    }
+
+return actions;
+}
+

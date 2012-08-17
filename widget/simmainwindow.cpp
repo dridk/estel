@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QFileDialog>
+#include <QMenu>
 #include "lifedialog.h"
 SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,16 +24,18 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 
     setCentralWidget(mView);
 
+    ui->menuLifesTypes->addActions(mLifeFileView->actions());
+    ui->menuLifes->addActions(mLifesView->actions());
+
 
     connect(mView->gridView()->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
 
     //    connect(ui->fileListView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showLifeEditor()));
     connect(ui->actionRun,SIGNAL(triggered()),this,SLOT(startSimulation()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveSim()));
-    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
+//    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
+    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(showLifeEditor()));
 
-    connect(ui->actionEditLife,SIGNAL(triggered()),this,SLOT(editLife()));
-    connect(ui->actionRemLife,SIGNAL(triggered()),this,SLOT(remLife()));
 }
 
 SimMainWindow::~SimMainWindow()
