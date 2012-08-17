@@ -28,6 +28,7 @@ public slots:
     void newSim();
     void openSim();
     void saveSim();
+    void saveAsSim();
 
     void refresh();
     void showLifeEditor();

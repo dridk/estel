@@ -15,7 +15,6 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     mLifeFileView = new LifeFileView;
     mLifesView = new LifesView(mEngine);
 
-
     ui->dock1->setWidget(mLifeFileView);
     ui->dock2->setWidget(mLifesView);
 
@@ -30,11 +29,10 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 
     connect(mView->gridView()->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
 
-    //    connect(ui->fileListView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showLifeEditor()));
     connect(ui->actionRun,SIGNAL(triggered()),this,SLOT(startSimulation()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveSim()));
-//    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
-    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(showLifeEditor()));
+    connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAsSim()));
+    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
 
 }
 
@@ -54,36 +52,53 @@ void SimMainWindow::newSim()
 
 void SimMainWindow::openSim()
 {
-    QString fileName =
-            QFileDialog::getOpenFileName(this,
-                                         tr("Open Simulation"), "",  tr("Estel (*.estel)"));
+    QString fileName=QFileDialog::getOpenFileName(this,tr("Open Simulation")
+                                                  ,"",  tr("Estel (*.estel)"));
 
-    if(mEngine->load(fileName)){
-        setWindowTitle(fileName);
-        refresh();
+    if(!mEngine->load(fileName)){
+        QMessageBox::warning(this,"error","cannot open file");
+        return;
     }
-
-    else qDebug()<<"cannot open simulation";
+    setWindowTitle(fileName);
+    refresh();
 }
 
 void SimMainWindow::saveSim()
 {
     QString fileName = windowTitle();
-    if (!QFile::exists(windowTitle()))
-    {
-        fileName = QFileDialog::getSaveFileName(this,
-                                                tr("Save Simulation"), "", tr("Estel Simulation (*.estel"));
-    }
+    if (!QFile::exists(fileName))
+        fileName = QFileDialog::getSaveFileName(this,tr("Save Simulation"),
+                                                "", tr("Estel Simulation (*.estel"));
 
     if(mEngine->save(fileName))
         setWindowTitle(fileName);
-    else qDebug()<<"Cannot save Simulation";
+    else
+        QMessageBox::warning(this,"error","Cannot save file");
 
+}
+
+void SimMainWindow::saveAsSim()
+{
+
+    QString fileName =QFileDialog::getSaveFileName(this,tr("Open Simulation")
+                                                   ,"",  tr("Estel (*.estel)"));
+
+    if(!mEngine->save(fileName)){
+        QMessageBox::warning(this,"error","cannot save file");
+        return;
+    }
+    setWindowTitle(fileName);
 }
 void SimMainWindow::refresh()
 {
+    setEnabled(false);
+    statusBar()->showMessage("Load lifes....");
     mView->refresh();
     mLifesView->refresh();
+    setEnabled(true);
+    statusBar()->showMessage("Lifes loaded");
+
+
 }
 
 void SimMainWindow::showLifeEditor()
