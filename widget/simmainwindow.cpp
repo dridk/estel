@@ -80,6 +80,7 @@ void SimMainWindow::saveSim()
 void SimMainWindow::refresh()
 {
     mView->refresh();
+    mLifesView->refresh();
 }
 
 void SimMainWindow::showLifeEditor()
@@ -136,35 +137,25 @@ void SimMainWindow::remLife()
 
 void SimMainWindow::clicked(QPoint pos)
 {
-    //    if (mEngine->hasLife(pos.x(),pos.y()))
-    //        return;
+    if (mEngine->hasLife(pos.x(),pos.y()))
+        return;
 
-    //    if (ui->fileListView->selectionModel()->selectedIndexes().count() <= 0)
-    //        return;
+    if (!mLifeFileView->selectionCount())
+        return;
 
-    //    QString fileName = mFileModel->stringList().at(
-    //                ui->fileListView->selectionModel()->selectedRows().first().row());
+    if (mEngine->hasLife(pos.x(),pos.y()))
+        return;
 
-    //    Life * life = new Life;
-    //    //====== load file....
-    //    if (!life->loadFile(fileName))
-    //    {
-    //        delete life;
-    //        qDebug()<<"cannot load life file...";
-    //        return;
-    //    }
-    //    //====== Test if position is avaible....
+    QString filename = mLifeFileView->currentFilename();
 
-    //    if (mEngine->hasLife(pos.x(),pos.y()))
-    //    {
-    //        delete life;
-    //        qDebug()<<"cannot add life on this position";
-    //        return;
-    //    }
+    qDebug()<<filename;
+    Life * life = Life::fromFile(filename);
+    if (!life)
+        return;
 
-    //    life->setPos(pos);
-    //    life->setAge(0);
-    //    mEngine->addLife(life);
+    life->setPos(pos);
+    life->setAge(0);
+    mEngine->addLife(life);
 
-    //    refresh();
+    refresh();
 }

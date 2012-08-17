@@ -196,7 +196,7 @@ bool Life::loadFile(const QString &filename)
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        qDebug()<<"err"<<file.errorString();
+        qDebug()<<"error"<<file.errorString();
         return false;
     }
 
@@ -304,6 +304,18 @@ Life * Life::parse(const QString &json)
     scriptFile.close();
 
     return newLife;
+}
+
+Life *Life::fromFile(const QString &filename)
+{
+    Life * life = new Life;
+    if (!life->loadFile(filename))
+    {
+        qDebug()<<"cannot load files...";
+        delete life;
+        return NULL;
+    }
+    return life;
 }
 
 const QString &Life::script() const

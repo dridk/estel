@@ -39,3 +39,29 @@ void LifeFileView::refresh(const QString &path)
 
 }
 
+void LifeFileView::remove()
+{
+    foreach (QModelIndex  i, view()->selectionModel()->selectedRows())
+    {
+
+
+
+    }
+
+
+}
+
+const QString &LifeFileView::filename(int row)
+{
+    return mModel->item(row)->data().toString();
+}
+
+const QString &LifeFileView::currentFilename()
+{
+    if (!selectionCount())
+        return QString();
+    else
+    return filename(currentRow());
+}
+
+

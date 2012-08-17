@@ -12,6 +12,9 @@ public:
     explicit ActionListView(QWidget *parent = 0);
 
     QTreeView * view() const;
+    int selectionCount() const;
+    int currentRow() const;
+
 
 public slots:
     virtual void refresh();
@@ -20,6 +23,9 @@ public slots:
     virtual void remove();
     void showMessage(const QString& msg);
     void hideAction(int index);
+
+signals:
+    void changed();
     
 
 private:

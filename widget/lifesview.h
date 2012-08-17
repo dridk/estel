@@ -10,6 +10,7 @@ public:
     explicit LifesView(LifeEngine * engine,QWidget *parent = 0);
 
     void refresh();
+    void remove();
 
     
 

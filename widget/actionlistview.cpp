@@ -38,6 +38,11 @@ QTreeView *ActionListView::view() const
     return mView;
 }
 
+int ActionListView::selectionCount() const
+{
+    return mView->selectionModel()->selectedRows().count();
+}
+
 void ActionListView::refresh()
 {
 
@@ -64,4 +69,11 @@ void ActionListView::showMessage(const QString &msg)
 void ActionListView::hideAction(int index)
 {
     mToolBar->actions().at(index)->setVisible(false);
+}
+
+int ActionListView::currentRow() const
+{
+    if (selectionCount() == 0)
+        return -1;
+    return view()->selectionModel()->selectedRows().first().row();
 }

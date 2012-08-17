@@ -49,6 +49,7 @@ public:
     bool saveFile(const QString& filename);
     static  QString serialize(Life * life);
     static  Life * parse(const QString& json);
+    static Life * fromFile(const QString& filename);
 
     virtual bool step();
     virtual void init();

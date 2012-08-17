@@ -43,7 +43,15 @@ void LifesView::refresh()
 
     }
     showMessage(QString::number(mEngine->lifes().count()));
+}
 
+void LifesView::remove()
+{
 
-
+    foreach (QModelIndex  i, view()->selectionModel()->selectedRows())
+    {
+        Life * life = mEngine->lifes().at(i.row());
+        mEngine->remLife(life->x(),life->y());
+    }
+    refresh();
 }
