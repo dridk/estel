@@ -22,7 +22,6 @@ public slots:
 protected slots:
     void updateLifeCombo();
     void updateGeneCombo();
-    void updateComboData();
 
 
 private:

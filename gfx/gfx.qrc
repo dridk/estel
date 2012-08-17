@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>arrow_refresh.png</file>
+        <file>brick_add.png</file>
+        <file>brick_delete.png</file>
+        <file>brick_edit.png</file>
+        <file>file_extension_bat.png</file>
+    </qresource>
+</RCC>

@@ -16,33 +16,38 @@
 #include "lifeeditor.h"
 #include "jsedit.h"
 #include "simmainwindow.h"
+#include "actionlistview.h"
+#include "lifefileview.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-//    LifeEditor * editor = new LifeEditor;
+    //    LifeEditor * editor = new LifeEditor;
 
-//    editor->show();
+    //    editor->show();
 
-    SimMainWindow * m  = new SimMainWindow;
-    m->show();
-
-
-//    LifeEngine * engine =new LifeEngine(100,100);
-//    engine->load("calibre.estel");
-//    LifeEngineView * view = new LifeEngineView(engine);
-
-//    view->show();
+    //    SimMainWindow * m  = new SimMainWindow;
+    //    m->show();
 
 
+    LifeFileView * v = new LifeFileView;
+    v->show();
+
+    //    LifeEngine * engine =new LifeEngine(100,100);
+    //    engine->load("calibre.estel");
+    //    LifeEngineView * view = new LifeEngineView(engine);
+
+    //    view->show();
 
 
 
-//    engine.addLife(l->muted());
-//    engine.addLife(l->muted());
-//    engine.run(20000);
+
+
+    //    engine.addLife(l->muted());
+    //    engine.addLife(l->muted());
+    //    engine.run(20000);
 
 
 

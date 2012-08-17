@@ -101,13 +101,6 @@ void LifeEngineView::updateGeneCombo()
         mGeneCombBox->addItem(gene.name());
 }
 
-void LifeEngineView::updateComboData()
-{
-    mComboData.clear();
-    foreach (Life * life, mEngine->lifes())
-        mComboData[life->name()] = life->genom();
 
-
-}
 
 
