@@ -37,7 +37,9 @@ AnimMainWindow::AnimMainWindow(QWidget *parent) :
 
     connect(mSlider,SIGNAL(valueChanged(int)),this,SLOT(refresh(int)));
     connect(mTimer,SIGNAL(timeout()),this,SLOT(incrPlayerIndex()));
+    connect(ui->listView,SIGNAL(clicked(QModelIndex)),this,SLOT(itemClicked(QModelIndex)));
 }
+
 
 AnimMainWindow::~AnimMainWindow()
 {
@@ -149,6 +151,13 @@ void AnimMainWindow::incrPlayerIndex()
 
 }
 
+void AnimMainWindow::itemClicked(const QModelIndex &index)
+{
+    int i  = index.row();
+    if (i<mPixList.count())
+        mSlider->setValue(i);
+
+}
 const QPixmap &AnimMainWindow::createPixmap(LifeEngine *engine)
 {
 

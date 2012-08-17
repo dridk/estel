@@ -30,6 +30,7 @@ public slots:
 
 protected slots:
     void incrPlayerIndex();
+    void itemClicked(const QModelIndex& index);
 
 
 protected:
