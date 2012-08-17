@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -86,6 +86,7 @@
    <addaction name="actionSave"/>
    <addaction name="actionSaveAs"/>
    <addaction name="separator"/>
+   <addaction name="actionClear"/>
    <addaction name="actionRun"/>
   </widget>
   <widget class="QDockWidget" name="dock1">
@@ -154,6 +155,11 @@
   <action name="actionQuit">
    <property name="text">
     <string>quit</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="text">
+    <string>clear</string>
    </property>
   </action>
  </widget>

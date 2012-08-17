@@ -31,6 +31,7 @@ public slots:
     void saveAsSim();
 
     void refresh();
+    void clear();
     void showLifeEditor();
     void startSimulation();
 

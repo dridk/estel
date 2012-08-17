@@ -33,6 +33,7 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveSim()));
     connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAsSim()));
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
+    connect(ui->actionClear,SIGNAL(triggered()),this,SLOT(clear()));
 
 }
 
@@ -55,6 +56,8 @@ void SimMainWindow::openSim()
     QString fileName=QFileDialog::getOpenFileName(this,tr("Open Simulation")
                                                   ,"",  tr("Estel (*.estel)"));
 
+    if (fileName.isEmpty())
+        return;
     if(!mEngine->load(fileName)){
         QMessageBox::warning(this,"error","cannot open file");
         return;
@@ -91,13 +94,17 @@ void SimMainWindow::saveAsSim()
 }
 void SimMainWindow::refresh()
 {
-    setEnabled(false);
     statusBar()->showMessage("Load lifes....");
     mView->refresh();
     mLifesView->refresh();
-    setEnabled(true);
     statusBar()->showMessage("Lifes loaded");
 
+}
+
+void SimMainWindow::clear()
+{
+    mEngine->clear();
+    refresh();
 }
 
 void SimMainWindow::showLifeEditor()
