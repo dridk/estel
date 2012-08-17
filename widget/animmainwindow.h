@@ -5,6 +5,7 @@
 #include "gridview.h"
 #include <QSplitter>
 #include <QStringList>
+#include <QPixmap>
 namespace Ui {
 class AnimMainWindow;
 }
@@ -25,14 +26,24 @@ public slots:
     void beginPlay();
     void endPlay();
     void play(bool playing = true);
+    void refresh(int index = 0);
+
+protected slots:
+    void incrPlayerIndex();
+
+
+protected:
+    const QPixmap& createPixmap(LifeEngine * engine);
 
 
     
 private:
     Ui::AnimMainWindow *ui;
-    GridView * mView;
     QSlider * mSlider;
-QStandardItemModel * mModel;
+    QLabel * mPixLabel;
+    QStandardItemModel * mModel;
+    QList<QPixmap> mPixList;
+    QTimer * mTimer;
 };
 
 #endif // ANIMMAINWINDOW_H

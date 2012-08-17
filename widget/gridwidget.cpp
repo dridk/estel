@@ -21,44 +21,22 @@ GridWidget::GridWidget(int row, int column, QWidget *parent):
 
 void GridWidget::paintEvent(QPaintEvent *event)
 {
-    QPainter paint;
-    paint.begin(this);
-
-    paint.drawPixmap(0,0,mGridPix);
-
-
-    foreach (int index , mColors.keys())
-    {
-
-        int y = qRound(index/mColumnCount);
-        int x = index % mRowCount;
-
-        paint.setBrush(mColors[index]);
-        paint.drawRect(x*mSquareSize,y*mSquareSize, mSquareSize, mSquareSize);
-
-
-
-    }
-
-
-    paint.end();
-
-
-
+    Q_UNUSED(event)
+    drawGrid(this);
 }
 
 void GridWidget::mousePressEvent(QMouseEvent * event)
 {
 
-        int X = event->x() / mSquareSize;
-        int Y = event->y() / mSquareSize;
+    int X = event->x() / mSquareSize;
+    int Y = event->y() / mSquareSize;
 
     ////    qDebug()<<"press"<<X<<" "<<Y;
     ////    switchOn(X,Y, Qt::blue);
 
     //    update(QRegion(X*mSquareSize,Y*mSquareSize,mSquareSize,mSquareSize));
 
-        emit squareClicked(QPoint(X,Y));
+    emit squareClicked(QPoint(X,Y));
     QWidget::mousePressEvent(event);
 
 }
@@ -82,6 +60,33 @@ void GridWidget::switchOff(int x, int y)
 void GridWidget::clear()
 {
     mColors.clear();
+}
+
+const QPixmap &GridWidget::snap()
+{
+    QPixmap * pix = new QPixmap(size());
+    drawGrid(pix);
+    return *pix;
+}
+
+
+void GridWidget::drawGrid(QPaintDevice *device)
+{
+
+    QPainter paint;
+    paint.begin(device);
+
+    paint.drawPixmap(0,0,mGridPix);
+    foreach (int index , mColors.keys())
+    {
+        int y = qRound(index/mColumnCount);
+        int x = index % mRowCount;
+
+        paint.setBrush(mColors[index]);
+        paint.drawRect(x*mSquareSize,y*mSquareSize, mSquareSize, mSquareSize);
+    }
+    paint.end();
+
 }
 
 

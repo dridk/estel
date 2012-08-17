@@ -51,7 +51,7 @@
      <item>
       <widget class="QProgressBar" name="progressBar">
        <property name="value">
-        <number>24</number>
+        <number>0</number>
        </property>
       </widget>
      </item>
@@ -125,8 +125,8 @@
    </property>
    <property name="icon">
     <iconset resource="../gfx/gfx.qrc">
-     <normaloff>:/control_pause.png</normaloff>
-     <normalon>:/control_play.png</normalon>:/control_pause.png</iconset>
+     <normaloff>:/control_play.png</normaloff>
+     <normalon>:/control_pause.png</normalon>:/control_play.png</iconset>
    </property>
    <property name="text">
     <string>play</string>
