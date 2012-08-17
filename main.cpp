@@ -18,6 +18,7 @@
 #include "simmainwindow.h"
 #include "actionlistview.h"
 #include "lifefileview.h"
+#include "lifesview.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -32,12 +33,15 @@ int main(int argc, char *argv[])
     //    m->show();
 
 
-    LifeFileView * v = new LifeFileView;
-    v->show();
 
-    //    LifeEngine * engine =new LifeEngine(100,100);
-    //    engine->load("calibre.estel");
-    //    LifeEngineView * view = new LifeEngineView(engine);
+        LifeEngine * engine =new LifeEngine(100,100);
+        engine->load("/home/sacha/simtest.estel");
+
+
+
+       LifesView * v = new LifesView(engine);
+        v->show();
+
 
     //    view->show();
 

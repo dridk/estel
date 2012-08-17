@@ -1,15 +1,22 @@
 #ifndef LIFESVIEW_H
 #define LIFESVIEW_H
-
+#include "actionlistview.h"
+#include "lifeengine.h"
+#include <QStandardItemModel>
 class LifesView : public ActionListView
 {
     Q_OBJECT
 public:
-    explicit LifesView(QWidget *parent = 0);
+    explicit LifesView(LifeEngine * engine,QWidget *parent = 0);
+
+    void refresh();
+
     
-signals:
-    
-public slots:
+
+
+private:
+    LifeEngine * mEngine;
+    QStandardItemModel * mModel;
     
 };
 

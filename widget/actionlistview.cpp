@@ -5,11 +5,13 @@ ActionListView::ActionListView(QWidget *parent) :
     QWidget(parent)
 {
     mToolBar = new QToolBar;
-    mView = new QListView;
+    mView = new QTreeView;
+    mStatusBar = new QStatusBar;
 
     QVBoxLayout * layout  =new QVBoxLayout;
     layout->addWidget(mToolBar);
     layout->addWidget(mView);
+    layout->addWidget(mStatusBar);
     layout->setSpacing(0);
     layout->setMargin(0);
     setLayout(layout);
@@ -29,14 +31,15 @@ ActionListView::ActionListView(QWidget *parent) :
 
 }
 
-QListView *ActionListView::view() const
+QTreeView *ActionListView::view() const
 {
     return mView;
 }
 
 void ActionListView::refresh()
 {
-    qDebug()<<"refresh";
+
+
 }
 
 void ActionListView::add()
@@ -49,4 +52,9 @@ void ActionListView::edit()
 
 void ActionListView::remove()
 {
+}
+
+void ActionListView::showMessage(const QString &msg)
+{
+    mStatusBar->showMessage(msg);
 }
