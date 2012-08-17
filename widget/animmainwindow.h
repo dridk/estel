@@ -2,7 +2,8 @@
 #define ANIMMAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "gridview.h"
+#include <QSplitter>
 namespace Ui {
 class AnimMainWindow;
 }
@@ -17,6 +18,8 @@ public:
     
 private:
     Ui::AnimMainWindow *ui;
+    GridView * mView;
+    QSlider * mSlider;
 };
 
 #endif // ANIMMAINWINDOW_H

@@ -19,6 +19,7 @@
 #include "actionlistview.h"
 #include "lifefileview.h"
 #include "lifesview.h"
+#include "animmainwindow.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -29,8 +30,11 @@ int main(int argc, char *argv[])
 
     //    editor->show();
 
-    SimMainWindow * m  = new SimMainWindow;
-    m->show();
+//    SimMainWindow * m  = new SimMainWindow;
+//    m->show();
+    AnimMainWindow * w  =new AnimMainWindow;
+
+    w->show();
 
 
 
