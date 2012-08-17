@@ -10,6 +10,8 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
     mGeneCombBox = new QComboBox;
     mLifeComboBox->setObjectName("localCombo");
     mGeneCombBox->setObjectName("localCombo");
+    mLifeComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    mGeneCombBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 
     QToolBar * toolbar = new QToolBar(this);
 
@@ -22,6 +24,8 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
 
 
     QVBoxLayout * layout =new QVBoxLayout;
+    layout->setSpacing(0);
+    layout->setMargin(0);
     layout->addWidget(toolbar);
     layout->addWidget(mGridView);
 

@@ -29,18 +29,18 @@ int main(int argc, char *argv[])
 
     //    editor->show();
 
-    //    SimMainWindow * m  = new SimMainWindow;
-    //    m->show();
+    SimMainWindow * m  = new SimMainWindow;
+    m->show();
 
 
 
-        LifeEngine * engine =new LifeEngine(100,100);
-        engine->load("/home/sacha/simtest.estel");
+//        LifeEngine * engine =new LifeEngine(100,100);
+//        engine->load("/home/sacha/simtest.estel");
 
 
 
-       LifesView * v = new LifesView(engine);
-        v->show();
+//       LifesView * v = new LifesView(engine);
+//        v->show();
 
 
     //    view->show();

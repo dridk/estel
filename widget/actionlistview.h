@@ -19,6 +19,7 @@ public slots:
     virtual void edit();
     virtual void remove();
     void showMessage(const QString& msg);
+    void hideAction(int index);
     
 
 private:

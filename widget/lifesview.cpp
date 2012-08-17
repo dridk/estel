@@ -8,6 +8,8 @@ LifesView::LifesView(LifeEngine *engine, QWidget *parent) :
     view()->setModel(mModel);
     mModel->setColumnCount(2);
     refresh();
+    setWindowTitle("Lifes");
+    hideAction(0);
 }
 
 void LifesView::refresh()

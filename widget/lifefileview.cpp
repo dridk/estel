@@ -9,6 +9,7 @@ LifeFileView::LifeFileView(QWidget *parent)
     view()->setModel(mModel);
 
     refresh();
+    setWindowTitle("Lifes Types");
 
 }
 

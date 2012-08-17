@@ -10,6 +10,9 @@
 #include "lifeeditor.h"
 #include "simulationdialog.h"
 #include "lifeengineview.h"
+#include "lifesview.h"
+#include "lifefileview.h"
+
 namespace Ui {
 class SimMainWindow;
 }
@@ -36,15 +39,13 @@ public slots:
 
 protected slots:
     void clicked(QPoint pos);
-    void updateLifeFile(const QString& path = QString());
-    void updateLifeList();
 
 private:
     Ui::SimMainWindow *ui;
     LifeEngineView * mView;
-    QStringListModel * mFileModel;
-    QStringListModel * mLifeModel;
     LifeEngine * mEngine;
+    LifesView * mLifesView;
+    LifeFileView * mLifeFileView;
 
 
 };

@@ -15,6 +15,8 @@ ActionListView::ActionListView(QWidget *parent) :
     layout->setSpacing(0);
     layout->setMargin(0);
     setLayout(layout);
+    mStatusBar->setSizeGripEnabled(false);
+
 
     QWidget* spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -57,4 +59,9 @@ void ActionListView::remove()
 void ActionListView::showMessage(const QString &msg)
 {
     mStatusBar->showMessage(msg);
+}
+
+void ActionListView::hideAction(int index)
+{
+    mToolBar->actions().at(index)->setVisible(false);
 }
