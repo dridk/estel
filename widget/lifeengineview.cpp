@@ -18,9 +18,11 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
     QWidget* spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    toolbar->addWidget(spacer);
     toolbar->addWidget(mLifeComboBox);
     toolbar->addWidget(mGeneCombBox);
+    toolbar->addWidget(spacer);
+    toolbar->addAction(QIcon(":arrow_refresh.png"),"refresh",this,SLOT(refresh()));
+
 
 
     QVBoxLayout * layout =new QVBoxLayout;
@@ -59,6 +61,8 @@ void LifeEngineView::refresh()
 
     if (updateCombo)
         mComboData.clear();
+
+    mGridView->grid()->clear();
 
     foreach (Life * life, mEngine->lifes())
     {

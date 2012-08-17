@@ -32,8 +32,7 @@ public slots:
     void refresh();
     void showLifeEditor();
     void startSimulation();
-    void editLife();
-    void remLife();
+
 
 
 

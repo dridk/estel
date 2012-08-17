@@ -106,34 +106,6 @@ void SimMainWindow::startSimulation()
     refresh();
 }
 
-void SimMainWindow::editLife()
-{
-    //    if ( ui->lifeListView->selectionModel()->selectedRows().count() <=0)
-    //        return;
-
-    //    int row = ui->lifeListView->selectionModel()->selectedRows().first().row();
-
-    //    Life * life = mEngine->lifes().value(row);
-
-    //    LifeDialog * dialog = new LifeDialog(life);
-    //    dialog->exec();
-
-    //    refresh();
-}
-
-void SimMainWindow::remLife()
-{
-    //    if ( ui->lifeListView->selectionModel()->selectedRows().count() <=0)
-    //        return;
-
-    //    foreach (QModelIndex index, ui->lifeListView->selectionModel()->selectedRows())
-    //    {
-    //        QPoint pos = mEngine->lifes().value(index.row())->pos();
-    //        mEngine->remLife(pos.x(),pos.y());
-    //    }
-
-    //    refresh();
-}
 
 void SimMainWindow::clicked(QPoint pos)
 {
