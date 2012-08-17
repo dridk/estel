@@ -8,6 +8,8 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
     mGridView = new GridView(engine->rows(),engine->columns());
     mLifeComboBox = new QComboBox;
     mGeneCombBox = new QComboBox;
+    mLifeComboBox->setObjectName("localCombo");
+    mGeneCombBox->setObjectName("localCombo");
 
     QToolBar * toolbar = new QToolBar(this);
 
@@ -26,6 +28,8 @@ LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
     setLayout(layout);
 
     connect(mLifeComboBox,SIGNAL(activated(int)),this,SLOT(updateGeneCombo()));
+    connect(mLifeComboBox,SIGNAL(activated(int)),this,SLOT(refresh()));
+    connect(mGeneCombBox,SIGNAL(activated(int)),this,SLOT(refresh()));
 
 
     refresh();
@@ -41,6 +45,17 @@ LifeEngineView::~LifeEngineView()
 
 void LifeEngineView::refresh()
 {
+    bool updateCombo = true;
+    if (sender())
+    {
+        if (sender()->objectName() == "localCombo"){
+            updateCombo = false;
+        }
+    }
+
+    if (updateCombo)
+        mComboData.clear();
+
     foreach (Life * life, mEngine->lifes())
     {
         if (life->name() == mLifeComboBox->currentText())
@@ -50,10 +65,16 @@ void LifeEngineView::refresh()
         }
         else
             mGridView->grid()->switchOn(life->x(),life->y(),Qt::black);
+
+        if (updateCombo)
+            mComboData[life->name()] = life->genom();
+
+
     }
 
     mGridView->grid()->update();
-    updateComboData();
+    if (updateCombo)
+        updateLifeCombo();
 }
 
 GridView *LifeEngineView::gridView()
