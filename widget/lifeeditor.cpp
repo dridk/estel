@@ -18,28 +18,34 @@ LifeEditor::LifeEditor(QWidget *parent) :
     canBeSaved(false);
     connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
 
-}
+    connect(ui->actionNew,SIGNAL(triggered()),this,SLOT(newFile()));
+    connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveFile()));
+    connect(ui->actionAddGene,SIGNAL(triggered()),this,SLOT(addGene()));
+    connect(ui->actionEditGene,SIGNAL(triggered()),this,SLOT(editGene()));
+    connect(ui->actionRemGene,SIGNAL(triggered()),this,SLOT(remGene()));
 
+
+
+}
 LifeEditor::~LifeEditor()
 {
     delete ui;
 }
-
-void LifeEditor::on_actionNew_triggered()
+void LifeEditor::newFile()
 {
 
     setWindowTitle("no name");
     ui->geneTreeWidget->clear();
     ui->scriptEdit->clear();
-
-
 }
 
-void LifeEditor::on_actionOpen_triggered()
+void LifeEditor::openFile(const QString &name)
 {
-    QString fileName =
-            QFileDialog::getOpenFileName(this,
-                                         tr("Open Life script"), "", tr("Life Script (*.json *.life"));
+    QString fileName = name;
+    if (fileName.isEmpty())
+    fileName = QFileDialog::getOpenFileName(this,tr("Open Life script"),
+                                         "", tr("Life Script (*.json *.life"));
+
 
     if (!mCurrentLife->loadFile(fileName))
     {
@@ -53,30 +59,42 @@ void LifeEditor::on_actionOpen_triggered()
     canBeSaved(false);
 }
 
-void LifeEditor::on_actionSave_triggered()
+void LifeEditor::saveFile()
 {
     QString fileName = windowTitle();
     if (!QFile::exists(fileName))
     {
-        fileName = QFileDialog::getSaveFileName(this,
-                                                tr("Save Life script"), "", tr("Life Script (*.json *.life"));
+        fileName = QFileDialog::getSaveFileName(this,tr("Save Life script"),
+                                                "", tr("Life Script (*.json *.life"));
 
     }
 
     mCurrentLife->setScript(ui->scriptEdit->toPlainText());
     if(!mCurrentLife->saveFile(fileName))
     {
-        qDebug()<<"cannot save life...";
+        QMessageBox::warning(this,"error","cannot save life");
         return;
     }
     setWindowTitle(fileName);
     canBeSaved(false);
-
 }
 
-void LifeEditor::on_actionNewGene_triggered()
+void LifeEditor::saveAs()
 {
+    QString fileName = QFileDialog::getSaveFileName(this,tr("Save Life script"),
+                                                    "", tr("Life Script (*.json *.life"));
 
+    mCurrentLife->setScript(ui->scriptEdit->toPlainText());
+    if(!mCurrentLife->saveFile(fileName))
+    {
+        QMessageBox::warning(this,"error","cannot save life");
+        return;
+    }
+    setWindowTitle(fileName);
+    canBeSaved(false);
+}
+void LifeEditor::addGene()
+{
     GeneDialog * dialog = new GeneDialog;
     if (dialog->exec() ==QDialog::Accepted)
     {
@@ -86,20 +104,18 @@ void LifeEditor::on_actionNewGene_triggered()
     }
 
     refresh();
-
-
 }
 
-void LifeEditor::on_actionEditGene_triggered()
+void LifeEditor::editGene()
 {
 }
 
-void LifeEditor::on_actionRemGene_triggered()
+void LifeEditor::remGene()
 {
 
 }
 
-void LifeEditor::on_actionSimReset_triggered()
+void LifeEditor::reset()
 {
     qDebug()<<"RESET"<<mEngine->population();
     mEngine->clear();
@@ -109,13 +125,13 @@ void LifeEditor::on_actionSimReset_triggered()
 
 }
 
-void LifeEditor::on_actionSimStep_triggered()
+void LifeEditor::step()
 {
     if (mEngine->population() == 0)
     {
-       mCurrentLife->setAge(0);
-       mCurrentLife->setPos(0,0);
-       mEngine->addLife(mCurrentLife);
+        mCurrentLife->setAge(0);
+        mCurrentLife->setPos(0,0);
+        mEngine->addLife(mCurrentLife);
     }
 
     mEngine->step();
@@ -126,10 +142,6 @@ void LifeEditor::on_actionSimStep_triggered()
                                   "Pop :"+QString::number(mEngine->population())+"==</b>");
 
     ui->debugTextEdit->appendPlainText(mEngine->lastDebug());
-
-
-
-
 
 }
 

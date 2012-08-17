@@ -2,20 +2,23 @@
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QMessageBox>
 LifeFileView::LifeFileView(QWidget *parent)
     :ActionListView(parent)
 {
     mModel = new QStandardItemModel(this);
     view()->setModel(mModel);
 
-    refresh();
     setWindowTitle("Lifes Types");
+    refresh();
+
 
 }
 
 void LifeFileView::refresh(const QString &path)
 {
     mModel->clear();
+    qDebug()<<"REFRESH";
     QString currentDir = path;
     if ( path.isEmpty())
         currentDir = qApp->applicationDirPath();
@@ -41,14 +44,51 @@ void LifeFileView::refresh(const QString &path)
 
 void LifeFileView::remove()
 {
-    foreach (QModelIndex  i, view()->selectionModel()->selectedRows())
-    {
+    QMessageBox * box = new QMessageBox(this);
+    box->setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    box->setDefaultButton(QMessageBox::No);
+    box->setWindowTitle("Delete lifeType file");
+    box->setText("Do you really want to remove this file?");
 
+    if (box->exec() == QMessageBox::No)
+        return;
 
+    QString filename = mModel->item(currentRow())->data().toString();
 
+    if (!QFile::remove(filename)){
+        QMessageBox::warning(this,"error","cannot remove file");
+        return;
     }
 
+    refresh();
+}
 
+void LifeFileView::edit()
+{
+    if (!selectionCount())
+        return;
+    QString filename = mModel->item(currentRow())->data().toString();
+    LifeEditor * editor = new LifeEditor;
+    editor->openFile(filename);
+    editor->setAttribute(Qt::WA_DeleteOnClose);
+    connect(editor,SIGNAL(destroyed()),this,SLOT(refresh()));
+    editor->show();
+
+}
+
+void LifeFileView::add()
+{
+    LifeEditor * editor = new LifeEditor;
+    editor->setAttribute(Qt::WA_DeleteOnClose);
+    connect(editor,SIGNAL(destroyed()),this,SLOT(refresh()));
+    editor->show();
+
+
+}
+
+void LifeFileView::test()
+{
+    qDebug()<<"CLOSE";
 }
 
 const QString &LifeFileView::filename(int row)
@@ -61,7 +101,7 @@ const QString &LifeFileView::currentFilename()
     if (!selectionCount())
         return QString();
     else
-    return filename(currentRow());
+        return filename(currentRow());
 }
 
 

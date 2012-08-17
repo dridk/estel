@@ -21,14 +21,17 @@ public:
     ~LifeEditor();
 
 public slots:
-    void on_actionNew_triggered();
-    void on_actionOpen_triggered();
-    void on_actionSave_triggered();
-    void on_actionNewGene_triggered();
-    void on_actionEditGene_triggered();
-    void on_actionRemGene_triggered();
-    void on_actionSimReset_triggered();
-    void on_actionSimStep_triggered();
+    void newFile();
+    void openFile(const QString& name = QString());
+    void saveFile();
+    void saveAs();
+    void addGene();
+    void remGene();
+    void editGene();
+    void reset();
+    void step();
+
+
 
     void canBeSaved(bool enable = true);
 

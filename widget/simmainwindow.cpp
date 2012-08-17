@@ -98,7 +98,6 @@ void SimMainWindow::refresh()
     setEnabled(true);
     statusBar()->showMessage("Lifes loaded");
 
-
 }
 
 void SimMainWindow::showLifeEditor()
