@@ -23,6 +23,9 @@ LifeEditor::LifeEditor(QWidget *parent) :
     connect(ui->actionAddGene,SIGNAL(triggered()),this,SLOT(addGene()));
     connect(ui->actionEditGene,SIGNAL(triggered()),this,SLOT(editGene()));
     connect(ui->actionRemGene,SIGNAL(triggered()),this,SLOT(remGene()));
+    connect(ui->actionSimReset,SIGNAL(triggered()),this,SLOT(reset()));
+    connect(ui->actionSimStep,SIGNAL(triggered()),this,SLOT(step()));
+
 
 
 
