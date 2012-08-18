@@ -12,6 +12,8 @@ LifeFileView::LifeFileView(QWidget *parent)
     setWindowTitle("Lifes Types");
     refresh();
 
+    connect(this,SIGNAL(doubleClicked()),this,SLOT(edit()));
+
 
 }
 

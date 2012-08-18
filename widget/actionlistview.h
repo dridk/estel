@@ -27,6 +27,7 @@ public slots:
 
 signals:
     void changed();
+    void doubleClicked();
     
 
 private:
