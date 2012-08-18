@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>784</width>
+    <height>457</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../gfx/gfx.qrc">
+    <normaloff>:/layers.png</normaloff>:/layers.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -19,25 +23,156 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>784</width>
      <height>25</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="windowIcon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/layers.png</normaloff>:/layers.png</iconset>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetVerticalTitleBar</set>
+   </property>
+   <property name="windowTitle">
+    <string>simulations</string>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QListWidget" name="listWidget"/>
+      <widget class="QListView" name="listView"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="lifeTypeCombo"/>
+       </item>
+       <item>
+        <widget class="QComboBox" name="geneCombo"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="progressBar">
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionAdd"/>
+   <addaction name="actionRemove"/>
+   <addaction name="actionClear"/>
+   <addaction name="actionMake"/>
+  </widget>
+  <widget class="QToolBar" name="controlToolBar">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionBackward"/>
+   <addaction name="actionPlay"/>
+   <addaction name="actionForward"/>
+  </widget>
+  <action name="actionAdd">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/layer_import.png</normaloff>:/layer_import.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add...</string>
+   </property>
+  </action>
+  <action name="actionRemove">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/layer_remove.png</normaloff>:/layer_remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>remove</string>
+   </property>
+  </action>
+  <action name="actionBackward">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/control_start.png</normaloff>:/control_start.png</iconset>
+   </property>
+   <property name="text">
+    <string>backward</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/control_play.png</normaloff>
+     <normalon>:/control_pause.png</normalon>:/control_play.png</iconset>
+   </property>
+   <property name="text">
+    <string>play</string>
+   </property>
+  </action>
+  <action name="actionForward">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/control_end.png</normaloff>:/control_end.png</iconset>
+   </property>
+   <property name="text">
+    <string>forward</string>
+   </property>
+  </action>
+  <action name="actionMake">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/cog_go.png</normaloff>:/cog_go.png</iconset>
+   </property>
+   <property name="text">
+    <string>make</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/cancel.png</normaloff>:/cancel.png</iconset>
+   </property>
+   <property name="text">
+    <string>clear</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../gfx/gfx.qrc"/>
+ </resources>
  <connections/>
 </ui>

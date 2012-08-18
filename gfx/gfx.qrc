@@ -12,5 +12,16 @@
         <file>disk.png</file>
         <file>cog_go.png</file>
         <file>page_white_add.png</file>
+        <file>control_end.png</file>
+        <file>control_pause.png</file>
+        <file>control_play.png</file>
+        <file>control_start.png</file>
+        <file>layer.png</file>
+        <file>layer_add.png</file>
+        <file>layer_import.png</file>
+        <file>layer_remove.png</file>
+        <file>layers.png</file>
+        <file>layer_wms.png</file>
+        <file>cancel.png</file>
     </qresource>
 </RCC>
