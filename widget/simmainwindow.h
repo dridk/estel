@@ -50,6 +50,7 @@ private:
     LifeEngine * mEngine;
     LifesView * mLifesView;
     LifeFileView * mLifeFileView;
+    int mOldLifeCount;
 
 
 };

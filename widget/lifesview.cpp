@@ -54,6 +54,7 @@ void LifesView::remove()
         mEngine->remLife(life->x(),life->y());
     }
     refresh();
+    emit changed();
 }
 
 void LifesView::edit()
