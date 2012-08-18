@@ -118,6 +118,11 @@ void Gene::setMutationProbability(double proba)
     else
         mMutRate = 1/ mMutationProbability;
 }
+
+void Gene::setRootColor(const QColor &col)
+{
+    mRootColor = col;
+}
 void Gene::debug()
 {
     qDebug()<<name()<<"="<<value()<<"["<<min()<<"-"<<max()<<"] {"<<mutationProbability()<<"?"<<variance()<<"}";
@@ -126,6 +131,11 @@ void Gene::debug()
 const QColor &Gene::color() const
 {
     return mColor;
+}
+
+const QColor &Gene::rootColor() const
+{
+    return mRootColor;
 }
 void Gene::generateColor()
 {
