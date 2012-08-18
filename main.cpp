@@ -30,11 +30,11 @@ int main(int argc, char *argv[])
 
     //    editor->show();
 
-//    SimMainWindow * m  = new SimMainWindow;
-//    m->show();
-    AnimMainWindow * w  =new AnimMainWindow;
+    SimMainWindow * m  = new SimMainWindow;
+    m->show();
+//    AnimMainWindow * w  =new AnimMainWindow;
 
-    w->show();
+//    w->show();
 
 
 

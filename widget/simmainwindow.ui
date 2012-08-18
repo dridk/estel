@@ -37,16 +37,7 @@
     <property name="title">
      <string>Lifes</string>
     </property>
-   </widget>
-   <widget class="QMenu" name="menuGrid">
-    <property name="title">
-     <string>Grid</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
+    <addaction name="separator"/>
     <addaction name="actionRun"/>
     <addaction name="separator"/>
    </widget>
@@ -60,11 +51,17 @@
      <string>LifesTypes</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionAnimator"/>
+    <addaction name="actionLifeEditor"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLifesTypes"/>
    <addaction name="menuLifes"/>
-   <addaction name="menuGrid"/>
-   <addaction name="menuTools"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -88,6 +85,7 @@
    <addaction name="separator"/>
    <addaction name="actionClear"/>
    <addaction name="actionRun"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QDockWidget" name="dock1">
    <property name="features">
@@ -158,8 +156,26 @@
    </property>
   </action>
   <action name="actionClear">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/cancel.png</normaloff>:/cancel.png</iconset>
+   </property>
    <property name="text">
     <string>clear</string>
+   </property>
+  </action>
+  <action name="actionAnimator">
+   <property name="icon">
+    <iconset resource="../gfx/gfx.qrc">
+     <normaloff>:/layers.png</normaloff>:/layers.png</iconset>
+   </property>
+   <property name="text">
+    <string>show Animator</string>
+   </property>
+  </action>
+  <action name="actionLifeEditor">
+   <property name="text">
+    <string>show life editor</string>
    </property>
   </action>
  </widget>

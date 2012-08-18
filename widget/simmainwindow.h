@@ -12,7 +12,7 @@
 #include "lifeengineview.h"
 #include "lifesview.h"
 #include "lifefileview.h"
-
+#include "animmainwindow.h"
 namespace Ui {
 class SimMainWindow;
 }
@@ -32,8 +32,11 @@ public slots:
 
     void refresh();
     void clear();
-    void showLifeEditor();
     void startSimulation();
+
+    void showAnimator();
+    void showLifeEditor();
+
 
 
 

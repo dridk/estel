@@ -34,6 +34,8 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAsSim()));
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openSim()));
     connect(ui->actionClear,SIGNAL(triggered()),this,SLOT(clear()));
+    connect(ui->actionAnimator,SIGNAL(triggered()),this,SLOT(showAnimator()));
+    connect(ui->actionLifeEditor,SIGNAL(triggered()),this,SLOT(showLifeEditor()));
 
 }
 
@@ -109,17 +111,9 @@ void SimMainWindow::clear()
 
 void SimMainWindow::showLifeEditor()
 {
-    LifeEditor * editor = new LifeEditor;
-
-
-    //    editor->setWindowModality(Qt::ApplicationModal);
-    editor->show();
-    //    editor->set
-    //    connect(editor, SIGNAL(destroyed()), &loop, SLOT(quit()));
-    //    loop.exec();
-
-    //    qDebug()<<"end";
-
+    LifeEditor * w = new LifeEditor;
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
 
 }
 
@@ -128,6 +122,13 @@ void SimMainWindow::startSimulation()
     SimulationDialog * dialog = new SimulationDialog(mEngine);
     dialog->exec();
     refresh();
+}
+
+void SimMainWindow::showAnimator()
+{
+    AnimMainWindow * w = new AnimMainWindow;
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
 }
 
 
