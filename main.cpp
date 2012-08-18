@@ -26,11 +26,19 @@ int main(int argc, char *argv[])
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-    Gene gene;
-    gene.setRootColor("red");
-
-    GeneColorWidget * w = new GeneColorWidget(gene);
+    SimMainWindow * w = new SimMainWindow;
     w->show();
+
+//    Gene g = 14;
+//    GeneDialog * d = new GeneDialog;
+//    d->setGene(g);
+//    d->show();
+
+//    Gene gene;
+//    gene.setRootColor("red");
+
+//    GeneColorWidget * w = new GeneColorWidget(gene);
+//    w->show();
 
 
 

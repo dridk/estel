@@ -1,18 +1,20 @@
 #include "genecolorwidget.h"
-
-GeneColorWidget::GeneColorWidget(const Gene &gene, QWidget *parent):
+#include <QDebug>
+GeneColorWidget::GeneColorWidget(QWidget *parent):
     QWidget(parent)
 {
-    mGene = gene;
-    resize(600,10);
+    setMinimumHeight(10);
+
+
 }
 
 void GeneColorWidget::paintEvent(QPaintEvent *)
 {
 
-
     QPainter painter;
     painter.begin(this);
+    painter.setPen(QPen(Qt::transparent));
+    qDebug()<<"repaint";
     QLinearGradient linearGrad(QPointF(0, 0), QPointF(width(), 0));
     mGene.setValue(mGene.min());
     linearGrad.setColorAt(0, mGene.color());
@@ -25,4 +27,10 @@ void GeneColorWidget::paintEvent(QPaintEvent *)
 
 
 
+}
+
+void GeneColorWidget::setGene(const Gene &gene)
+{
+    mGene = gene;
+    update();
 }

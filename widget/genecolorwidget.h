@@ -9,8 +9,10 @@ class GeneColorWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GeneColorWidget(const Gene& gene,QWidget *parent = 0);
+    explicit GeneColorWidget(QWidget *parent = 0);
     void paintEvent(QPaintEvent *);
+
+    void setGene(const Gene& gene);
     
 
 private:
