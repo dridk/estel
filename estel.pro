@@ -16,9 +16,9 @@ SOURCES += main.cpp\
     core/life.cpp \
     core/lifeengine.cpp \
     qxtjson/qxtjson.cpp \
-    projectfile.cpp \
-    metapolygonitem.cpp \
-    shapewidget.cpp \
+#    projectfile.cpp \
+#    metapolygonitem.cpp \
+#    shapewidget.cpp \
     widget/lifeengineview.cpp \
     widget/gridwidget.cpp \
     widget/gridview.cpp \
@@ -40,9 +40,9 @@ HEADERS  += gene.h \
     core/life.h \
     core/lifeengine.h \
     qxtjson/qxtjson.h \
-    projectfile.h \
-    metapolygonitem.h \
-    shapewidget.h \
+#    projectfile.h \
+#    metapolygonitem.h \
+#    shapewidget.h \
     widget/lifeengineview.h \
     widget/gridwidget.h \
     widget/gridview.h \

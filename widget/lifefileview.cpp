@@ -93,17 +93,18 @@ void LifeFileView::test()
     qDebug()<<"CLOSE";
 }
 
-const QString &LifeFileView::filename(int row)
+ QString LifeFileView::filename(int row) const
 {
-    return mModel->item(row)->data().toString();
+    QString name  = mModel->item(row)->data().toString();
+    return name;
 }
 
-const QString &LifeFileView::currentFilename()
+ QString LifeFileView::currentFilename() const
 {
     if (!selectionCount())
         return QString();
-    else
-        return filename(currentRow());
+
+    return QString(filename(currentRow()));
 }
 
 

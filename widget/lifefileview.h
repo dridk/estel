@@ -12,8 +12,8 @@ class LifeFileView : public ActionListView
 public:
     LifeFileView(QWidget * parent = 0);
 
-    const QString& filename(int row);
-    const QString& currentFilename();
+     QString filename(int row) const;
+     QString currentFilename() const;
 
 public slots:
     void refresh(const QString& path = QString());

@@ -254,10 +254,10 @@ const QPixmap &AnimMainWindow::createPixmap(LifeEngine *engine)
 
     }
 
-    QPixmap pix = grid->snap();
+    return grid->snap();
     delete grid;
 
-    return pix;
+
 
 }
 
