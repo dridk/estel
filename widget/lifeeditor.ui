@@ -71,7 +71,7 @@
      <x>0</x>
      <y>0</y>
      <width>877</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuLife">
@@ -85,9 +85,6 @@
     <property name="title">
      <string>Genom</string>
     </property>
-    <addaction name="actionAddGene"/>
-    <addaction name="actionEditGene"/>
-    <addaction name="actionRemGene"/>
    </widget>
    <widget class="QMenu" name="menuSimulation">
     <property name="title">
@@ -118,34 +115,22 @@
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
    <addaction name="separator"/>
-   <addaction name="actionAddGene"/>
-   <addaction name="actionEditGene"/>
-   <addaction name="actionRemGene"/>
    <addaction name="separator"/>
    <addaction name="actionSimReset"/>
    <addaction name="actionSimStep"/>
   </widget>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetVerticalTitleBar</set>
+   </property>
+   <property name="windowTitle">
+    <string>Genom</string>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QTreeWidget" name="geneTreeWidget">
-       <column>
-        <property name="text">
-         <string>gene</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>value</string>
-        </property>
-       </column>
-      </widget>
-     </item>
-    </layout>
+    <layout class="QVBoxLayout" name="verticalLayout_2"/>
    </widget>
   </widget>
   <action name="actionNew">
@@ -162,30 +147,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actionAddGene">
-   <property name="text">
-    <string>addGene</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+A</string>
-   </property>
-  </action>
-  <action name="actionEditGene">
-   <property name="text">
-    <string>editGene</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+E</string>
-   </property>
-  </action>
-  <action name="actionRemGene">
-   <property name="text">
-    <string>remGene</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+X</string>
    </property>
   </action>
   <action name="actionSimReset">

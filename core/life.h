@@ -40,6 +40,7 @@ public:
 
     void addGene(Gene  gene);
     void remGene(Gene  gene);
+    void clearGene();
 
     void setGenom(const Genom& genom);
     void setName(const QString& name);

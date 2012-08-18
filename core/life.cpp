@@ -136,6 +136,11 @@ void Life::remGene(Gene gene)
     mGenom.rem(gene);
 }
 
+void Life::clearGene()
+{
+    mGenom.clear();
+}
+
 Gene& Life::gene(const QString &name)
 {
     return mGenom.gene(name);
@@ -258,7 +263,7 @@ QString Life::serialize(Life *life)
         gMap.insert("max",gene.max());
         gMap.insert("proba",gene.mutationProbability());
         gMap.insert("variance",gene.variance());
-        gMap.insert("rootcolor",gene.rootColor());
+        gMap.insert("rootcolor",gene.rootColor().name());
 
         geneList.append(gMap);
     }
