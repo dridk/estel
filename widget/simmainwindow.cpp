@@ -79,7 +79,7 @@ void SimMainWindow::newSim()
 void SimMainWindow::openSim()
 {
     QString fileName=QFileDialog::getOpenFileName(this,tr("Open Simulation")
-                                                  ,"",  tr("Estel (*.estel)"));
+                                                  ,"",tr("Estel Simulation (*.estel)"));
 
     if (fileName.isEmpty())
         return;
@@ -95,9 +95,17 @@ void SimMainWindow::openSim()
 void SimMainWindow::saveSim()
 {
     QString fileName = windowTitle();
-    if (!QFile::exists(fileName))
+    if (!QFile::exists(fileName)){
         fileName = QFileDialog::getSaveFileName(this,tr("Save Simulation"),
                                                 "", tr("Estel Simulation (*.estel"));
+
+
+        QFileInfo info(fileName);
+        if (info.suffix()!="estel")
+            fileName.append(".estel");
+    }
+
+
 
     if(!mEngine->save(fileName)){
         QMessageBox::warning(this,"error","Cannot save file");
@@ -113,6 +121,10 @@ void SimMainWindow::saveAsSim()
 
     QString fileName =QFileDialog::getSaveFileName(this,tr("Open Simulation")
                                                    ,"",  tr("Estel (*.estel)"));
+
+    QFileInfo info(fileName);
+    if (info.suffix()!="estel")
+        fileName.append(".estel");
 
     if(!mEngine->save(fileName)){
         QMessageBox::warning(this,"error","cannot save file");

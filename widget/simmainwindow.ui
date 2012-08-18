@@ -24,12 +24,17 @@
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
+    <addaction name="actionRun"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -38,7 +43,6 @@
      <string>Lifes</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionRun"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -113,6 +117,9 @@
    <property name="text">
     <string>new</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionOpen">
    <property name="icon">
@@ -121,6 +128,9 @@
    </property>
    <property name="text">
     <string>open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionSave">
@@ -131,6 +141,9 @@
    <property name="text">
     <string>save</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionRun">
    <property name="icon">
@@ -139,6 +152,9 @@
    </property>
    <property name="text">
     <string>run</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionSaveAs">
@@ -153,6 +169,9 @@
   <action name="actionQuit">
    <property name="text">
     <string>quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionClear">
@@ -172,10 +191,16 @@
    <property name="text">
     <string>show Animator</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+A</string>
+   </property>
   </action>
   <action name="actionLifeEditor">
    <property name="text">
     <string>show life editor</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+E</string>
    </property>
   </action>
  </widget>

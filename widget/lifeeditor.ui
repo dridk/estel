@@ -152,35 +152,56 @@
    <property name="text">
     <string>new</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionOpen">
    <property name="text">
     <string>open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionAddGene">
    <property name="text">
     <string>addGene</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+A</string>
+   </property>
   </action>
   <action name="actionEditGene">
    <property name="text">
     <string>editGene</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+E</string>
    </property>
   </action>
   <action name="actionRemGene">
    <property name="text">
     <string>remGene</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+X</string>
+   </property>
   </action>
   <action name="actionSimReset">
    <property name="text">
     <string>simReset</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="actionSimStep">
    <property name="text">
     <string>simStep</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionSave">
@@ -189,6 +210,9 @@
    </property>
    <property name="text">
     <string>save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionClearDebug">

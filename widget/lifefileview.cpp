@@ -20,7 +20,7 @@ LifeFileView::LifeFileView(QWidget *parent)
 void LifeFileView::refresh(const QString &path)
 {
     mModel->clear();
-    qDebug()<<"REFRESH";
+    mModel->setHorizontalHeaderLabels(QStringList()<<"Life type");
     QString currentDir = path;
     if ( path.isEmpty())
         currentDir = qApp->applicationDirPath();

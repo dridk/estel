@@ -10,6 +10,8 @@ LifesView::LifesView(LifeEngine *engine, QWidget *parent) :
     refresh();
     setWindowTitle("Lifes");
     hideAction(0);
+    connect(this,SIGNAL(doubleClicked()),this,SLOT(edit()));
+
 }
 
 void LifesView::refresh()

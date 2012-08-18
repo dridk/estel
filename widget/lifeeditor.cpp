@@ -20,6 +20,8 @@ LifeEditor::LifeEditor(QWidget *parent) :
 
     connect(ui->actionNew,SIGNAL(triggered()),this,SLOT(newFile()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveFile()));
+    connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openFile()));
+
     connect(ui->actionAddGene,SIGNAL(triggered()),this,SLOT(addGene()));
     connect(ui->actionEditGene,SIGNAL(triggered()),this,SLOT(editGene()));
     connect(ui->actionRemGene,SIGNAL(triggered()),this,SLOT(remGene()));
@@ -70,7 +72,13 @@ void LifeEditor::saveFile()
         fileName = QFileDialog::getSaveFileName(this,tr("Save Life script"),
                                                 "", tr("Life Script (*.json *.life"));
 
+
+        QFileInfo info(fileName);
+        if (info.suffix()!="life")
+            fileName.append(".life");
     }
+
+
 
     mCurrentLife->setScript(ui->scriptEdit->toPlainText());
     if(!mCurrentLife->saveFile(fileName))
@@ -86,6 +94,12 @@ void LifeEditor::saveAs()
 {
     QString fileName = QFileDialog::getSaveFileName(this,tr("Save Life script"),
                                                     "", tr("Life Script (*.json *.life"));
+
+
+
+    QFileInfo info(fileName);
+    if (info.suffix()!="life")
+        fileName.append(".life");
 
     mCurrentLife->setScript(ui->scriptEdit->toPlainText());
     if(!mCurrentLife->saveFile(fileName))
