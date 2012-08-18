@@ -37,10 +37,14 @@ AnimMainWindow::AnimMainWindow(QWidget *parent) :
     connect(ui->actionForward,SIGNAL(triggered()),this,SLOT(endPlay()));
     connect(ui->actionPlay,SIGNAL(triggered(bool)),this,SLOT(play(bool)));
     connect(ui->actionClear,SIGNAL(triggered()),this,SLOT(clear()));
+    connect(ui->lifeTypeCombo,SIGNAL(currentIndexChanged(int)),this,SLOT(loadComboGeneData()));
 
     connect(mSlider,SIGNAL(valueChanged(int)),this,SLOT(refresh(int)));
     connect(mTimer,SIGNAL(timeout()),this,SLOT(incrPlayerIndex()));
     connect(ui->listView,SIGNAL(clicked(QModelIndex)),this,SLOT(itemClicked(QModelIndex)));
+
+
+
 }
 
 
@@ -67,6 +71,8 @@ void AnimMainWindow::addSim()
         item->setData(filename);
         mModel->appendRow(item);
     }
+
+    loadComboData();
 }
 
 void AnimMainWindow::remSim()
@@ -176,6 +182,50 @@ void AnimMainWindow::itemClicked(const QModelIndex &index)
         mSlider->setValue(i);
 
 }
+
+
+void AnimMainWindow::loadComboData()
+{
+    if (mModel->rowCount()<=0)
+        return;
+
+    QString fileName = mModel->item(0)->data().toString();
+    LifeEngine * engine = new LifeEngine(100,100);
+    if(engine->load(fileName))
+    {
+        foreach (Life * life, engine->lifes())
+            mComboData[life->name()] = life->genom();
+
+        ui->lifeTypeCombo->clear();
+        ui->lifeTypeCombo->addItem("All");
+        ui->lifeTypeCombo->addItems(mComboData.keys());
+
+    }
+
+
+
+}
+
+void AnimMainWindow::loadComboGeneData()
+{
+    if (!ui->lifeTypeCombo->currentIndex())
+    {
+        ui->geneCombo->setEnabled(false);
+        return;
+    }
+
+    ui->geneCombo->setEnabled(true);
+    ui->geneCombo->clear();
+    QString key = ui->lifeTypeCombo->currentText();
+    foreach (Gene gene, mComboData[key].genes())
+        ui->geneCombo->addItem(gene.name());
+
+
+
+
+}
+
+
 const QPixmap &AnimMainWindow::createPixmap(LifeEngine *engine)
 {
 

@@ -49,6 +49,16 @@
       <widget class="QListView" name="listView"/>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="lifeTypeCombo"/>
+       </item>
+       <item>
+        <widget class="QComboBox" name="geneCombo"/>
+       </item>
+      </layout>
+     </item>
+     <item>
       <widget class="QProgressBar" name="progressBar">
        <property name="value">
         <number>0</number>

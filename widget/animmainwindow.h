@@ -32,13 +32,13 @@ public slots:
 protected slots:
     void incrPlayerIndex();
     void itemClicked(const QModelIndex& index);
+    void loadComboData();
+    void loadComboGeneData();
+
 
 
 protected:
     const QPixmap& createPixmap(LifeEngine * engine);
-
-
-    
 private:
     Ui::AnimMainWindow *ui;
     QSlider * mSlider;
@@ -46,6 +46,7 @@ private:
     QStandardItemModel * mModel;
     QList<QPixmap> mPixList;
     QTimer * mTimer;
+    QMap<QString, Genom> mComboData;
 };
 
 #endif // ANIMMAINWINDOW_H
