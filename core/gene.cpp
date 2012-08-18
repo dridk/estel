@@ -1,5 +1,6 @@
 #include "gene.h"
 #include <QDebug>
+#include <QColor>
 Gene::Gene(const QString& name, int val, int min, int max, int var, double proba)
 
 {
@@ -8,6 +9,7 @@ Gene::Gene(const QString& name, int val, int min, int max, int var, double proba
     setVariance(var);
     setMutationProbability(proba);
     setValue(val);
+    mRootColor = Qt::black;
 }
 Gene::Gene(int val)
 {
@@ -16,6 +18,7 @@ Gene::Gene(int val)
     setVariance(1);
     setMutationProbability(0);
     setValue(val);
+    mRootColor = Qt::black;
 }
 Gene::Gene(const Gene & other)
 {
@@ -24,6 +27,7 @@ Gene::Gene(const Gene & other)
     setLimit(other.min(),other.max());
     setVariance(other.variance());
     setValue(other.value());
+    setRootColor(other.rootColor());
 }
 Gene Gene::muted() const
 {
@@ -123,6 +127,8 @@ void Gene::setRootColor(const QColor &col)
 {
     mRootColor = col;
 }
+
+
 void Gene::debug()
 {
     qDebug()<<name()<<"="<<value()<<"["<<min()<<"-"<<max()<<"] {"<<mutationProbability()<<"?"<<variance()<<"}";
@@ -142,7 +148,9 @@ void Gene::generateColor()
     int sat = 255 * mValue / (mMax - mMin);
 
     sat = qBound(0,sat,255);
-    mColor = QColor(0,sat,0);
+    mColor = mRootColor;
+    mColor.setHsl(mColor.hue(), sat, mColor.lightness());
+
 }
 
 void Gene::operator =(int v)

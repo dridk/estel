@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
     Gene gene;
+    gene.setRootColor("red");
+
     GeneColorWidget * w = new GeneColorWidget(gene);
     w->show();
 
