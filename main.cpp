@@ -19,65 +19,59 @@
 #include "actionlistview.h"
 #include "lifefileview.h"
 #include "lifesview.h"
-#include "animmainwindow.h"
+#include "genecolorwidget.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-    //    LifeEditor * editor = new LifeEditor;
-
-    //    editor->show();
-
-    SimMainWindow * m  = new SimMainWindow;
-    m->show();
-//    AnimMainWindow * w  =new AnimMainWindow;
-
-//    w->show();
+    Gene gene;
+    GeneColorWidget * w = new GeneColorWidget(gene);
+    w->show();
 
 
 
-//        LifeEngine * engine =new LifeEngine(100,100);
-//        engine->load("/home/sacha/simtest.estel");
+            //        LifeEngine * engine =new LifeEngine(100,100);
+            //        engine->load("/home/sacha/simtest.estel");
 
 
 
-//       LifesView * v = new LifesView(engine);
-//        v->show();
+            //       LifesView * v = new LifesView(engine);
+            //        v->show();
 
 
-    //    view->show();
+            //    view->show();
 
 
 
 
 
-    //    engine.addLife(l->muted());
-    //    engine.addLife(l->muted());
-    //    engine.run(20000);
+            //    engine.addLife(l->muted());
+            //    engine.addLife(l->muted());
+            //    engine.run(20000);
 
 
 
-    //    engine.load("experimentA-14.json");
+            //    engine.load("experimentA-14.json");
 
-    //    LifeEngineView * view = new LifeEngineView(&engine);
-
-
-    //    view->show();
+            //    LifeEngineView * view = new LifeEngineView(&engine);
 
 
-    //  LifeDialog * dialog = new LifeDialog(life);
-
-    //  dialog->exec();
+            //    view->show();
 
 
-    //  life->genom().debug();
+            //  LifeDialog * dialog = new LifeDialog(life);
 
-    //ShapeWidget * w = new ShapeWidget;
+            //  dialog->exec();
 
-    //w->show();
 
-    
-    return a.exec();
+            //  life->genom().debug();
+
+            //ShapeWidget * w = new ShapeWidget;
+
+            //w->show();
+
+
+            return a.exec();
 }
