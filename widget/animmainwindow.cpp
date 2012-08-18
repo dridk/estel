@@ -51,6 +51,11 @@ AnimMainWindow::AnimMainWindow(QWidget *parent) :
 AnimMainWindow::~AnimMainWindow()
 {
     delete ui;
+    delete mSlider;
+    delete mPixLabel;
+    delete mModel;
+    delete mTimer;
+    mPixList.clear();
 }
 
 void AnimMainWindow::addSim()
@@ -120,6 +125,8 @@ void AnimMainWindow::clear()
     centralWidget()->setEnabled(false);
     ui->controlToolBar->setEnabled(false);
     ui->progressBar->setValue(0);
+    ui->geneCombo->clear();
+    ui->lifeTypeCombo->clear();
 
 
 
@@ -228,12 +235,22 @@ void AnimMainWindow::loadComboGeneData()
 
 const QPixmap &AnimMainWindow::createPixmap(LifeEngine *engine)
 {
-
     GridWidget * grid = new GridWidget(engine->rows(), engine->columns());
 
     foreach (Life * life, engine->lifes())
     {
+        if (!ui->lifeTypeCombo->currentIndex())
         grid->switchOn(life->x(), life->y(), Qt::black);
+
+        if (life->name() == ui->lifeTypeCombo->currentText())
+        {
+            QString gname = ui->geneCombo->currentText();
+            QColor col = life->gene(gname).color();
+            grid->switchOn(life->x(), life->y(), col);
+
+
+
+        }
 
     }
 
