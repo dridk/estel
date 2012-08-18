@@ -26,6 +26,8 @@ AnimMainWindow::AnimMainWindow(QWidget *parent) :
     setCentralWidget(widget);
 
     centralWidget()->setEnabled(false);
+    ui->controlToolBar->setEnabled(false);
+
 
     ui->listView->setModel(mModel);
     connect(ui->actionAdd,SIGNAL(triggered()),this,SLOT(addSim()));
@@ -34,6 +36,7 @@ AnimMainWindow::AnimMainWindow(QWidget *parent) :
     connect(ui->actionBackward,SIGNAL(triggered()),this,SLOT(beginPlay()));
     connect(ui->actionForward,SIGNAL(triggered()),this,SLOT(endPlay()));
     connect(ui->actionPlay,SIGNAL(triggered(bool)),this,SLOT(play(bool)));
+    connect(ui->actionClear,SIGNAL(triggered()),this,SLOT(clear()));
 
     connect(mSlider,SIGNAL(valueChanged(int)),this,SLOT(refresh(int)));
     connect(mTimer,SIGNAL(timeout()),this,SLOT(incrPlayerIndex()));
@@ -96,7 +99,22 @@ void AnimMainWindow::make()
     }
 
     centralWidget()->setEnabled(true);
+    ui->controlToolBar->setEnabled(true);
+
     refresh();
+
+
+}
+
+void AnimMainWindow::clear()
+{
+    mModel->clear();
+    mPixList.clear();
+    mPixLabel->setPixmap(QPixmap());
+    centralWidget()->setEnabled(false);
+    ui->controlToolBar->setEnabled(false);
+    ui->progressBar->setValue(0);
+
 
 
 }

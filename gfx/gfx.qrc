@@ -22,5 +22,6 @@
         <file>layer_remove.png</file>
         <file>layers.png</file>
         <file>layer_wms.png</file>
+        <file>cancel.png</file>
     </qresource>
 </RCC>

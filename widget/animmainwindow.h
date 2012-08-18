@@ -22,6 +22,7 @@ public slots:
     void addSim();
     void remSim();
     void make();
+    void clear();
 
     void beginPlay();
     void endPlay();
