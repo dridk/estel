@@ -1,7 +1,7 @@
 #include <QtGui/QApplication>
 #include <QDebug>
 #include <QDateTime>
-
+#include <QTimer>
 #include "gene.h"
 #include "genom.h"
 #include "life.h"
@@ -34,68 +34,70 @@ int main(int argc, char *argv[])
 
     // Show splash screen
     QSplashScreen splash(QPixmap(":/splash.png"));
+    splash.setAttribute(Qt::WA_DeleteOnClose);
     splash.show();
-
-
 
     SimMainWindow * w = new SimMainWindow;
     w->show();
 
-//    Gene g = 14;
-//    GeneDialog * d = new GeneDialog;
-//    d->setGene(g);
-//    d->show();
 
-//    Gene gene;
-//    gene.setRootColor("red");
+    //    w->show();
 
+    //    Gene g = 14;
+    //    GeneDialog * d = new GeneDialog;
+    //    d->setGene(g);
+    //    d->show();
 
-//    GeneColorWidget * w = new GeneColorWidget(gene);
-//    w->show();
-
+    //    Gene gene;
+    //    gene.setRootColor("red");
 
 
-            //        LifeEngine * engine =new LifeEngine(100,100);
-            //        engine->load("/home/sacha/simtest.estel");
+    //    GeneColorWidget * w = new GeneColorWidget(gene);
+    //    w->show();
 
 
 
-            //       LifesView * v = new LifesView(engine);
-            //        v->show();
-
-
-            //    view->show();
+    //        LifeEngine * engine =new LifeEngine(100,100);
+    //        engine->load("/home/sacha/simtest.estel");
 
 
 
+    //       LifesView * v = new LifesView(engine);
+    //        v->show();
 
 
-            //    engine.addLife(l->muted());
-            //    engine.addLife(l->muted());
-            //    engine.run(20000);
+    //    view->show();
 
 
 
-            //    engine.load("experimentA-14.json");
-
-            //    LifeEngineView * view = new LifeEngineView(&engine);
 
 
-            //    view->show();
+    //    engine.addLife(l->muted());
+    //    engine.addLife(l->muted());
+    //    engine.run(20000);
 
 
-            //  LifeDialog * dialog = new LifeDialog(life);
 
-            //  dialog->exec();
+    //    engine.load("experimentA-14.json");
 
-
-            //  life->genom().debug();
-
-            //ShapeWidget * w = new ShapeWidget;
-
-            //w->show();
+    //    LifeEngineView * view = new LifeEngineView(&engine);
 
 
-            return a.exec();
+    //    view->show();
+
+
+    //  LifeDialog * dialog = new LifeDialog(life);
+
+    //  dialog->exec();
+
+
+    //  life->genom().debug();
+
+    //ShapeWidget * w = new ShapeWidget;
+
+    //w->show();
+
+
+    return a.exec();
 
 }
