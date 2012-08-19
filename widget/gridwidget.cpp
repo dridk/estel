@@ -62,11 +62,11 @@ void GridWidget::clear()
     mColors.clear();
 }
 
-const QPixmap &GridWidget::snap()
+ QPixmap * GridWidget::snap()
 {
     QPixmap * pix = new QPixmap(size());
     drawGrid(pix);
-    return *pix;
+    return pix;
 }
 
 

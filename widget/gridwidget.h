@@ -17,7 +17,7 @@ public:
     void switchOn(int x,int y, const QColor& color);
     void switchOff(int x, int y);
     void clear();
-    const QPixmap& snap() ;
+     QPixmap * snap() ;
 
 protected:
     void drawGrid(QPaintDevice * device);

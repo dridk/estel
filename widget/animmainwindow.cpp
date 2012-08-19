@@ -93,6 +93,7 @@ void AnimMainWindow::make()
     LifeEngine * engine = new LifeEngine(100,100);
     ui->progressBar->setRange(0,mModel->rowCount()-1);
     mSlider->setRange(0,mModel->rowCount()-1);
+    mPixList.clear();
 
     QDir dir(mModel->item(0)->data().toString());
     dir.mkdir("cache");
@@ -112,9 +113,10 @@ void AnimMainWindow::make()
         QFileInfo info(filename);
         QString pixFile = dir.currentPath()+
                 QDir::separator()+info.baseName()+".png";
-        createPixmap(engine).save(pixFile);
+        QPixmap * pix  = createPixmap(engine);
+        pix->save(pixFile);
+        delete pix;
         mPixList.append(pixFile);
-        qDebug()<<pixFile;
     }
 
     centralWidget()->setEnabled(true);
@@ -241,30 +243,28 @@ void AnimMainWindow::loadComboGeneData()
 
 }
 
-
-const QPixmap &AnimMainWindow::createPixmap(LifeEngine *engine)
+QPixmap * AnimMainWindow::createPixmap(LifeEngine *engine)
 {
     GridWidget * grid = new GridWidget(engine->rows(), engine->columns());
 
     foreach (Life * life, engine->lifes())
     {
         if (!ui->lifeTypeCombo->currentIndex())
-        grid->switchOn(life->x(), life->y(), Qt::black);
+            grid->switchOn(life->x(), life->y(), Qt::black);
 
         if (life->name() == ui->lifeTypeCombo->currentText())
         {
             QString gname = ui->geneCombo->currentText();
             QColor col = life->gene(gname).color();
             grid->switchOn(life->x(), life->y(), col);
-
-
-
         }
 
     }
 
-    return grid->snap();
+    QPixmap * result =  grid->snap();
     delete grid;
+
+    return result;
 
 
 

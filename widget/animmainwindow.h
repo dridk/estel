@@ -38,7 +38,7 @@ protected slots:
 
 
 protected:
-    const QPixmap& createPixmap(LifeEngine * engine);
+     QPixmap * createPixmap(LifeEngine * engine);
 private:
     Ui::AnimMainWindow *ui;
     QSlider * mSlider;
