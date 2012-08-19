@@ -20,18 +20,30 @@
 #include "lifefileview.h"
 #include "lifesview.h"
 #include "animmainwindow.h"
+
+
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
-    //    LifeEditor * editor = new LifeEditor;
 
+    //    LifeEditor * editor = new LifeEditor;
     //    editor->show();
 
+
+    // Show splash screen
+    QSplashScreen splash(QPixmap(":/splash.png"));
+    splash.show();
+
+
+    // Create main windows
     SimMainWindow * m  = new SimMainWindow;
     m->show();
+
+
+
 //    AnimMainWindow * w  =new AnimMainWindow;
 
 //    w->show();
@@ -78,6 +90,10 @@ int main(int argc, char *argv[])
 
     //w->show();
 
+
+    // Hide splash screen
+    // ikit: commenté car sinon on ne le voit pas :)
+    //splash.finish(m);
     
     return a.exec();
 }

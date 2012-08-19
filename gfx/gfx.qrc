@@ -23,5 +23,6 @@
         <file>layers.png</file>
         <file>layer_wms.png</file>
         <file>cancel.png</file>
+        <file>splash.png</file>
     </qresource>
 </RCC>
