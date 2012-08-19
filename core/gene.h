@@ -24,7 +24,9 @@ public:
     void setName(const QString& name);
     void setVariance(int var);
     void setMutationProbability(double proba);
+    void setRootColor(const QColor& col);
     const QColor& color() const;
+    const QColor& rootColor() const;
     void generateColor();
     void	operator= ( int v );
     void debug();
@@ -38,6 +40,7 @@ private:
     double mMutationProbability;
     QString mName;
     QColor mColor;
+    QColor mRootColor;
 
 
 };

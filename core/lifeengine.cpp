@@ -191,6 +191,8 @@ bool LifeEngine::save(const QString &filename)
             gMap.insert("max",gene.max());
             gMap.insert("proba",gene.mutationProbability());
             gMap.insert("variance",gene.variance());
+            gMap.insert("rootcolor",gene.rootColor().name());
+
             geneList.append(gMap);
         }
         dataMap.insert("genom", geneList);

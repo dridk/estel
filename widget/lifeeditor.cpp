@@ -15,18 +15,18 @@ LifeEditor::LifeEditor(QWidget *parent) :
     ui->setupUi(this);
     mEngine = new LifeEngine;
     mCurrentLife = new Life;
+    mGenomView = new GenomView(mCurrentLife);
     mCurrentStep = 0;
     setWindowTitle("Life Editor");
     canBeSaved(false);
+    ui->dockWidget->setWidget(mGenomView);
+    ui->menuGenom->addActions(mGenomView->actions());
     connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
 
     connect(ui->actionNew,SIGNAL(triggered()),this,SLOT(newFile()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveFile()));
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(openFile()));
 
-    connect(ui->actionAddGene,SIGNAL(triggered()),this,SLOT(addGene()));
-    connect(ui->actionEditGene,SIGNAL(triggered()),this,SLOT(editGene()));
-    connect(ui->actionRemGene,SIGNAL(triggered()),this,SLOT(remGene()));
     connect(ui->actionSimReset,SIGNAL(triggered()),this,SLOT(reset()));
     connect(ui->actionSimStep,SIGNAL(triggered()),this,SLOT(step()));
 
@@ -40,19 +40,28 @@ LifeEditor::~LifeEditor()
 }
 void LifeEditor::newFile()
 {
+<<<<<<< HEAD
 
     setWindowTitle("Life Editor");
     ui->geneTreeWidget->clear();
+=======
+    setWindowTitle("no name");
+>>>>>>> color
     ui->scriptEdit->clear();
+    mCurrentLife->clearGene();
+    mGenomView->refresh();
+
 }
 
 void LifeEditor::openFile(const QString &name)
 {
+    qDebug()<<"OPEN FILE";
     QString fileName = name;
     if (fileName.isEmpty())
-    fileName = QFileDialog::getOpenFileName(this,tr("Open Life script"),
-                                         "", tr("Life Script (*.json *.life"));
+        fileName = QFileDialog::getOpenFileName(this,tr("Open Life script"),
+                                                "", tr("Life Script (*.json *.life"));
 
+    qDebug()<<fileName;
 
     if (!mCurrentLife->loadFile(fileName))
     {
@@ -61,7 +70,7 @@ void LifeEditor::openFile(const QString &name)
     }
 
     ui->scriptEdit->setPlainText(mCurrentLife->script());
-    refresh();
+    mGenomView->refresh();
     setWindowTitle(fileName);
     canBeSaved(false);
 }
@@ -112,27 +121,6 @@ void LifeEditor::saveAs()
     setWindowTitle(fileName);
     canBeSaved(false);
 }
-void LifeEditor::addGene()
-{
-    GeneDialog * dialog = new GeneDialog;
-    if (dialog->exec() ==QDialog::Accepted)
-    {
-        qDebug()<<"Accepted";
-        Gene g = dialog->gene();
-        mCurrentLife->addGene(g);
-    }
-
-    refresh();
-}
-
-void LifeEditor::editGene()
-{
-}
-
-void LifeEditor::remGene()
-{
-
-}
 
 void LifeEditor::reset()
 {
@@ -169,25 +157,5 @@ void LifeEditor::canBeSaved(bool enable)
     ui->actionSave->setEnabled(enable);
 }
 
-void LifeEditor::refresh()
-{
-    ui->geneTreeWidget->clear();
-    foreach (Gene g, mCurrentLife->genom().genes())
-    {
 
-        QTreeWidgetItem * item = new QTreeWidgetItem;
-
-        QString v = QString::number(g.value());
-        v.append("["+QString::number(g.min())+"-"+QString::number(g.max())+"]");
-        v.append("{"+QString::number(g.mutationProbability())+"±"+QString::number(g.variance())+"}");
-        item->setText(0,g.name());
-        item->setText(1,v);
-        item->setTextColor(1,Qt::lightGray);
-        ui->geneTreeWidget->addTopLevelItem(item);
-
-    }
-
-    ui->dockWidget->setWindowTitle("genom id :"+mGenes.identity());
-
-}
 

@@ -20,8 +20,7 @@
 #include "lifefileview.h"
 #include "lifesview.h"
 #include "animmainwindow.h"
-
-
+#include "genecolorwidget.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,64 +37,65 @@ int main(int argc, char *argv[])
     splash.show();
 
 
-    // Create main windows
-    SimMainWindow * m  = new SimMainWindow;
-    m->setWindowTitle("Estel - beta 1");
-    m->setWindowIcon(QIcon(":/layer.png"));
-    m->show();
+
+    SimMainWindow * w = new SimMainWindow;
+    w->show();
+
+//    Gene g = 14;
+//    GeneDialog * d = new GeneDialog;
+//    d->setGene(g);
+//    d->show();
+
+//    Gene gene;
+//    gene.setRootColor("red");
 
 
-
-//    AnimMainWindow * w  =new AnimMainWindow;
-
+//    GeneColorWidget * w = new GeneColorWidget(gene);
 //    w->show();
 
 
 
-//        LifeEngine * engine =new LifeEngine(100,100);
-//        engine->load("/home/sacha/simtest.estel");
+            //        LifeEngine * engine =new LifeEngine(100,100);
+            //        engine->load("/home/sacha/simtest.estel");
 
 
 
-//       LifesView * v = new LifesView(engine);
-//        v->show();
+            //       LifesView * v = new LifesView(engine);
+            //        v->show();
 
 
-    //    view->show();
-
-
-
-
-
-    //    engine.addLife(l->muted());
-    //    engine.addLife(l->muted());
-    //    engine.run(20000);
+            //    view->show();
 
 
 
-    //    engine.load("experimentA-14.json");
-
-    //    LifeEngineView * view = new LifeEngineView(&engine);
 
 
-    //    view->show();
+            //    engine.addLife(l->muted());
+            //    engine.addLife(l->muted());
+            //    engine.run(20000);
 
 
-    //  LifeDialog * dialog = new LifeDialog(life);
 
-    //  dialog->exec();
+            //    engine.load("experimentA-14.json");
 
-
-    //  life->genom().debug();
-
-    //ShapeWidget * w = new ShapeWidget;
-
-    //w->show();
+            //    LifeEngineView * view = new LifeEngineView(&engine);
 
 
-    // Hide splash screen
-    // ikit: commenté car sinon on ne le voit pas :)
-    //splash.finish(m);
-    
-    return a.exec();
+            //    view->show();
+
+
+            //  LifeDialog * dialog = new LifeDialog(life);
+
+            //  dialog->exec();
+
+
+            //  life->genom().debug();
+
+            //ShapeWidget * w = new ShapeWidget;
+
+            //w->show();
+
+
+            return a.exec();
+>>>>>>> color
 }

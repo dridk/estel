@@ -8,6 +8,7 @@
 #include "life.h"
 #include "genom.h"
 #include "genedialog.h"
+#include "genomview.h"
 namespace Ui {
 class LifeEditor;
 }
@@ -25,9 +26,6 @@ public slots:
     void openFile(const QString& name = QString());
     void saveFile();
     void saveAs();
-    void addGene();
-    void remGene();
-    void editGene();
     void reset();
     void step();
 
@@ -35,13 +33,13 @@ public slots:
 
     void canBeSaved(bool enable = true);
 
-protected:
-    void refresh();
+
 
 private:
     Ui::LifeEditor *ui;
     Genom mGenes;
     LifeEngine * mEngine;
+    GenomView * mGenomView;
     Life * mCurrentLife;
     int mCurrentStep;
 };
