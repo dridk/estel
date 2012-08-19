@@ -16,10 +16,12 @@ public:
     ~SimulationDialog();
 public slots:
     void run();
+    void setDestination();
     
 private:
     Ui::SimulationDialog *ui;
     LifeEngine * mEngine;
+    QString mDestination;
 };
 
 #endif // SIMULATIONDIALOG_H

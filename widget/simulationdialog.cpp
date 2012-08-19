@@ -1,6 +1,8 @@
 #include "simulationdialog.h"
 #include "ui_simulationdialog.h"
 #include <QDateTime>
+#include <QApplication>
+#include <QFileDialog>
 SimulationDialog::SimulationDialog(LifeEngine *engine, QWidget *parent):
     QDialog(parent),
     ui(new Ui::SimulationDialog)
@@ -10,6 +12,11 @@ SimulationDialog::SimulationDialog(LifeEngine *engine, QWidget *parent):
 
     setWindowTitle("Simulation Player");
     connect(ui->pushButton,SIGNAL(clicked()),this,SLOT(run()));
+    connect(ui->toolButton,SIGNAL(clicked()),this,SLOT(setDestination()));
+
+    ui->lineEdit->setText(qApp->applicationDirPath());
+
+
 }
 
 SimulationDialog::~SimulationDialog()
@@ -35,8 +42,9 @@ void SimulationDialog::run()
         ui->sizeLabel->setText(QString::number(sizeof(Life) * mEngine->population()));
         mEngine->step();
 
-        QString filename=beginTime.toString("MMyy-hhmm")
-                +QString::number(i)+".estel";
+        QString filename= "sim_"+QString::number(i)+".estel";
+
+        filename = ui->lineEdit->text()+QDir::separator()+filename;
 
         if(mEngine->save(filename))
             ui->plainTextEdit->appendPlainText(filename+" saved");
@@ -49,6 +57,20 @@ void SimulationDialog::run()
     }
     ui->pushButton->setEnabled(true);
 
+
+
+}
+
+void SimulationDialog::setDestination()
+{
+
+    mDestination =
+            QFileDialog::getExistingDirectory(this,
+                                              "error",
+                                              qApp->applicationDirPath());
+
+
+    ui->lineEdit->setText(mDestination);
 
 
 }
