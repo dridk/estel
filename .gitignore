@@ -4,6 +4,9 @@ Makefile.in
 estel.pro.user
 .directory
 *~
+*.o
+*.moc
+ui_*
 # http://www.gnu.org/software/autoconf
 
 /autom4te.cache
