@@ -46,6 +46,8 @@ void SimulationDialog::run()
 
         filename = ui->lineEdit->text()+QDir::separator()+filename;
 
+        qDebug()<<filename;
+
         if(mEngine->save(filename))
             ui->plainTextEdit->appendPlainText(filename+" saved");
 

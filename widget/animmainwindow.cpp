@@ -95,9 +95,13 @@ void AnimMainWindow::make()
     mSlider->setRange(0,mModel->rowCount()-1);
     mPixList.clear();
 
-    QDir dir(mModel->item(0)->data().toString());
+    QFileInfo info(mModel->item(0)->data().toString());
+    QDir dir(info.path());
     dir.mkdir("cache");
     dir.cd("cache");
+
+
+    qDebug()<<"cache path"<<dir.path();
 
     for (int i=0; i<mModel->rowCount(); ++i)
     {
@@ -111,7 +115,7 @@ void AnimMainWindow::make()
         ui->progressBar->setValue(i);
         ui->progressBar->setFormat("Loading  simulation %v ");
         QFileInfo info(filename);
-        QString pixFile = dir.currentPath()+
+        QString pixFile = dir.path()+
                 QDir::separator()+info.baseName()+".png";
         QPixmap * pix  = createPixmap(engine);
         pix->save(pixFile);
