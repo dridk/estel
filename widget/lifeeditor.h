@@ -9,6 +9,8 @@
 #include "genom.h"
 #include "genedialog.h"
 #include "genomview.h"
+#include "structureview.h"
+#include "jsonmodel.h"
 namespace Ui {
 class LifeEditor;
 }
@@ -40,6 +42,8 @@ private:
     Genom mGenes;
     LifeEngine * mEngine;
     GenomView * mGenomView;
+    JsonModel * mJsonModel;
+
     Life * mCurrentLife;
     int mCurrentStep;
 };

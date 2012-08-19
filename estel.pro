@@ -32,10 +32,11 @@ SOURCES += main.cpp\
     widget/simmainwindow.cpp \
     widget/animmainwindow.cpp \
     widget/actionlistview.cpp \
-    widget/lifefileview.cpp \
     widget/lifesview.cpp \
     widget/genecolorwidget.cpp \
-    widget/genomview.cpp
+    widget/genomview.cpp \
+    qxtjson/jsonmodel.cpp \
+    widget/lifefileview.cpp
 
 HEADERS  += gene.h \
     core/genom.h \
@@ -61,7 +62,8 @@ HEADERS  += gene.h \
     widget/lifefileview.h \
     widget/lifesview.h \
     widget/genecolorwidget.h \
-    widget/genomview.h
+    widget/genomview.h \
+    qxtjson/jsonmodel.h
 
 INCLUDEPATH+= core qxtjson widget script jsedit
 

@@ -16,10 +16,12 @@ LifeEditor::LifeEditor(QWidget *parent) :
     mEngine = new LifeEngine;
     mCurrentLife = new Life;
     mGenomView = new GenomView(mCurrentLife);
+    mJsonModel = new JsonModel;
     mCurrentStep = 0;
     setWindowTitle("Life Editor");
     canBeSaved(false);
     ui->dockWidget->setWidget(mGenomView);
+    ui->structView->setModel(mJsonModel);
     ui->menuGenom->addActions(mGenomView->actions());
     connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
 
@@ -66,6 +68,7 @@ void LifeEditor::openFile(const QString &name)
 
     ui->scriptEdit->setPlainText(mCurrentLife->script());
     mGenomView->refresh();
+    mJsonModel->setData(Life::serialize(mCurrentLife));
     setWindowTitle(fileName);
     canBeSaved(false);
 }
@@ -84,8 +87,6 @@ void LifeEditor::saveFile()
             fileName.append(".life");
     }
 
-
-
     mCurrentLife->setScript(ui->scriptEdit->toPlainText());
     if(!mCurrentLife->saveFile(fileName))
     {
@@ -93,6 +94,7 @@ void LifeEditor::saveFile()
         return;
     }
     setWindowTitle(fileName);
+    mJsonModel->setData(Life::serialize(mCurrentLife));
     canBeSaved(false);
 }
 
@@ -114,6 +116,7 @@ void LifeEditor::saveAs()
         return;
     }
     setWindowTitle(fileName);
+    mJsonModel->setData(Life::serialize(mCurrentLife));
     canBeSaved(false);
 }
 

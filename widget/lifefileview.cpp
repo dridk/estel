@@ -107,4 +107,3 @@ void LifeFileView::test()
     return QString(filename(currentRow()));
 }
 
-
