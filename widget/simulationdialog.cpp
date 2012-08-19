@@ -8,6 +8,7 @@ SimulationDialog::SimulationDialog(LifeEngine *engine, QWidget *parent):
     ui->setupUi(this);
     mEngine = engine;
 
+    setWindowTitle("Simulation Player");
     connect(ui->pushButton,SIGNAL(clicked()),this,SLOT(run()));
 }
 

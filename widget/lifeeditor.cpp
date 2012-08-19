@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include "qxtjson.h"
+
+
 LifeEditor::LifeEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LifeEditor)
@@ -14,7 +16,7 @@ LifeEditor::LifeEditor(QWidget *parent) :
     mEngine = new LifeEngine;
     mCurrentLife = new Life;
     mCurrentStep = 0;
-    setWindowTitle("no name");
+    setWindowTitle("Life Editor");
     canBeSaved(false);
     connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
 
@@ -39,7 +41,7 @@ LifeEditor::~LifeEditor()
 void LifeEditor::newFile()
 {
 
-    setWindowTitle("no name");
+    setWindowTitle("Life Editor");
     ui->geneTreeWidget->clear();
     ui->scriptEdit->clear();
 }

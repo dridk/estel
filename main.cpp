@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
 
     // Create main windows
     SimMainWindow * m  = new SimMainWindow;
+    m->setWindowTitle("Estel - beta 1");
+    m->setWindowIcon(QIcon(":/layer.png"));
     m->show();
 
 
