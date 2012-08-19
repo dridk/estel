@@ -19,11 +19,11 @@ LifeEditor::LifeEditor(QWidget *parent) :
     mJsonModel = new JsonModel;
     mCurrentStep = 0;
     setWindowTitle("Life Editor");
-    canBeSaved(false);
     ui->dockWidget->setWidget(mGenomView);
     ui->structView->setModel(mJsonModel);
     ui->menuGenom->addActions(mGenomView->actions());
-    connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(canBeSaved()));
+    connect(ui->scriptEdit,SIGNAL(textChanged()),this,SLOT(workHasChanged()));
+    connect(mGenomView,SIGNAL(changed()),this,SLOT(workHasChanged()));
 
     connect(ui->actionNew,SIGNAL(triggered()),this,SLOT(newFile()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveFile()));
@@ -42,11 +42,23 @@ LifeEditor::~LifeEditor()
 }
 void LifeEditor::newFile()
 {
+    if (ui->actionSave->isEnabled())
+    {
+        QMessageBox * box = new QMessageBox;
+        box->setWindowTitle("Warning");
+        box->setIcon(QMessageBox::Warning);
+        box->setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+        box->setText("Do you want to save your current work ?");
+
+        if (box->exec() == QMessageBox::Yes)
+            saveFile();
+    }
 
     setWindowTitle("Life Editor");
     ui->scriptEdit->clear();
     mCurrentLife->clearGene();
     mGenomView->refresh();
+    ui->actionSave->setEnabled(false);
 
 }
 
@@ -70,7 +82,7 @@ void LifeEditor::openFile(const QString &name)
     mGenomView->refresh();
     mJsonModel->setData(Life::serialize(mCurrentLife));
     setWindowTitle(fileName);
-    canBeSaved(false);
+    ui->actionSave->setEnabled(false);
 }
 
 void LifeEditor::saveFile()
@@ -95,7 +107,7 @@ void LifeEditor::saveFile()
     }
     setWindowTitle(fileName);
     mJsonModel->setData(Life::serialize(mCurrentLife));
-    canBeSaved(false);
+    ui->actionSave->setEnabled(false);
 }
 
 void LifeEditor::saveAs()
@@ -117,7 +129,7 @@ void LifeEditor::saveAs()
     }
     setWindowTitle(fileName);
     mJsonModel->setData(Life::serialize(mCurrentLife));
-    canBeSaved(false);
+    ui->actionSave->setEnabled(false);
 }
 
 void LifeEditor::reset()
@@ -132,6 +144,8 @@ void LifeEditor::reset()
 
 void LifeEditor::step()
 {
+    saveFile();
+    ui->tabWidget->setCurrentIndex(1);
     if (mEngine->population() == 0)
     {
         mCurrentLife->setAge(0);
@@ -150,9 +164,9 @@ void LifeEditor::step()
 
 }
 
-void LifeEditor::canBeSaved(bool enable)
+void LifeEditor::workHasChanged()
 {
-    ui->actionSave->setEnabled(enable);
+    ui->actionSave->setEnabled(true);
 }
 
 

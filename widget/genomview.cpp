@@ -6,6 +6,8 @@ GenomView::GenomView(Life *life, QWidget *parent):
     mLife = life;
     mModel = new QStandardItemModel;
     view()->setModel(mModel);
+    connect(this,SIGNAL(doubleClicked()),this,SLOT(edit()));
+
     refresh();
 }
 
@@ -17,6 +19,8 @@ void GenomView::add()
 
     mLife->addGene(dialog->gene());
     refresh();
+
+    emit changed();
 
 }
 
@@ -33,6 +37,7 @@ void GenomView::edit()
     mLife->remGene(mLife->genom().genes().at(currentRow()));
     mLife->addGene(dialog->gene());
     refresh();
+    emit changed();
 }
 
 void GenomView::remove()
@@ -43,6 +48,7 @@ void GenomView::remove()
     mLife->remGene(mLife->genom().genes().at(currentRow()));
 
     refresh();
+    emit changed();
 
 
 }

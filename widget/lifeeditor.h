@@ -31,8 +31,8 @@ public slots:
     void step();
 
 
-
-    void canBeSaved(bool enable = true);
+protected slots:
+    void workHasChanged();
 
 
 
