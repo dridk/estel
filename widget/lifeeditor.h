@@ -9,7 +9,6 @@
 #include "genom.h"
 #include "genedialog.h"
 #include "genomview.h"
-#include "structureview.h"
 #include "jsonmodel.h"
 namespace Ui {
 class LifeEditor;
