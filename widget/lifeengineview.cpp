@@ -68,7 +68,10 @@ void LifeEngineView::refresh()
     {
         if (life->name() == mLifeComboBox->currentText())
         {
-            QColor color = life->gene(mGeneCombBox->currentText()).color();
+            QString gname = mGeneCombBox->currentText();
+            life->gene(gname).generateColor();
+            QColor color = life->gene(gname).color();
+
             mGridView->grid()->switchOn(life->x(),life->y(),color);
         }
         else

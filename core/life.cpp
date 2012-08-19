@@ -297,7 +297,7 @@ Life * Life::parse(const QString &json)
                       geneData.toMap().value("max").toInt());
         gene.setVariance(geneData.toMap().value("variance").toInt());
         gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
-        gene.setRootColor(geneData.toMap().value("rootcolor").toString());
+        gene.setRootColor(QColor(geneData.toMap().value("rootcolor").toString()));
 
         newLife->addGene(gene);
     }
