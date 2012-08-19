@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>298</width>
-    <height>264</height>
+    <height>280</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,7 +66,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QSpinBox" name="varianceEdit">
+        <widget class="QSpinBox" name="minEdit">
          <property name="maximum">
           <number>1000</number>
          </property>
@@ -107,7 +107,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QSpinBox" name="minEdit">
+        <widget class="QSpinBox" name="varianceEdit">
          <property name="maximum">
           <number>10000</number>
          </property>
