@@ -259,6 +259,7 @@ QPixmap * AnimMainWindow::createPixmap(LifeEngine *engine)
         if (life->name() == ui->lifeTypeCombo->currentText())
         {
             QString gname = ui->geneCombo->currentText();
+            life->gene(gname).generateColor();
             QColor col = life->gene(gname).color();
             grid->switchOn(life->x(), life->y(), col);
         }
