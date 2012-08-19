@@ -44,7 +44,7 @@ private:
     QSlider * mSlider;
     QLabel * mPixLabel;
     QStandardItemModel * mModel;
-    QList<QPixmap> mPixList;
+    QList<QString> mPixList;
     QTimer * mTimer;
     QMap<QString, Genom> mComboData;
 };

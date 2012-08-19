@@ -94,6 +94,10 @@ void AnimMainWindow::make()
     ui->progressBar->setRange(0,mModel->rowCount()-1);
     mSlider->setRange(0,mModel->rowCount()-1);
 
+    QDir dir(mModel->item(0)->data().toString());
+    dir.mkdir("cache");
+    dir.cd("cache");
+
     for (int i=0; i<mModel->rowCount(); ++i)
     {
         QString filename = mModel->item(i)->data().toString();
@@ -105,8 +109,12 @@ void AnimMainWindow::make()
 
         ui->progressBar->setValue(i);
         ui->progressBar->setFormat("Loading  simulation %v ");
-        QPixmap pix = QPixmap(createPixmap(engine));
-        mPixList.append(pix);
+        QFileInfo info(filename);
+        QString pixFile = dir.currentPath()+
+                QDir::separator()+info.baseName()+".png";
+        createPixmap(engine).save(pixFile);
+        mPixList.append(pixFile);
+        qDebug()<<pixFile;
     }
 
     centralWidget()->setEnabled(true);
@@ -159,8 +167,9 @@ void AnimMainWindow::refresh(int index)
 {
     if (index < mPixList.count())
     {
-        mPixLabel->setPixmap(mPixList.at(index));
-        mPixLabel->resize(mPixList.at(index).size());
+        QPixmap pix = QPixmap(mPixList.at(index));
+        mPixLabel->setPixmap(pix);
+        mPixLabel->resize(pix.size());
         ui->listView->setCurrentIndex (mModel->item(index)->index());
 
     }
