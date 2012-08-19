@@ -54,6 +54,10 @@ void GeneDialog::setColor(const QColor &color)
     paint.setPen(QPen(Qt::transparent));
     paint.drawEllipse(QRect(3,3,24,24));
     ui->colorButton->setIcon(QIcon(pix));
+
+    Gene currentGene = gene();
+    currentGene.setRootColor(mColor);
+    mGeneColorWidget->setGene(currentGene);
 }
 
 void GeneDialog::showColorDialog()

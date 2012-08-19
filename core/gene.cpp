@@ -149,7 +149,7 @@ void Gene::generateColor()
 
     sat = qBound(0,sat,255);
     mColor = mRootColor;
-    mColor.setHsl(mColor.hue(), sat, mColor.lightness());
+    mColor.setHsv(mColor.hue(),mColor.saturation(),sat);
 
 }
 
