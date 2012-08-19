@@ -40,13 +40,8 @@ LifeEditor::~LifeEditor()
 }
 void LifeEditor::newFile()
 {
-<<<<<<< HEAD
 
     setWindowTitle("Life Editor");
-    ui->geneTreeWidget->clear();
-=======
-    setWindowTitle("no name");
->>>>>>> color
     ui->scriptEdit->clear();
     mCurrentLife->clearGene();
     mGenomView->refresh();
