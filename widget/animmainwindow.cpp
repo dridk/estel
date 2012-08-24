@@ -210,7 +210,7 @@ void AnimMainWindow::loadComboData()
 {
     if (mModel->rowCount()<=0)
         return;
-
+    mComboData.clear();
     QString fileName = mModel->item(0)->data().toString();
     LifeEngine * engine = new LifeEngine(100,100);
     if(engine->load(fileName))
