@@ -130,7 +130,7 @@
    <addaction name="actionNew"/>
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
-   <addaction name="separator"/>
+   <addaction name="actionSaveAs"/>
    <addaction name="separator"/>
    <addaction name="actionSimReset"/>
    <addaction name="actionSimStep"/>
@@ -200,6 +200,11 @@
   <action name="actionClearError">
    <property name="text">
     <string>clear error</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>saveAs</string>
    </property>
   </action>
  </widget>
