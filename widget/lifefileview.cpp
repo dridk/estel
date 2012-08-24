@@ -14,6 +14,10 @@ LifeFileView::LifeFileView(QWidget *parent)
 
     connect(this,SIGNAL(doubleClicked()),this,SLOT(edit()));
 
+    actions().at(0)->setText("Add new type");
+    actions().at(1)->setText("Edit current type");
+    actions().at(2)->setText("Remove current type");
+    actions().at(3)->setText("Refresh types list");
 
 }
 

@@ -17,6 +17,7 @@ public:
     QList<QAction*> actions() const;
 
 
+
 public slots:
     virtual void refresh();
     virtual void add();

@@ -12,6 +12,11 @@ LifesView::LifesView(LifeEngine *engine, QWidget *parent) :
     hideAction(0);
     connect(this,SIGNAL(doubleClicked()),this,SLOT(edit()));
 
+    actions().at(1)->setText("Edit current life");
+    actions().at(2)->setText("Remove current life");
+    actions().at(3)->setText("Refresh lifes list");
+
+
 }
 
 void LifesView::refresh()
