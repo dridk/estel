@@ -28,6 +28,7 @@ public slots:
 signals:
     void changed();
     void doubleClicked();
+    void clicked();
     
 
 private:

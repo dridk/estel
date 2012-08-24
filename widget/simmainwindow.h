@@ -33,6 +33,7 @@ public slots:
     void refresh();
     void clear();
     void startSimulation();
+    void setGridSelection();
 
     void showAnimator();
     void showLifeEditor();

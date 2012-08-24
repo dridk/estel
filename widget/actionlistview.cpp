@@ -31,7 +31,7 @@ ActionListView::ActionListView(QWidget *parent) :
     mToolBar->addAction(QIcon(":arrow_refresh.png"),"refresh",this,SLOT(refresh()));
 
     connect(mView,SIGNAL(doubleClicked(QModelIndex)),this,SIGNAL(doubleClicked()));
-
+    connect(mView,SIGNAL(clicked(QModelIndex)),this,SIGNAL(clicked()));
 }
 
 QTreeView *ActionListView::view() const

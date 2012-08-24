@@ -19,6 +19,7 @@ public:
     void selectOn(int x,int y);
     void selectOff(int x,int y);
     void clear();
+    void clearSelection();
      QPixmap * snap() ;
 
 protected:

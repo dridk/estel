@@ -39,6 +39,7 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(ui->actionAnimator,SIGNAL(triggered()),this,SLOT(showAnimator()));
     connect(ui->actionLifeEditor,SIGNAL(triggered()),this,SLOT(showLifeEditor()));
     connect(mLifesView,SIGNAL(changed()),this,SLOT(refresh()));
+    connect(mLifesView,SIGNAL(clicked()),this,SLOT(setGridSelection()));
 
     ui->actionSave->setEnabled(false);
     newSim();
@@ -168,6 +169,21 @@ void SimMainWindow::startSimulation()
     SimulationDialog * dialog = new SimulationDialog(mEngine);
     dialog->exec();
     refresh();
+}
+
+void SimMainWindow::setGridSelection()
+{
+    if (!mLifesView->selectionCount())
+        return;
+    Life * life = mEngine->lifes().at(mLifesView->currentRow());
+    mView->gridView()->grid()->clearSelection();
+
+    mView->gridView()->grid()->selectOn(life->x(),life->y());
+
+    mView->gridView()->grid()->update();
+
+
+
 }
 
 void SimMainWindow::showAnimator()

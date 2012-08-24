@@ -76,6 +76,11 @@ void GridWidget::clear()
     mColors.clear();
 }
 
+void GridWidget::clearSelection()
+{
+    mSquareSelected.clear();
+}
+
  QPixmap * GridWidget::snap()
 {
     QPixmap * pix = new QPixmap(size());
