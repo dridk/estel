@@ -33,7 +33,11 @@ LifeEditor::LifeEditor(QWidget *parent) :
     connect(ui->actionSimReset,SIGNAL(triggered()),this,SLOT(reset()));
     connect(ui->actionSimStep,SIGNAL(triggered()),this,SLOT(step()));
 
-
+    connect(ui->actionUndo,SIGNAL(triggered()),ui->scriptEdit,SLOT(undo()));
+    connect(ui->actionCut,SIGNAL(triggered()),ui->scriptEdit,SLOT(cut()));
+    connect(ui->actionCopy,SIGNAL(triggered()),ui->scriptEdit,SLOT(copy()));
+    connect(ui->actionPast,SIGNAL(triggered()),ui->scriptEdit,SLOT(paste()));
+    connect(ui->actionSelectAll,SIGNAL(triggered()),ui->scriptEdit,SLOT(selectAll()));
 
 
 }

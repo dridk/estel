@@ -87,7 +87,7 @@
      <x>0</x>
      <y>0</y>
      <width>877</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuLife">
@@ -112,8 +112,22 @@
     <addaction name="actionClearDebug"/>
     <addaction name="actionClearError"/>
    </widget>
+   <widget class="QMenu" name="menuEditor">
+    <property name="title">
+     <string>Editor</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPast"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelectAll"/>
+   </widget>
    <addaction name="menuLife"/>
    <addaction name="menuGenom"/>
+   <addaction name="menuEditor"/>
    <addaction name="menuSimulation"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -205,6 +219,36 @@
   <action name="actionSaveAs">
    <property name="text">
     <string>saveAs</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>copy</string>
+   </property>
+  </action>
+  <action name="actionPast">
+   <property name="text">
+    <string>past</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="text">
+    <string>cut</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>undo</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>redo</string>
+   </property>
+  </action>
+  <action name="actionSelectAll">
+   <property name="text">
+    <string>selectAll</string>
    </property>
   </action>
  </widget>
