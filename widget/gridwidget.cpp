@@ -17,6 +17,8 @@ GridWidget::GridWidget(int row, int column, QWidget *parent):
     createGrid();
 
 
+
+
 }
 
 void GridWidget::paintEvent(QPaintEvent *event)
@@ -57,6 +59,18 @@ void GridWidget::switchOff(int x, int y)
 
 }
 
+void GridWidget::selectOn(int x, int y)
+{
+    int index =  mColumnCount * y  + x;
+    mSquareSelected.append(index);
+}
+
+void GridWidget::selectOff(int x, int y)
+{
+    int index =  mColumnCount * y  + x;
+    mSquareSelected.removeOne(index);
+}
+
 void GridWidget::clear()
 {
     mColors.clear();
@@ -77,6 +91,7 @@ void GridWidget::drawGrid(QPaintDevice *device)
     paint.begin(device);
 
     paint.drawPixmap(0,0,mGridPix);
+    //Draw Square
     foreach (int index , mColors.keys())
     {
         int y = qRound(index/mColumnCount);
@@ -85,6 +100,22 @@ void GridWidget::drawGrid(QPaintDevice *device)
         paint.setBrush(mColors[index]);
         paint.drawRect(x*mSquareSize,y*mSquareSize, mSquareSize, mSquareSize);
     }
+
+    //Draw SquareSelector
+    foreach (int index, mSquareSelected)
+    {
+        int y = qRound(index/mColumnCount);
+        int x = index % mRowCount;
+
+        paint.setBrush(Qt::transparent);
+
+        paint.setBrush(QBrush(Qt::Dense4Pattern));
+        QRect selector = QRect(x*mSquareSize,y*mSquareSize, mSquareSize, mSquareSize);
+        selector.adjust(-2,-2,2,2);
+        paint.drawRect(selector);
+
+    }
+
     paint.end();
 
 }

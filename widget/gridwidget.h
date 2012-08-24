@@ -16,6 +16,8 @@ public:
     void mousePressEvent(QMouseEvent *);
     void switchOn(int x,int y, const QColor& color);
     void switchOff(int x, int y);
+    void selectOn(int x,int y);
+    void selectOff(int x,int y);
     void clear();
      QPixmap * snap() ;
 
@@ -38,6 +40,7 @@ private:
     int mColumnCount;
     QPixmap mGridPix;
     QHash<int, QColor >mColors;
+    QList<int> mSquareSelected;
 
 
 
