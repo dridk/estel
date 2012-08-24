@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QMenu>
 #include "lifedialog.h"
+#include "aboutdialog.h"
 #include "addlifecommand.h"
 SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,6 +44,9 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(ui->actionLifeEditor,SIGNAL(triggered()),this,SLOT(showLifeEditor()));
     connect(mLifesView,SIGNAL(changed()),this,SLOT(refresh()));
     connect(mLifesView,SIGNAL(clicked()),this,SLOT(setGridSelection()));
+    connect(ui->actionAboutQt,SIGNAL(triggered()),this,SLOT(showAboutQt()));
+    connect(ui->actionAbout,SIGNAL(triggered()),this,SLOT(showAbout()));
+
 
     connect(ui->actionUndo,SIGNAL(triggered()),mUndoStack,SLOT(undo()));
     connect(ui->actionRedo,SIGNAL(triggered()),mUndoStack,SLOT(redo()));
@@ -182,6 +186,17 @@ void SimMainWindow::showLifeEditor()
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
 
+}
+
+void SimMainWindow::showAboutQt()
+{
+    qApp->aboutQt();
+}
+
+void SimMainWindow::showAbout()
+{
+    AboutDialog dialog;
+    dialog.exec();
 }
 
 void SimMainWindow::startSimulation()

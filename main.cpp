@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("labsquare");
     QCoreApplication::setOrganizationDomain("labsquare.org");
     QCoreApplication::setApplicationName("ESTEL");
-    QCoreApplication::setApplicationName("alpha 0.1");
+    QCoreApplication::setApplicationVersion("alpha 0.1");
 
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());

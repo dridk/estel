@@ -36,17 +36,19 @@ public slots:
     void refresh();
     void clear();
     void startSimulation();
-    void setGridSelection();
 
     void showAnimator();
     void showLifeEditor();
 
-
+    void showAboutQt();
+    void showAbout();
 
 
 
 protected slots:
     void clicked(QPoint pos);
+    void setGridSelection();
+
 
 private:
     Ui::SimMainWindow *ui;
