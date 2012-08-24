@@ -69,6 +69,11 @@ LifeEngine *SimMainWindow::engine() const
     return mEngine;
 }
 
+LifeEngineView *SimMainWindow::view() const
+{
+    return mView;
+}
+
 void SimMainWindow::newSim()
 {
     if (ui->actionSave->isEnabled())
@@ -159,6 +164,7 @@ void SimMainWindow::refresh()
     mLifesView->refresh();
     statusBar()->showMessage("Lifes loaded");
     mOldLifeCount = mEngine->lifes().count();
+    mView->gridView()->grid()->clearSelection();
 
 }
 

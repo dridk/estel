@@ -26,6 +26,7 @@ public:
     explicit SimMainWindow(QWidget *parent = 0);
     ~SimMainWindow();
     LifeEngine * engine()const;
+    LifeEngineView * view() const;
 public slots:
     void newSim();
     void openSim();
