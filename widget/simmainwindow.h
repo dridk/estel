@@ -6,6 +6,7 @@
 #include <QStringListModel>
 #include <QApplication>
 #include <QComboBox>
+#include <QUndoStack>
 #include "lifeengine.h"
 #include "lifeeditor.h"
 #include "simulationdialog.h"
@@ -24,6 +25,7 @@ class SimMainWindow : public QMainWindow
 public:
     explicit SimMainWindow(QWidget *parent = 0);
     ~SimMainWindow();
+    LifeEngine * engine()const;
 public slots:
     void newSim();
     void openSim();
@@ -51,6 +53,7 @@ private:
     LifeEngine * mEngine;
     LifesView * mLifesView;
     LifeFileView * mLifeFileView;
+    QUndoStack * mUndoStack;
     int mOldLifeCount;
 
 

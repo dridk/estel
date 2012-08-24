@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QMenu>
 #include "lifedialog.h"
+#include "addlifecommand.h"
 SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SimMainWindow)
@@ -14,6 +15,7 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     mView = new LifeEngineView(mEngine);
     mLifeFileView = new LifeFileView;
     mLifesView = new LifesView(mEngine);
+    mUndoStack = new QUndoStack(this);
     mOldLifeCount = 0;
 
     ui->dock1->setWidget(mLifeFileView);
@@ -24,8 +26,9 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 
     setCentralWidget(mView);
 
-    ui->menuLifesTypes->addActions(mLifeFileView->actions());
-    ui->menuLifes->addActions(mLifesView->actions());
+    ui->menuEdit->addActions(mLifeFileView->actions());
+    ui->menuEdit->addSeparator();
+    ui->menuEdit->addActions(mLifesView->actions());
 
 
     connect(mView->gridView()->grid(),SIGNAL(squareClicked(QPoint)),this,SLOT(clicked(QPoint)));
@@ -41,6 +44,11 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(mLifesView,SIGNAL(changed()),this,SLOT(refresh()));
     connect(mLifesView,SIGNAL(clicked()),this,SLOT(setGridSelection()));
 
+    connect(ui->actionUndo,SIGNAL(triggered()),mUndoStack,SLOT(undo()));
+    connect(ui->actionRedo,SIGNAL(triggered()),mUndoStack,SLOT(redo()));
+    connect(mUndoStack,SIGNAL(canUndoChanged(bool)),ui->actionUndo,SLOT(setEnabled(bool)));
+    connect(mUndoStack,SIGNAL(canRedoChanged(bool)),ui->actionRedo,SLOT(setEnabled(bool)));
+
     ui->actionSave->setEnabled(false);
     newSim();
 }
@@ -52,7 +60,13 @@ SimMainWindow::~SimMainWindow()
     delete mView;
     delete mLifesView;
     delete mLifeFileView;
+    delete mUndoStack;
 
+}
+
+LifeEngine *SimMainWindow::engine() const
+{
+    return mEngine;
 }
 
 void SimMainWindow::newSim()
@@ -214,7 +228,9 @@ void SimMainWindow::clicked(QPoint pos)
 
     life->setPos(pos);
     life->setAge(0);
-    mEngine->addLife(life);
+
+    //    mEngine->addLife(life);
+    mUndoStack->push(new AddLifeCommand(this,life));
 
     refresh();
 }
