@@ -9,7 +9,7 @@ AnimMainWindow::AnimMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     mSlider = new QSlider(Qt::Horizontal);
-    mModel = new QStandardItemModel;
+    mModel = new QStringListModel;
     mPixLabel = new QLabel;
     mTimer = new QTimer;
     QScrollArea * area = new QScrollArea;
@@ -66,18 +66,32 @@ void AnimMainWindow::addSim()
                                                           "",
                                                           "(*.estel)"
                                                           );
+
+    QStringList names;
     foreach (QString filename, filenames)
     {
-        QFileInfo info(filename);
-        QStandardItem * item =new QStandardItem;
-        item->setEditable(false);
-        item->setText(info.baseName());
-        item->setIcon(QIcon(":layer.png"));
-        item->setData(filename);
-        mModel->appendRow(item);
+        names.append(filename.split("/").last());
+
     }
 
-    loadComboData();
+    mModel->setStringList(names);
+//    mModel->setRowCount(filenames.count());
+//    int i=0;
+//    foreach (QString filename, filenames)
+//    {
+//        QFileInfo info(filename);
+////        mModel->setData(mModel->index(i,0),info.baseName(),Qt::DisplayRole);
+////        QStandardItem * item =new QStandardItem;
+////        item->setEditable(false);
+////        item->setText(info.baseName());
+////        item->setIcon(QIcon(":layer.png"));
+////        item->setData(filename);
+////        mModel->appendRow(item);
+//        ++i;
+//    }
+
+
+//    loadComboData();
 }
 
 void AnimMainWindow::remSim()
@@ -95,7 +109,7 @@ void AnimMainWindow::make()
     mSlider->setRange(0,mModel->rowCount()-1);
     mPixList.clear();
 
-    QFileInfo info(mModel->item(0)->data().toString());
+    QFileInfo info(mModel->index(0).data().toString());
     QDir dir(info.path());
     dir.mkdir("cache");
     dir.cd("cache");
@@ -105,7 +119,7 @@ void AnimMainWindow::make()
 
     for (int i=0; i<mModel->rowCount(); ++i)
     {
-        QString filename = mModel->item(i)->data().toString();
+        QString filename = mModel->index(i).data().toString();
         if (!engine->load(filename))
         {
             qDebug()<<"cannot load "<<filename;
@@ -133,7 +147,7 @@ void AnimMainWindow::make()
 
 void AnimMainWindow::clear()
 {
-    mModel->clear();
+    mModel->setStringList(QStringList());
     mPixList.clear();
     mPixLabel->setPixmap(QPixmap());
     centralWidget()->setEnabled(false);
@@ -176,7 +190,7 @@ void AnimMainWindow::refresh(int index)
         QPixmap pix = QPixmap(mPixList.at(index));
         mPixLabel->setPixmap(pix);
         mPixLabel->resize(pix.size());
-        ui->listView->setCurrentIndex (mModel->item(index)->index());
+        ui->listView->setCurrentIndex (mModel->index(index));
 
     }
 
@@ -211,7 +225,7 @@ void AnimMainWindow::loadComboData()
     if (mModel->rowCount()<=0)
         return;
     mComboData.clear();
-    QString fileName = mModel->item(0)->data().toString();
+    QString fileName = mModel->index(0).data().toString();
     LifeEngine * engine = new LifeEngine(100,100);
     if(engine->load(fileName))
     {

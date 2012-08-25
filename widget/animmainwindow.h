@@ -43,7 +43,7 @@ private:
     Ui::AnimMainWindow *ui;
     QSlider * mSlider;
     QLabel * mPixLabel;
-    QStandardItemModel * mModel;
+    QStringListModel * mModel;
     QList<QString> mPixList;
     QTimer * mTimer;
     QMap<QString, Genom> mComboData;

@@ -40,12 +40,6 @@ void LifeEngine::addLife(Life *life)
     life->init();
 }
 
-void LifeEngine::addLifes(QList<Life*> lifes)
-{
-    foreach (Life* l, lifes)
-        addLife(l);
-}
-
 void LifeEngine::remLife(int x, int y)
 {
     int index =  mColumns * x + y;
