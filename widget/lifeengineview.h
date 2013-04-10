@@ -6,30 +6,31 @@
 #include "gridview.h"
 
 
-class LifeEngineView : public QWidget
+class LifeEngineView : public GridView
 {
     Q_OBJECT
 public:
-    explicit LifeEngineView(LifeEngine * engine, QWidget *parent = 0);
+    explicit LifeEngineView( QWidget *parent = 0);
     ~LifeEngineView();
-    GridView * gridView();
+    void setEngine(LifeEngine * engine);
+
+     QList<Life*> lifeSelected() const;
+
 
 public slots:
     void refresh();
-
-
+    void setLifeFilter(const QString& lifeName);
+    void setGeneFilter(const QString& geneName);
 
 protected slots:
-    void updateLifeCombo();
-    void updateGeneCombo();
+    void selectLife(const QPoint& pos);
 
 
 private:
     LifeEngine * mEngine;
-    GridView * mGridView;
-    QComboBox * mLifeComboBox;
-    QComboBox * mGeneCombBox;
-    QMap<QString, Genom> mComboData;
+    QString mCurrentLifeName;
+    QString mCurrentGeneName;
+
 
     
 };

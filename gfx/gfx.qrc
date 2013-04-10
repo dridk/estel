@@ -1,28 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>arrow_refresh.png</file>
-        <file>brick_add.png</file>
-        <file>brick_delete.png</file>
-        <file>brick_edit.png</file>
-        <file>file_extension_bat.png</file>
-        <file>molecule.png</file>
-        <file>lightning.png</file>
-        <file>save_as.png</file>
-        <file>folder.png</file>
-        <file>disk.png</file>
-        <file>cog_go.png</file>
-        <file>page_white_add.png</file>
-        <file>control_end.png</file>
-        <file>control_pause.png</file>
-        <file>control_play.png</file>
-        <file>control_start.png</file>
-        <file>layer.png</file>
-        <file>layer_add.png</file>
-        <file>layer_import.png</file>
-        <file>layer_remove.png</file>
-        <file>layers.png</file>
-        <file>layer_wms.png</file>
-        <file>cancel.png</file>
-        <file>splash.png</file>
+        <file alias="delete">delete.png</file>
+        <file alias="edit">edit.png</file>
+        <file alias="plus">plus2-26.png</file>
+        <file alias="refresh">refresh-26.png</file>
     </qresource>
 </RCC>

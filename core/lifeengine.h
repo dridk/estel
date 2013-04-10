@@ -51,6 +51,12 @@ public:
     //! \return true if life exist, otherwise return false
     Q_INVOKABLE bool hasLife(int x, int y) const;
 
+    //! \brief return life at position x,y. Use hasLife before using this function
+    //! \param x : x position
+    //! \param y : y position
+    //! \return Life* if life exist, otherwise return NULL
+    Q_INVOKABLE Life* life(int x, int y) const;
+
     //! \brief evaluate the logic script of life
     //! \return true if success, otherwise return false
     bool evaluateLife(Life * life);

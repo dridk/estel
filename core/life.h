@@ -40,7 +40,7 @@ public:
     const QPoint& pos() const;
 
     //! \return a new muted life
-    Life * muted() const;
+    Life* muted() const;
 
     //! \brief Mute the current life
     void mutate();
@@ -58,9 +58,7 @@ public:
      //! \param name : the name of gene
     Gene & gene(const QString& name);
 
-    //! \return the gene value
-    //! \param name : the name of gene
-    Q_INVOKABLE int g(const QString& name);
+
 
     //! \brief replicate the current life at position
     //! \param x : x position
@@ -101,25 +99,13 @@ public:
     //! \brief set a logic script for the current life
     void setScript(const QString& script);
 
-    //! \brief load life from a json file
-    //! \return true if success otherwise return false
-    bool loadFile(const QString& filename);
-
-    //! \brief save life to a json file
-    //! \return true if success otherwise return false
-    bool saveFile(const QString& filename);
-
     //! \brief Serialize the life to Json data
     //! \return Json data
     static  QString serialize(Life * life);
 
     //! \brief Parse Json data and create a new Life
     //! \return new Life
-    static  Life * parse(const QString& json);
-
-    //! \brief create a Life from a Json file
-    //! \return a new life created
-    static Life * fromFile(const QString& filename);
+    static  void parse(const QString& json, Life * life);
 
     //! \brief Compute Step.
     //! \brief Parse Json data and create a new Life
@@ -132,6 +118,9 @@ public:
     virtual void init();
 
     void debug();
+
+    Gene& operator[](QString name) { return mGenom[name];}
+
 
 private:
     Genom mGenom;

@@ -2,25 +2,16 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QTimer>
+#include <cmath>
+#include <QGraphicsView>
+#include <QGraphicsScene>
 #include "gene.h"
 #include "genom.h"
 #include "life.h"
-#include <cmath>
-#include "lifeengine.h"
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include "lifeengineview.h"
-#include "shapewidget.h"
-#include "lifedialog.h"
-#include "lifetypewidget.h"
-#include "lifeeditor.h"
 #include "jsedit.h"
-#include "simmainwindow.h"
-#include "actionlistview.h"
-#include "lifefileview.h"
+#include "lifeengineview.h"
 #include "lifesview.h"
-#include "animmainwindow.h"
-#include "genecolorwidget.h"
+#include "genomview.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,21 +26,35 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
-    //    LifeEditor * editor = new LifeEditor;
-    //    editor->show();
+    LifeEngine * engine = new LifeEngine;
+    engine->addLife(new Life());
+    engine->addLife(new Life(4,3));
+    engine->addLife(new Life(14,3));
 
 
-    // Show splash screen
-    QSplashScreen splash(QPixmap(":/splash.png"));
-    splash.setAttribute(Qt::WA_DeleteOnClose);
-    splash.show();
 
-    SimMainWindow * w = new SimMainWindow;
-    w->show();
+//    GenomView * gv = new GenomView(new Life);
+//    gv->show();
+
+    Life * life = new Life;
+    life->addGene(Gene("sexe"));
+    life->addGene(Gene("taille"));
 
 
+    GeneDialog * g = new GeneDialog;
+    g->show();
+
+
+
+    //    // Show splash screen
+    //    QSplashScreen splash(QPixmap(":/splash.png"));
+    //    splash.setAttribute(Qt::WA_DeleteOnClose);
+    //    splash.show();
+
+    //    SimMainWindow * w = new SimMainWindow;
     //    w->show();
 
+    //    w->show();
     //    Gene g = 14;
     //    GeneDialog * d = new GeneDialog;
     //    d->setGene(g);

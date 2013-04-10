@@ -5,39 +5,36 @@ ActionListView::ActionListView(QWidget *parent) :
     QWidget(parent)
 {
     mToolBar = new QToolBar;
-    mView = new QTreeView;
+    mView = new QListView;
     mStatusBar = new QStatusBar;
+    mToolBar->setIconSize(QSize(16,16));
 
     QVBoxLayout * layout  =new QVBoxLayout;
     layout->addWidget(mToolBar);
     layout->addWidget(mView);
     layout->addWidget(mStatusBar);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
     setLayout(layout);
     mStatusBar->setSizeGripEnabled(false);
-
 
     QWidget* spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-
-
-    mToolBar->addAction(QIcon(":brick_add.png"),"add",this,SLOT(add()));
-    mToolBar->addAction(QIcon(":brick_edit.png"),"edit",this,SLOT(edit()));
-    mToolBar->addAction(QIcon(":brick_delete.png"),"rem",this,SLOT(remove()));
+    mAddAction = mToolBar->addAction(QIcon(":plus"),"add",this,SLOT(add()));
+    mEditAction = mToolBar->addAction(QIcon(":edit"),"edit",this,SLOT(edit()));
+    mRemAction =  mToolBar->addAction(QIcon(":delete"),"rem",this,SLOT(remove()));
     mToolBar->addWidget(spacer);
 
-    mToolBar->addAction(QIcon(":arrow_refresh.png"),"refresh",this,SLOT(refresh()));
+
+    mRefreshAction =  mToolBar->addAction(QIcon(":refresh"),"refresh",this,SLOT(refresh()));
 
     connect(mView,SIGNAL(doubleClicked(QModelIndex)),this,SIGNAL(doubleClicked()));
     connect(mView,SIGNAL(clicked(QModelIndex)),this,SIGNAL(clicked()));
+
+
 }
 
-QTreeView *ActionListView::view() const
-{
-    return mView;
-}
 
 int ActionListView::selectionCount() const
 {
@@ -67,27 +64,14 @@ void ActionListView::showMessage(const QString &msg)
     mStatusBar->showMessage(msg);
 }
 
-void ActionListView::hideAction(int index)
-{
-    mToolBar->actions().at(index)->setVisible(false);
-}
+
 
 int ActionListView::currentRow() const
 {
     if (selectionCount() == 0)
         return -1;
-    return view()->selectionModel()->selectedRows().first().row();
+    return mView->selectionModel()->selectedRows().first().row();
 }
 
-QList<QAction*> ActionListView::actions() const
-{
-    QList<QAction*> actions;
-    foreach (QAction * action, mToolBar->actions())
-    {
-        if (!action->text().isEmpty())
-            actions.append(action);
-    }
 
-return actions;
-}
 

@@ -54,6 +54,8 @@ public:
 
     void debug() const;
 
+    Gene& operator[](const QString& name) { return mGenes[name];}
+
 private:
     QHash<QString,Gene> mGenes;
 };

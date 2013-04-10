@@ -3,10 +3,7 @@
 
 #include <QDialog>
 #include "gene.h"
-#include "genecolorwidget.h"
-namespace Ui {
-class GeneDialog;
-}
+//#include "genecolorwidget.h"
 
 class GeneDialog : public QDialog
 {
@@ -22,10 +19,9 @@ public slots:
     void showColorDialog();
     
 private:
-    Ui::GeneDialog *ui;
     Gene mGene;
     QColor mColor;
-    GeneColorWidget * mGeneColorWidget;
+   // GeneColorWidget * mGeneColorWidget;
 };
 
 #endif // GENEDIALOG_H

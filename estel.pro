@@ -20,25 +20,23 @@ SOURCES += main.cpp\
 #    metapolygonitem.cpp \
 #    shapewidget.cpp \
     widget/lifeengineview.cpp \
-    widget/gridwidget.cpp \
     widget/gridview.cpp \
     widget/lifedialog.cpp \
 #    script/scriptlife.cpp \
-    mainwindow.cpp \
-    widget/simulationdialog.cpp \
-    widget/lifeeditor.cpp \
+#    widget/simulationdialog.cpp \
+#    widget/lifeeditor.cpp \
     widget/genedialog.cpp \
-    jsedit/jsedit.cpp \
-    widget/simmainwindow.cpp \
-    widget/animmainwindow.cpp \
+   jsedit/jsedit.cpp \
+#    widget/simmainwindow.cpp \
+#    widget/animmainwindow.cpp \
     widget/actionlistview.cpp \
     widget/lifesview.cpp \
-    widget/genecolorwidget.cpp \
-    widget/genomview.cpp \
-    qxtjson/jsonmodel.cpp \
-    widget/lifefileview.cpp \
-    widget/addlifecommand.cpp \
-    widget/aboutdialog.cpp
+#    widget/genecolorwidget.cpp \
+    widget/genomview.cpp
+#    qxtjson/jsonmodel.cpp \
+#    widget/lifefileview.cpp \
+#    widget/addlifecommand.cpp \
+#    widget/aboutdialog.cpp
 
 HEADERS  += gene.h \
     core/genom.h \
@@ -49,38 +47,36 @@ HEADERS  += gene.h \
 #    metapolygonitem.h \
 #    shapewidget.h \
     widget/lifeengineview.h \
-    widget/gridwidget.h \
     widget/gridview.h \
     widget/lifedialog.h \
 #    script/scriptlife.h \
-    mainwindow.h \
-    widget/simulationdialog.h \
-    widget/lifeeditor.h \
+#    widget/simulationdialog.h \
+#    widget/lifeeditor.h \
     widget/genedialog.h \
     jsedit/jsedit.h \
-    widget/simmainwindow.h \
-    widget/animmainwindow.h \
+#    widget/simmainwindow.h \
+#    widget/animmainwindow.h \
     widget/actionlistview.h \
-    widget/lifefileview.h \
+ #  widget/lifefileview.h
     widget/lifesview.h \
-    widget/genecolorwidget.h \
-    widget/genomview.h \
-    qxtjson/jsonmodel.h \
-    widget/addlifecommand.h \
-    widget/aboutdialog.h
+#    widget/genecolorwidget.h \
+   widget/genomview.h
+#    qxtjson/jsonmodel.h \
+#    widget/addlifecommand.h \
+#    widget/aboutdialog.h
 
 INCLUDEPATH+= core qxtjson widget script jsedit
 
 FORMS += \
-    shapewidget.ui \
-    widget/lifedialog.ui \
-    mainwindow.ui \
-    widget/simulationdialog.ui \
-    widget/lifeeditor.ui \
-    widget/genedialog.ui \
-    widget/simmainwindow.ui \
-    widget/animmainwindow.ui \
-    widget/aboutdialog.ui
+#    shapewidget.ui \
+#    widget/lifedialog.ui \
+#    mainwindow.ui \
+#    widget/simulationdialog.ui \
+#    widget/lifeeditor.ui \
+#    widget/genedialog.ui \
+#    widget/simmainwindow.ui \
+#    widget/animmainwindow.ui \
+#    widget/aboutdialog.ui
 
 RESOURCES += \
     jsedit/testeditor.qrc \

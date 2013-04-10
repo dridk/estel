@@ -2,10 +2,9 @@
 #define LIFEDIALOG_H
 
 #include <QDialog>
+#include <QtGui>
 #include "life.h"
-namespace Ui {
-class LifeDialog;
-}
+#include "genomview.h"
 
 class LifeDialog : public QDialog
 {
@@ -20,8 +19,12 @@ protected slots:
     void save();
     
 private:
-    Ui::LifeDialog *ui;
     Life * mLife;
+    QSpinBox * mAgeSpinBox;
+    QLineEdit * mNameEdit;
+    QSpinBox * mXSpinBox;
+    QSpinBox * mYSpinBox;
+    GenomView * mGenomView;
 };
 
 #endif // LIFEDIALOG_H

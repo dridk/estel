@@ -3,15 +3,11 @@
 #include "qxtjson.h"
 Life::Life(int x, int y, int age)
     :QObject()
-
-
 {
     mAge = age;
     mPos = QPoint(x,y);
     mName = "Life";
     mEngine = NULL;
-
-
 }
 
 
@@ -96,30 +92,6 @@ void Life::setGenom(const Genom &genom)
 bool Life::step()
 {
 
-    //    mAge++;
-
-    ////    if ( mAge > 10)
-    ////        return false;
-
-
-    //    if (mAge%2 && mAge != 1)
-    //    {
-
-
-
-    //        Life * child = new Life(muted());
-    //       child->setPos(x()+(qrand()%3)-1, y()+(qrand()%3)-1);
-    ////       qDebug()<<child->pos();
-    //       engine()->addLife(child);
-
-
-    //    }
-
-    //    return true;
-
-    return true;
-
-
 }
 
 void Life::init()
@@ -146,10 +118,7 @@ Gene& Life::gene(const QString &name)
     return mGenom.gene(name);
 }
 
-int Life::g(const QString &name)
-{
-    return mGenom.gene(name).value();
-}
+
 
 void Life::replicate(int x, int y)
 {
@@ -196,54 +165,6 @@ void Life::setScript(const QString &script)
     mScript = script;
 }
 
-bool Life::loadFile(const QString &filename)
-{
-    QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qDebug()<<"error"<<file.errorString();
-        return false;
-    }
-
-    Life * tmpLife = Life::parse(file.readAll());
-
-    setName(tmpLife->name());
-    setAge(tmpLife->age());
-    setPos(tmpLife->pos());
-    setGenom(tmpLife->genom());
-    setScript(tmpLife->script());
-
-    delete tmpLife;
-
-    file.close();
-
-    return true;
-}
-
-bool Life::saveFile(const QString &filename)
-{
-    //========= save script ============
-    QFileInfo fileInfo(filename);
-    setName(fileInfo.baseName());
-    QFile scriptFile(name()+"_script.js");
-    if (!scriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
-        return false;
-    scriptFile.write(script().toUtf8());
-    scriptFile.close();
-
-    //========== save life =============
-    QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return false;
-
-    QString data = Life::serialize(this);
-    file.write(data.toUtf8());
-    file.close();
-
-    return true;
-
-}
-
 QString Life::serialize(Life *life)
 {
     QVariantMap dataMap;
@@ -251,7 +172,7 @@ QString Life::serialize(Life *life)
     dataMap.insert("x", life->x());
     dataMap.insert("y", life->y());
     dataMap.insert("age", life->age());
-    dataMap.insert("script", life->name()+"_script.js");
+    dataMap.insert("script", life->script());
 
     QVariantList geneList;
     foreach (Gene  gene,life->genom().genes())
@@ -269,25 +190,22 @@ QString Life::serialize(Life *life)
     }
 
     dataMap.insert("genom", geneList);
-
-    QString result = QxtJSON::stringify(dataMap);
-
-    return result;
+    return QxtJSON::stringify(dataMap);
 
 }
 
-Life * Life::parse(const QString &json)
+void Life::parse(const QString &json, Life *life)
 {
-    Life * newLife = new Life;
     QVariant data = QxtJSON::parse(json);
 
-    newLife->setName(data.toMap().value("name").toString());
-    newLife->setAge(data.toMap().value("age").toInt());
-    newLife->setX(data.toMap().value("x").toInt());
-    newLife->setY(data.toMap().value("y").toInt());
+    life->setName(data.toMap().value("name").toString());
+    life->setAge(data.toMap().value("age").toInt());
+    life->setX(data.toMap().value("x").toInt());
+    life->setY(data.toMap().value("y").toInt());
 
     QVariantList genomData = data.toMap().value("genom").toList();
 
+    life->clearGene();
     foreach (QVariant geneData, genomData)
     {
         Gene gene;
@@ -299,34 +217,14 @@ Life * Life::parse(const QString &json)
         gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
         gene.setRootColor(QColor(geneData.toMap().value("rootcolor").toString()));
 
-        newLife->addGene(gene);
+        life->addGene(gene);
     }
 
     //=== load script
-    QString scriptFileName = data.toMap().value("script").toString();
-    QFile scriptFile(scriptFileName);
-    if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        return newLife;
+    QString script = data.toMap().value("script").toString();
+    life->setScript(script);
 
-    newLife->setScript(scriptFile.readAll());
-
-    scriptFile.close();
-
-    return newLife;
 }
-
-Life *Life::fromFile(const QString &filename)
-{
-    Life * life = new Life;
-    if (!life->loadFile(filename))
-    {
-        qDebug()<<"cannot load files...";
-        delete life;
-        return NULL;
-    }
-    return life;
-}
-
 const QString &Life::script() const
 {
     return mScript;

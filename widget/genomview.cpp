@@ -1,5 +1,5 @@
 #include "genomview.h"
-
+#include <QPainter>
 GenomView::GenomView(Life *life, QWidget *parent):
     ActionListView(parent)
 {
@@ -13,31 +13,31 @@ GenomView::GenomView(Life *life, QWidget *parent):
 
 void GenomView::add()
 {
-    GeneDialog * dialog  =new GeneDialog;
-    if (dialog->exec() == QDialog::Rejected)
-        return;
+//    GeneDialog * dialog  =new GeneDialog;
+//    if (dialog->exec() == QDialog::Rejected)
+//        return;
 
-    mLife->addGene(dialog->gene());
-    refresh();
+//    mLife->addGene(dialog->gene());
+//    refresh();
 
-    emit changed();
+//    emit changed();
 
 }
 
 void GenomView::edit()
 {
-    if (!selectionCount())
-        return;
+//    if (!selectionCount())
+//        return;
 
-    GeneDialog * dialog  =new GeneDialog;
-    dialog->setGene(mLife->genom().genes().at(currentRow()));
-    if (dialog->exec() == QDialog::Rejected)
-        return;
+//    GeneDialog * dialog  =new GeneDialog;
+//    dialog->setGene(mLife->genom().genes().at(currentRow()));
+//    if (dialog->exec() == QDialog::Rejected)
+//        return;
 
-    mLife->remGene(mLife->genom().genes().at(currentRow()));
-    mLife->addGene(dialog->gene());
-    refresh();
-    emit changed();
+//    mLife->remGene(mLife->genom().genes().at(currentRow()));
+//    mLife->addGene(dialog->gene());
+//    refresh();
+//    emit changed();
 }
 
 void GenomView::remove()
@@ -62,7 +62,12 @@ void GenomView::refresh()
     foreach (Gene g, mLife->genom().genes())
     {
         QPixmap pix(16,16);
-        pix.fill(g.rootColor());
+        pix.fill(Qt::transparent);
+        QPainter paint(&pix);
+        paint.setRenderHint(QPainter::Antialiasing,true);
+        paint.setBrush(QBrush(g.color()));
+        paint.setPen(Qt::NoPen);
+        paint.drawEllipse(QRectF(0,0,15,15));
         QStandardItem * item = new QStandardItem;
         item->setEditable(false);
         item->setIcon(QIcon(pix));

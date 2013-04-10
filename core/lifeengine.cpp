@@ -24,14 +24,13 @@ void LifeEngine::addLife(Life *life)
 
     int index =  mColumns * life->x()  + life->y();
 
-    if (mLifeList.keys().contains(index))
-    {
-        //        qDebug()<<"life already set for this position "<<life->pos();
+    if (mLifeList.keys().contains(index)) {
+        qDebug()<<"life already set for this position "<<life->pos();
         return;
     }
 
     if (index >= mRows * mColumns){
-        //        qDebug()<<"life position out of range";
+        qDebug()<<"life position out of range";
         return;
     }
 
@@ -59,7 +58,7 @@ void LifeEngine::clear()
 }
 void LifeEngine::run(int iteration)
 {
-   int currentStep = 0;
+    int currentStep = 0;
 
     while (currentStep < iteration)
     {
@@ -98,35 +97,35 @@ int LifeEngine::population()
 
 bool LifeEngine::evaluateLife(Life *life)
 {
-    mLastError.clear();
-    mLastDebug.clear();
+    //    mLastError.clear();
+    //    mLastDebug.clear();
 
-    // Set context Property ....
-    QScriptValue lifeObj = mScriptEngine.newQObject(life);
-    mScriptEngine.globalObject().setProperty("life",lifeObj);
+    //    // Set context Property ....
+    //    QScriptValue lifeObj = mScriptEngine.newQObject(life);
+    //    mScriptEngine.globalObject().setProperty("life",lifeObj);
 
-    //evaluate script
+    //    //evaluate script
 
-    QScriptValue result = mScriptEngine.evaluate(life->script());
-    if (result.isError())
-    {
-        error("Error in script("
-              +result.property("lineNumber").toString()+"):"
-              +result.property("message").toString());
-        qDebug()<<"script error";
-        return true;
-    }
-    //evaluate function
-    QScriptValue runFunction = mScriptEngine.globalObject().property("step");
-    if (!runFunction.isFunction())
-    {
-        qDebug()<<"cannot find step function";
-        error("cannot find step function");
-    }
+    //    QScriptValue result = mScriptEngine.evaluate(life->script());
+    //    if (result.isError())
+    //    {
+    //        error("Error in script("
+    //              +result.property("lineNumber").toString()+"):"
+    //              +result.property("message").toString());
+    //        qDebug()<<"script error";
+    //        return true;
+    //    }
+    //    //evaluate function
+    //    QScriptValue runFunction = mScriptEngine.globalObject().property("step");
+    //    if (!runFunction.isFunction())
+    //    {
+    //        qDebug()<<"cannot find step function";
+    //        error("cannot find step function");
+    //    }
 
 
-    qDebug()<<lastError();
-    return runFunction.call().toBool();
+    //    qDebug()<<lastError();
+    //    return runFunction.call().toBool();
 }
 
 
@@ -141,24 +140,18 @@ bool LifeEngine::load(const QString &filename)
         return false;
 
     clear();
-
     QVariant data = QxtJSON::parse(file.readAll());
-
     QVariantList lifeList = data.toMap().value("lifes").toList();
 
     foreach (QVariant lifeData, lifeList)
     {
-
-        Life * life = Life::parse(QxtJSON::stringify(lifeData));
+        Life * life = new Life;
+        Life::parse(QxtJSON::stringify(lifeData),life);
         addLife(life);
-
     }
 
     file.close();
     return true;
-
-
-
 }
 
 bool LifeEngine::save(const QString &filename)
@@ -168,30 +161,7 @@ bool LifeEngine::save(const QString &filename)
         return false;
     QVariantList lifeList;
     foreach (Life * l, lifes()){
-        QVariantMap dataMap;
-        dataMap.insert("name", l->name());
-        dataMap.insert("x", l->x());
-        dataMap.insert("y", l->y());
-        dataMap.insert("age", l->age());
-        dataMap.insert("script", l->name()+"_script.js");
-
-        QVariantList geneList;
-        foreach (Gene  gene,l->genom().genes())
-        {
-            QVariantHash gMap;
-            gMap.insert("name",gene.name());
-            gMap.insert("value",gene.value());
-            gMap.insert("min",gene.min());
-            gMap.insert("max",gene.max());
-            gMap.insert("proba",gene.mutationProbability());
-            gMap.insert("variance",gene.variance());
-            gMap.insert("rootcolor",gene.rootColor().name());
-
-            geneList.append(gMap);
-        }
-        dataMap.insert("genom", geneList);
-        lifeList.append(dataMap);
-
+        lifeList.append(QxtJSON::parse(Life::serialize(l)));
     }
 
     QVariantMap globalMap;
@@ -199,13 +169,8 @@ bool LifeEngine::save(const QString &filename)
     globalMap.insert("lifes", lifeList);
 
     file.write(QxtJSON::stringify(globalMap).toUtf8());
-
     file.close();
-
     return true;
-
-
-
 }
 
 int LifeEngine::rows() const
@@ -227,6 +192,15 @@ bool LifeEngine::hasLife(int x, int y) const
         return true;
     return false;
 
+}
+
+Life *LifeEngine::life(int x, int y) const
+{
+    int index =  mColumns * x + y;
+    if (mLifeList.contains(index))
+        return mLifeList[index];
+    else
+        return NULL;
 }
 
 void LifeEngine::debug(const QString &msg)

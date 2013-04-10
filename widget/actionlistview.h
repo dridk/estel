@@ -5,17 +5,21 @@
 #include <QAction>
 #include <QToolBar>
 #include <QStatusBar>
+#include <QListView>
 class ActionListView : public QWidget
 {
     Q_OBJECT
 public:
     explicit ActionListView(QWidget *parent = 0);
 
-    QTreeView * view() const;
     int selectionCount() const;
     int currentRow() const;
-    QList<QAction*> actions() const;
+    QListView * view() {return mView;}
 
+    QAction * addAction() const {return mAddAction;}
+    QAction * editAction() const {return mEditAction;}
+    QAction * remAction() const {return mRemAction;}
+    QAction * refreshAction() const {return mRefreshAction;}
 
 
 public slots:
@@ -24,7 +28,6 @@ public slots:
     virtual void edit();
     virtual void remove();
     void showMessage(const QString& msg);
-    void hideAction(int index);
 
 signals:
     void changed();
@@ -33,10 +36,17 @@ signals:
     
 
 private:
-    QList<QAction*> mActions;
-    QTreeView * mView;
+    QListView * mView;
     QToolBar * mToolBar;
     QStatusBar * mStatusBar;
+
+    QAction * mAddAction;
+    QAction * mEditAction;
+    QAction * mRemAction;
+    QAction * mRefreshAction;
+
+
+
     
 };
 

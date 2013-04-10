@@ -14,9 +14,6 @@ public:
     void remove();
     void edit();
 
-    
-
-
 private:
     LifeEngine * mEngine;
     QStandardItemModel * mModel;

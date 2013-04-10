@@ -1,24 +1,25 @@
 #include "gridwidget.h"
 #include <QDebug>
 
-GridWidget::GridWidget(int row, int column, QWidget *parent):
+GridWidget::GridWidget(int rowCount, int columnCount, QWidget *parent):
     QWidget(parent)
 {
-    mSquareSize = 10;
-    mColumnCount = column;
-    mRowCount = row ;
 
+  mCellSize = 10;
+  mRowCount = rowCount;
+  mColumnCount = columnCount;
+  createGrid();
+  setMinimumSize(1000,1000);
+  switchOn(63,2,Qt::black);
 
-    //    setMinimumSize(mSquareSize*mRowCount, mSquareSize * mColumnCount);
-    //    setMaximumSize(mSquareSize*mRowCount, mSquareSize * mColumnCount);
+}
 
-    setFixedSize(mSquareSize*mRowCount, mSquareSize * mColumnCount);
+void GridWidget::setGridSize(int rowCount, int columnCount)
+{
+    mRowCount = rowCount;
+    mColumnCount = columnCount;
 
     createGrid();
-
-
-
-
 }
 
 void GridWidget::paintEvent(QPaintEvent *event)
@@ -30,15 +31,15 @@ void GridWidget::paintEvent(QPaintEvent *event)
 void GridWidget::mousePressEvent(QMouseEvent * event)
 {
 
-    int X = event->x() / mSquareSize;
-    int Y = event->y() / mSquareSize;
+    int X = event->x() / mCellSize;
+    int Y = event->y() / mCellSize;
 
     ////    qDebug()<<"press"<<X<<" "<<Y;
     ////    switchOn(X,Y, Qt::blue);
 
-    //    update(QRegion(X*mSquareSize,Y*mSquareSize,mSquareSize,mSquareSize));
+    //    update(QRegion(X*mCellSize,Y*mCellSize,mCellSize,mCellSize));
 
-    emit squareClicked(QPoint(X,Y));
+    emit cellClicked(QPoint(X,Y));
     QWidget::mousePressEvent(event);
 
 }
@@ -62,13 +63,13 @@ void GridWidget::switchOff(int x, int y)
 void GridWidget::selectOn(int x, int y)
 {
     int index =  mColumnCount * y  + x;
-    mSquareSelected.append(index);
+    mCellSelected.append(index);
 }
 
 void GridWidget::selectOff(int x, int y)
 {
     int index =  mColumnCount * y  + x;
-    mSquareSelected.removeOne(index);
+    mCellSelected.removeOne(index);
 }
 
 void GridWidget::clear()
@@ -78,10 +79,15 @@ void GridWidget::clear()
 
 void GridWidget::clearSelection()
 {
-    mSquareSelected.clear();
+    mCellSelected.clear();
 }
 
- QPixmap * GridWidget::snap()
+void GridWidget::setCellSize(int size)
+{
+    mCellSize = size;
+}
+
+QPixmap * GridWidget::snap()
 {
     QPixmap * pix = new QPixmap(size());
     drawGrid(pix);
@@ -94,7 +100,6 @@ void GridWidget::drawGrid(QPaintDevice *device)
 
     QPainter paint;
     paint.begin(device);
-
     paint.drawPixmap(0,0,mGridPix);
     //Draw Square
     foreach (int index , mColors.keys())
@@ -103,11 +108,11 @@ void GridWidget::drawGrid(QPaintDevice *device)
         int x = index % mRowCount;
 
         paint.setBrush(mColors[index]);
-        paint.drawRect(x*mSquareSize,y*mSquareSize, mSquareSize, mSquareSize);
+        paint.drawRect(x*mCellSize,y*mCellSize, mCellSize, mCellSize);
     }
 
     //Draw SquareSelector
-    foreach (int index, mSquareSelected)
+    foreach (int index, mCellSelected)
     {
         int y = qRound(index/mColumnCount);
         int x = index % mRowCount;
@@ -115,7 +120,7 @@ void GridWidget::drawGrid(QPaintDevice *device)
         paint.setBrush(Qt::transparent);
 
         paint.setBrush(QBrush(Qt::Dense4Pattern));
-        QRect selector = QRect(x*mSquareSize,y*mSquareSize, mSquareSize, mSquareSize);
+        QRect selector = QRect(x*mCellSize,y*mCellSize, mCellSize, mCellSize);
         selector.adjust(-2,-2,2,2);
         paint.drawRect(selector);
 
@@ -128,42 +133,21 @@ void GridWidget::drawGrid(QPaintDevice *device)
 
 void GridWidget::createGrid()
 {
-
+    resize(mRowCount*mCellSize, mColumnCount*mCellSize);
+    setFixedSize(size());
     mGridPix = QPixmap(size());
     mGridPix.fill(Qt::white);
     QPainter paint(&mGridPix);
     paint.setPen(QPen(Qt::lightGray));
 
-
-    for ( int x=0;x<width();x+=mSquareSize )
+    for ( int x=0;x<width();x+=mCellSize )
         paint.drawLine(x,rect().top(), x, rect().bottom());
 
-    for ( int y=0;y<height();y+=mSquareSize )
+    for ( int y=0;y<height();y+=mCellSize )
         paint.drawLine(rect().left(),y,rect().right(),y);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    update();
 
 
 }

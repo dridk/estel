@@ -1,117 +1,84 @@
 #include "lifeengineview.h"
 #include <QToolBar>
 #include <QVBoxLayout>
-LifeEngineView::LifeEngineView(LifeEngine *engine, QWidget *parent):
-    QWidget(parent)
+#include <QHBoxLayout>
+LifeEngineView::LifeEngineView(QWidget *parent):
+    GridView(100,100,parent)
 {
-    mEngine = engine;
-    mGridView = new GridView(engine->rows(),engine->columns());
-    mLifeComboBox = new QComboBox;
-    mGeneCombBox = new QComboBox;
-    mLifeComboBox->setObjectName("localCombo");
-    mGeneCombBox->setObjectName("localCombo");
-    mLifeComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    mGeneCombBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    mEngine = NULL;
 
-    QToolBar * toolbar = new QToolBar(this);
+    QAction * action = new QAction("refresh",this);
+    addAction(action);
+    setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    QWidget* spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    toolbar->addWidget(mLifeComboBox);
-    toolbar->addWidget(mGeneCombBox);
-    toolbar->addWidget(spacer);
-    toolbar->addAction(QIcon(":arrow_refresh.png"),"refresh",this,SLOT(refresh()));
-
-
-
-    QVBoxLayout * layout =new QVBoxLayout;
-    layout->setSpacing(0);
-    layout->setMargin(0);
-    layout->addWidget(toolbar);
-    layout->addWidget(mGridView);
-
-    setLayout(layout);
-
-    connect(mLifeComboBox,SIGNAL(activated(int)),this,SLOT(updateGeneCombo()));
-    connect(mLifeComboBox,SIGNAL(activated(int)),this,SLOT(refresh()));
-    connect(mGeneCombBox,SIGNAL(activated(int)),this,SLOT(refresh()));
-
-
-    refresh();
+    connect(action,SIGNAL(triggered()),this,SLOT(refresh()));
+    connect(this,SIGNAL(cellClicked(QPoint)),this,SLOT(selectLife(QPoint)));
 
 }
 
 LifeEngineView::~LifeEngineView()
 {
-    delete mGridView;
-    delete mLifeComboBox;
-    delete mGeneCombBox;
+
+}
+void LifeEngineView::setEngine(LifeEngine *engine)
+{
+    mEngine = engine;
+    refresh();
+}
+
+QList<Life *> LifeEngineView::lifeSelected() const
+{
+    Q_ASSERT_X(mEngine !=NULL, "LifeEngineView::lifeSelected", "no lifeEngine set");
+    QList<Life*> lifes;
+
+    if (mEngine == NULL)
+        return lifes;
+
+    foreach (QPoint pos, selection())
+    {
+        Life * life = mEngine->life(pos.x(),pos.y());
+        if (life != NULL)
+            lifes.append(life);
+    }
+
+    return lifes;
+
+
 }
 
 void LifeEngineView::refresh()
 {
-    bool updateCombo = true;
-    if (sender())
-    {
-        if (sender()->objectName() == "localCombo"){
-            updateCombo = false;
-        }
-    }
-
-    if (updateCombo)
-        mComboData.clear();
-
-    mGridView->grid()->clear();
-
+    if (mEngine == NULL)
+        return;
+    clear();
     foreach (Life * life, mEngine->lifes())
     {
-        if (life->name() == mLifeComboBox->currentText())
+        if (life->name() == mCurrentLifeName || mCurrentLifeName.isEmpty())
         {
-            QString gname = mGeneCombBox->currentText();
-            life->gene(gname).generateColor();
-            QColor color = life->gene(gname).color();
+            QColor col = Qt::black;
+            if (life->genom().contains(mCurrentGeneName))
+                col = life->gene(mCurrentGeneName).color();
 
-            mGridView->grid()->switchOn(life->x(),life->y(),color);
+            switchOn(life->x(),life->y(), col);
+
         }
-        else
-            mGridView->grid()->switchOn(life->x(),life->y(),Qt::black);
-
-        if (updateCombo)
-            mComboData[life->name()] = life->genom();
-
-
     }
-
-    mGridView->grid()->update();
-    if (updateCombo)
-        updateLifeCombo();
 }
 
-GridView *LifeEngineView::gridView()
+void LifeEngineView::setLifeFilter(const QString &lifeName)
 {
-    return mGridView;
+    mCurrentLifeName = lifeName;
+
 }
 
-void LifeEngineView::updateLifeCombo()
+void LifeEngineView::setGeneFilter(const QString &geneName)
 {
-
-    mLifeComboBox->clear();
-    mLifeComboBox->addItem("All");
-    mLifeComboBox->addItems(mComboData.keys());
+    mCurrentGeneName = geneName;
 }
 
-void LifeEngineView::updateGeneCombo()
+void LifeEngineView::selectLife(const QPoint &pos)
 {
-    mGeneCombBox->clear();
-    if (mLifeComboBox->currentText() == "All")
-        mGeneCombBox->setEnabled(false);
-    else mGeneCombBox->setEnabled(true);
+    qDebug()<<pos;
+    selectOn(pos.x(),pos.y());
 
-    foreach (Gene gene, mComboData[mLifeComboBox->currentText()].genes())
-        mGeneCombBox->addItem(gene.name());
 }
-
-
-
-

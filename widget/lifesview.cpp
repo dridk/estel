@@ -5,16 +5,11 @@ LifesView::LifesView(LifeEngine *engine, QWidget *parent) :
 {
     mEngine = engine;
     mModel = new QStandardItemModel;
-    view()->setModel(mModel);
     mModel->setColumnCount(2);
+
+    view()->setModel(mModel);
     refresh();
     setWindowTitle("Lifes");
-    hideAction(0);
-    connect(this,SIGNAL(doubleClicked()),this,SLOT(edit()));
-
-    actions().at(1)->setText("Edit current life");
-    actions().at(2)->setText("Remove current life");
-    actions().at(3)->setText("Refresh lifes list");
 
 
 }
@@ -24,10 +19,6 @@ void LifesView::refresh()
     mModel->clear();
 
     mModel->setHorizontalHeaderLabels(QStringList()<<"name"<<"genom");
-
-
-
-    qDebug()<<"add"<<mEngine->lifes().count();
 
     foreach ( Life * life, mEngine->lifes())
     {
@@ -69,8 +60,8 @@ void LifesView::edit()
     if (!selectionCount())
         return;
 
-    Life * life = mEngine->lifes().at(currentRow());
-    LifeDialog * dialog = new LifeDialog(life);
-    dialog->exec();
+//    Life * life = mEngine->lifes().at(currentRow());
+//    LifeDialog * dialog = new LifeDialog(life);
+//    dialog->exec();
 
 }
