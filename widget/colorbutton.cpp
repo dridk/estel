@@ -24,45 +24,40 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
-
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
 #include "colorbutton.h"
-class GeneDialog : public QDialog
+#include <QPainter>
+ColorButton::ColorButton(QWidget *parent) :
+    QPushButton(parent)
 {
-    Q_OBJECT
-public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+    connect(this,SIGNAL(clicked()),this,SLOT(openColorDialog()));
+}
+
+void ColorButton::setColor(const QColor &col)
+{
+    mColor = col;
+    QPixmap pix(32,32);
+    pix.fill(Qt::transparent);
+    QPainter paint(&pix);
+    paint.setRenderHint(QPainter::Antialiasing,true);
+    paint.setBrush(QBrush(col));
+    paint.setPen(Qt::NoPen);
+    paint.drawEllipse(QRect(0,0,31,31));
+
+    setIcon(QIcon(pix));
+
+    emit colorChanged(mColor);
 
 
-protected slots:
-    void setRange();
-    void nameChanged(const QString& name);
+}
 
-private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-    QSpinBox * mMinSpinBox;
-    QSpinBox * mMaxSpinBox;
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
+const QColor &ColorButton::color() const
+{
+    return mColor;
+}
 
+void ColorButton::openColorDialog()
+{
+    QColor col = QColorDialog::getColor();
+    setColor(col);
 
-
-
-    
-};
-
-#endif // GENEDIALOG_H
+}

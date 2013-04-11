@@ -31,14 +31,12 @@ public slots:
 
 signals:
     void changed();
-    void doubleClicked();
-    void clicked();
+
     
 
 private:
     QListView * mView;
     QToolBar * mToolBar;
-    QStatusBar * mStatusBar;
 
     QAction * mAddAction;
     QAction * mEditAction;

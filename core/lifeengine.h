@@ -30,6 +30,10 @@ public:
     //! \param y : y position of the life to remove
     Q_INVOKABLE void remLife(int x, int y);
 
+    //! \brief rem life
+    //! \param Life* : Life pointer
+    Q_INVOKABLE void remLife(Life * life);
+
     //! \return return all lifes
     Q_INVOKABLE QList<Life*> lifes() const;
 

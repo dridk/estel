@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QtGui>
+#include <QDialogButtonBox>
 #include "life.h"
 #include "genomview.h"
 
@@ -11,20 +12,21 @@ class LifeDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit LifeDialog(Life * life,QWidget *parent = 0);
+    explicit LifeDialog(QWidget *parent = 0);
     ~LifeDialog();
 
-protected slots:
-    void load();
-    void save();
+    void setLife(const Life& life);
+     Life life();
+
     
 private:
-    Life * mLife;
+    Life mLife;
     QSpinBox * mAgeSpinBox;
     QLineEdit * mNameEdit;
     QSpinBox * mXSpinBox;
     QSpinBox * mYSpinBox;
     GenomView * mGenomView;
+    QDialogButtonBox * mDialogBox;
 };
 
 #endif // LIFEDIALOG_H

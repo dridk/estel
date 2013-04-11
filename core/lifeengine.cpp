@@ -46,6 +46,20 @@ void LifeEngine::remLife(int x, int y)
         mLifeList.remove(index);
 }
 
+void LifeEngine::remLife(Life *life)
+{
+
+        int index =  mColumns * life->x()+ life->y();
+
+        if (mLifeList.keys().contains(index))
+        {
+            qDebug()<<"yes"<<index;
+            qDebug()<<mLifeList[index]->name();
+            mLifeList.remove(index);
+        }
+
+}
+
 
 QList<Life*> LifeEngine::lifes() const
 {

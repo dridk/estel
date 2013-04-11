@@ -5,26 +5,26 @@ Gene::Gene(const QString& name, int val, int min, int max, int var, double proba
 
 {
     mName = name;
-    setLimit(min,max);
+    setRange(min,max);
     setVariance(var);
     setMutationProbability(proba);
     setValue(val);
-    mRootColor = Qt::black;
+    mRootColor = Qt::white;
 }
 Gene::Gene(int val)
 {
     mName = "unknown-gene";
-    setLimit(0,100);
+    setRange(0,100);
     setVariance(1);
     setMutationProbability(0);
     setValue(val);
-    mRootColor = Qt::black;
+    mRootColor = Qt::white;
 }
 Gene::Gene(const Gene & other)
 {
     setName(other.name());
     setMutationProbability(other.mutationProbability());
-    setLimit(other.min(),other.max());
+    setRange(other.min(),other.max());
     setVariance(other.variance());
     setValue(other.value());
     setRootColor(other.rootColor());
@@ -96,7 +96,7 @@ void Gene::setValue(int val)
     generateColor();
 }
 
-void Gene::setLimit(int min, int max)
+void Gene::setRange(int min, int max)
 {
     mMin = min;
     mMax = max;

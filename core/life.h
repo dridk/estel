@@ -11,15 +11,11 @@
 
 class Life;
 class LifeEngine;
-class Life : public QObject
+class Life
 {
-    Q_OBJECT
-    Q_PROPERTY (int age READ age WRITE setAge )
-    Q_PROPERTY (int x READ x WRITE setX )
-    Q_PROPERTY (int y READ y WRITE setY )
-
 public:
     Life(int x=0, int y=0 , int age = 0);
+    Life(const Life& life);
 
     //! \brief Set the current life position
     void setPos(const QPoint& pos);
@@ -40,7 +36,7 @@ public:
     const QPoint& pos() const;
 
     //! \return a new muted life
-    Life* muted() const;
+    Life muted() const;
 
     //! \brief Mute the current life
     void mutate();
@@ -63,7 +59,7 @@ public:
     //! \brief replicate the current life at position
     //! \param x : x position
     //! \param y : y position
-    Q_INVOKABLE void replicate(int x, int y);
+     void replicate(int x, int y);
 
     //! \return a reference of the life's genom.
     const Genom & genom() const;
@@ -75,7 +71,7 @@ public:
     const QString& script()const;
 
     //! \return the LifeEngine where Life has been added
-    LifeEngine * engine();
+    LifeEngine * engine() const;
 
     //! \brief add a new gene
     void addGene(Gene gene);

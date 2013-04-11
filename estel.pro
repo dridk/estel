@@ -30,9 +30,14 @@ SOURCES += main.cpp\
 #    widget/simmainwindow.cpp \
 #    widget/animmainwindow.cpp \
     widget/actionlistview.cpp \
-    widget/lifesview.cpp \
-#    widget/genecolorwidget.cpp \
-    widget/genomview.cpp
+    widget/genomview.cpp \
+    widget/colorgradientwidget.cpp \
+    widget/colorbutton.cpp \
+    widget/lifelistview.cpp \
+    mainwindow.cpp \
+    widget/genecombobox.cpp \
+    widget/lifeengineviewfilterwidget.cpp \
+    widget/lifeengineviewfilterdelegate.cpp
 #    qxtjson/jsonmodel.cpp \
 #    widget/lifefileview.cpp \
 #    widget/addlifecommand.cpp \
@@ -58,9 +63,14 @@ HEADERS  += gene.h \
 #    widget/animmainwindow.h \
     widget/actionlistview.h \
  #  widget/lifefileview.h
-    widget/lifesview.h \
-#    widget/genecolorwidget.h \
-   widget/genomview.h
+   widget/genomview.h \
+    widget/colorgradientwidget.h \
+    widget/colorbutton.h \
+    widget/lifelistview.h \
+    mainwindow.h \
+    widget/genecombobox.h \
+    widget/lifeengineviewfilterwidget.h \
+    widget/lifeengineviewfilterdelegate.h
 #    qxtjson/jsonmodel.h \
 #    widget/addlifecommand.h \
 #    widget/aboutdialog.h
@@ -77,6 +87,7 @@ FORMS += \
 #    widget/simmainwindow.ui \
 #    widget/animmainwindow.ui \
 #    widget/aboutdialog.ui
+    mainwindow.ui
 
 RESOURCES += \
     jsedit/testeditor.qrc \

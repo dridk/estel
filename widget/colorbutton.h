@@ -24,45 +24,30 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
+#ifndef COLORBUTTON_H
+#define COLORBUTTON_H
 
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include <QPushButton>
+#include <QColorDialog>
+class ColorButton : public QPushButton
 {
     Q_OBJECT
 public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+    explicit ColorButton(QWidget *parent = 0);
+    const QColor& color() const;
 
+public slots:
+    void setColor(const QColor& col);
 
 protected slots:
-    void setRange();
-    void nameChanged(const QString& name);
+    void openColorDialog();
+
+signals:
+    void colorChanged(const QColor& color);
 
 private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-    QSpinBox * mMinSpinBox;
-    QSpinBox * mMaxSpinBox;
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
-
-
-
-
+    QColor mColor;
     
 };
 
-#endif // GENEDIALOG_H
+#endif // COLORBUTTON_H

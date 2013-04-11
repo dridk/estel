@@ -2,12 +2,20 @@
 #include <QFile>
 #include "qxtjson.h"
 Life::Life(int x, int y, int age)
-    :QObject()
 {
     mAge = age;
     mPos = QPoint(x,y);
     mName = "Life";
     mEngine = NULL;
+}
+
+Life::Life(const Life &life)
+{
+    setAge(life.age());
+    setPos(life.pos().x(),life.pos().y());
+    setName(life.name());
+    setEngine(life.engine());
+    setGenom(life.genom());
 }
 
 
@@ -41,13 +49,13 @@ const QPoint &Life::pos() const
     return mPos;
 }
 
-Life * Life::muted() const
+Life  Life::muted() const
 {
-    Life * newLife = new Life(x(),y(),0);
-    newLife->setGenom(genom());
-    newLife->setScript(script());
-    newLife->setName(name());
-    newLife->mutate();
+    Life newLife = Life(x(),y(),0);
+    newLife.setGenom(genom());
+    newLife.setScript(script());
+    newLife.setName(name());
+    newLife.mutate();
     return newLife;
 }
 
@@ -81,7 +89,7 @@ void Life::setGenom(const Genom &genom)
 {
     mGenom.clear();
     foreach (Gene g, genom.genes())
-        mGenom.add(g);
+        mGenom.append(g);
 
 
 }
@@ -100,12 +108,12 @@ void Life::init()
 
 void Life::addGene(Gene gene)
 {
-    mGenom.add(gene);
+    mGenom.append(gene);
 }
 
 void Life::remGene(Gene gene)
 {
-    mGenom.rem(gene);
+    mGenom.remove(gene);
 }
 
 void Life::clearGene()
@@ -122,16 +130,15 @@ Gene& Life::gene(const QString &name)
 
 void Life::replicate(int x, int y)
 {
-    if (!engine()->hasLife(x,y))
-    {
-        Life * child = muted();
-        child->setPos(x,y);
-        child->setAge(0);
-        engine()->addLife(child);
-        child->genom().debug();
+//    if (!engine()->hasLife(x,y))
+//    {
+//        Life * child = muted();
+//        child->setPos(x,y);
+//        child->setAge(0);
+//        engine()->addLife(child);
+//        child->genom().debug();
 
-    }
-
+//    }
 }
 
 
@@ -155,7 +162,7 @@ void Life::setEngine(LifeEngine *engine)
     mEngine = engine;
 }
 
-LifeEngine *Life::engine()
+LifeEngine *Life::engine() const
 {
     return mEngine;
 }
@@ -211,7 +218,7 @@ void Life::parse(const QString &json, Life *life)
         Gene gene;
         gene.setName(geneData.toMap().value("name").toString());
         gene.setValue(geneData.toMap().value("value").toInt());
-        gene.setLimit(geneData.toMap().value("min").toInt(),
+        gene.setRange(geneData.toMap().value("min").toInt(),
                       geneData.toMap().value("max").toInt());
         gene.setVariance(geneData.toMap().value("variance").toInt());
         gene.setMutationProbability(geneData.toMap().value("proba").toDouble());

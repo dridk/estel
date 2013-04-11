@@ -24,45 +24,27 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
+#ifndef LIFEENGINEVIEWFILTERDELEGATE_H
+#define LIFEENGINEVIEWFILTERDELEGATE_H
 
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include <QItemDelegate>
+#include "genecombobox.h"
+class LifeEngineViewFilterDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+    explicit LifeEngineViewFilterDelegate(QObject *parent = 0);
+    virtual QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
+    void addLife(const QString& name, const Life& life);
+    void clearLife();
 
-protected slots:
-    void setRange();
-    void nameChanged(const QString& name);
 
 private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-    QSpinBox * mMinSpinBox;
-    QSpinBox * mMaxSpinBox;
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
-
-
-
-
+    QHash<QString, Life> mLifes;
     
 };
 
-#endif // GENEDIALOG_H
+#endif // LIFEENGINEVIEWFILTERDELEGATE_H

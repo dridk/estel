@@ -4,5 +4,13 @@
         <file alias="edit">edit.png</file>
         <file alias="plus">plus2-26.png</file>
         <file alias="refresh">refresh-26.png</file>
+        <file alias="dna">biotech-26.png</file>
+        <file>coderwall.png</file>
+        <file>plasmid.png</file>
+        <file alias="rabbit">rabbit.png</file>
+        <file>research-26.png</file>
+        <file>services.png</file>
+        <file>speed.png</file>
+        <file>test_tube.png</file>
     </qresource>
 </RCC>

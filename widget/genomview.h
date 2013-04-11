@@ -8,8 +8,9 @@ class GenomView : public ActionListView
 {
     Q_OBJECT
 public:
-    explicit GenomView(Life * life, QWidget *parent = 0);
+    explicit GenomView(QWidget *parent = 0);
     void setGenom(const Genom& genom);
+    const Genom& genom() const;
 public slots:
     void add();
     void edit();
@@ -20,7 +21,7 @@ public slots:
     
 private:
     QStandardItemModel * mModel;
-    Life * mLife;
+    Genom mGenom;
     
 };
 

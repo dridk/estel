@@ -13,14 +13,17 @@ public:
     explicit LifeEngineView( QWidget *parent = 0);
     ~LifeEngineView();
     void setEngine(LifeEngine * engine);
+    LifeEngine * engine();
 
      QList<Life*> lifeSelected() const;
 
 
 public slots:
     void refresh();
-    void setLifeFilter(const QString& lifeName);
-    void setGeneFilter(const QString& geneName);
+    void addFilter(const QString& lifeName, const QString& geneName);
+    void remFilter(const QString& lifeName);
+    void clearFilter();
+
 
 protected slots:
     void selectLife(const QPoint& pos);
@@ -28,8 +31,7 @@ protected slots:
 
 private:
     LifeEngine * mEngine;
-    QString mCurrentLifeName;
-    QString mCurrentGeneName;
+    QHash<QString, QString> mGenesFilter;
 
 
     

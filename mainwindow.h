@@ -24,45 +24,38 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include <QMainWindow>
+#include "lifeengine.h"
+#include "lifeengineview.h"
+#include "lifelistview.h"
+#include "lifeengineviewfilterwidget.h"
+namespace Ui {
+class MainWindow;
+}
+
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
-public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
-
-
-protected slots:
-    void setRange();
-    void nameChanged(const QString& name);
-
-private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-    QSpinBox * mMinSpinBox;
-    QSpinBox * mMaxSpinBox;
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
-
-
-
-
     
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+    
+
+public slots:
+    void open();
+    void save();
+    void saveAs();
+private:
+    Ui::MainWindow *ui;
+    LifeEngine * mEngine;
+    LifeEngineView * mEngineView;
+    LifeListView * mLifeListView;
+    LifeEngineViewFilterWidget * mFilterWidget;
+
 };
 
-#endif // GENEDIALOG_H
+#endif // MAINWINDOW_H

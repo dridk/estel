@@ -1,54 +1,73 @@
 #include "genomview.h"
 #include <QPainter>
-GenomView::GenomView(Life *life, QWidget *parent):
+GenomView::GenomView( QWidget *parent):
     ActionListView(parent)
 {
-    mLife = life;
     mModel = new QStandardItemModel;
     view()->setModel(mModel);
-    connect(this,SIGNAL(doubleClicked()),this,SLOT(edit()));
 
+}
+
+void GenomView::setGenom(const Genom &genom)
+{
+    mGenom = genom;
     refresh();
+}
+
+const Genom &GenomView::genom() const
+{
+    return mGenom;
 }
 
 void GenomView::add()
 {
-//    GeneDialog * dialog  =new GeneDialog;
-//    if (dialog->exec() == QDialog::Rejected)
-//        return;
+    GeneDialog * dialog  =new GeneDialog;
+    if (dialog->exec() == QDialog::Rejected)
+        return;
 
-//    mLife->addGene(dialog->gene());
-//    refresh();
+    Gene gene = dialog->gene();
+    mGenom.append(gene);
+    delete dialog;
 
-//    emit changed();
+    refresh();
 
 }
 
 void GenomView::edit()
 {
-//    if (!selectionCount())
-//        return;
+    if (!selectionCount())
+        return;
 
-//    GeneDialog * dialog  =new GeneDialog;
-//    dialog->setGene(mLife->genom().genes().at(currentRow()));
-//    if (dialog->exec() == QDialog::Rejected)
-//        return;
+    GeneDialog * dialog  =new GeneDialog;
+    Gene oldGene = mGenom.genes().at(currentRow());
+    dialog->setGene(oldGene);
+    if (dialog->exec() == QDialog::Rejected)
+        return;
 
-//    mLife->remGene(mLife->genom().genes().at(currentRow()));
-//    mLife->addGene(dialog->gene());
-//    refresh();
-//    emit changed();
+    Gene gene = dialog->gene();
+    if (gene.name() != oldGene.name())
+        mGenom.remove(oldGene.name());
+
+    mGenom[gene.name()] = gene;
+
+    refresh();
 }
 
 void GenomView::remove()
 {
-    if (!selectionCount())
-        return;
+    QList<QString> names;
 
-    mLife->remGene(mLife->genom().genes().at(currentRow()));
+    qDebug()<<"count"<<view()->selectionModel()->selectedRows().count();
+
+    foreach (QModelIndex index, view()->selectionModel()->selectedRows())
+        names.append(mGenom.genes().at(index.row()).name());
+
+    foreach (QString name, names)
+       mGenom.remove(name);
+
+
 
     refresh();
-    emit changed();
 
 
 }
@@ -56,10 +75,8 @@ void GenomView::remove()
 void GenomView::refresh()
 {
     mModel->clear();
-    mModel->setHorizontalHeaderLabels(QStringList()<<"identify: "+
-                                      mLife->genom().identity());
 
-    foreach (Gene g, mLife->genom().genes())
+    foreach (Gene g, mGenom.genes())
     {
         QPixmap pix(16,16);
         pix.fill(Qt::transparent);
@@ -71,7 +88,9 @@ void GenomView::refresh()
         QStandardItem * item = new QStandardItem;
         item->setEditable(false);
         item->setIcon(QIcon(pix));
-        item->setText(g.name());
+        item->setText(QString("%1 : %2").arg(g.name()).arg(g.value()));
+        item->setToolTip(QString("[%1-%2] v:%3 p:%4").arg(g.min()).arg(g.max())
+                         .arg(g.variance()).arg(g.mutationProbability()));
         mModel->appendRow(item);
     }
 

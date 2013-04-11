@@ -24,45 +24,44 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
-
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include "genecombobox.h"
+#include <QPainter>
+GeneComboBox::GeneComboBox(QWidget *parent) :
+    QComboBox(parent)
 {
-    Q_OBJECT
-public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+}
 
+void GeneComboBox::setLife(const Life &life)
+{
+    mLife = life;
+    clear();
 
-protected slots:
-    void setRange();
-    void nameChanged(const QString& name);
+    foreach (Gene gene, life.genom().genes())
+    {
+        QPixmap pix(16,16);
+        pix.fill(Qt::transparent);
+        QPainter painter(&pix);
+        painter.setRenderHint(QPainter::Antialiasing,true);
+        painter.setBrush(QBrush(gene.rootColor()));
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(QRect(0,0,15,15));
 
-private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-    QSpinBox * mMinSpinBox;
-    QSpinBox * mMaxSpinBox;
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
+        addItem(QIcon(pix), gene.name());
 
 
 
+    }
 
-    
-};
 
-#endif // GENEDIALOG_H
+
+
+}
+
+Gene GeneComboBox::currentGene() const
+{
+
+    return mLife.genom().genes().at(currentIndex());
+
+
+
+}

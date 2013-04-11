@@ -6,17 +6,15 @@ ActionListView::ActionListView(QWidget *parent) :
 {
     mToolBar = new QToolBar;
     mView = new QListView;
-    mStatusBar = new QStatusBar;
     mToolBar->setIconSize(QSize(16,16));
+    mView->setIconSize(QSize(16,16));
 
     QVBoxLayout * layout  =new QVBoxLayout;
     layout->addWidget(mToolBar);
     layout->addWidget(mView);
-    layout->addWidget(mStatusBar);
     layout->setSpacing(0);
     layout->setContentsMargins(0,0,0,0);
     setLayout(layout);
-    mStatusBar->setSizeGripEnabled(false);
 
     QWidget* spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -29,10 +27,11 @@ ActionListView::ActionListView(QWidget *parent) :
 
     mRefreshAction =  mToolBar->addAction(QIcon(":refresh"),"refresh",this,SLOT(refresh()));
 
-    connect(mView,SIGNAL(doubleClicked(QModelIndex)),this,SIGNAL(doubleClicked()));
-    connect(mView,SIGNAL(clicked(QModelIndex)),this,SIGNAL(clicked()));
+    connect(mView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(edit()));
 
 
+    mView->setSelectionMode(QAbstractItemView::ContiguousSelection);
+    mView->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 
@@ -61,7 +60,6 @@ void ActionListView::remove()
 
 void ActionListView::showMessage(const QString &msg)
 {
-    mStatusBar->showMessage(msg);
 }
 
 

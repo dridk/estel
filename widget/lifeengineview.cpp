@@ -26,6 +26,11 @@ void LifeEngineView::setEngine(LifeEngine *engine)
     refresh();
 }
 
+LifeEngine *LifeEngineView::engine()
+{
+    return mEngine;
+}
+
 QList<Life *> LifeEngineView::lifeSelected() const
 {
     Q_ASSERT_X(mEngine !=NULL, "LifeEngineView::lifeSelected", "no lifeEngine set");
@@ -53,27 +58,39 @@ void LifeEngineView::refresh()
     clear();
     foreach (Life * life, mEngine->lifes())
     {
-        if (life->name() == mCurrentLifeName || mCurrentLifeName.isEmpty())
+
+        if (mGenesFilter.contains(life->name()))
         {
             QColor col = Qt::black;
-            if (life->genom().contains(mCurrentGeneName))
-                col = life->gene(mCurrentGeneName).color();
+            QString geneName = mGenesFilter[life->name()];
+            if (life->genom().contains(geneName))
+                col = life->gene(geneName).color();
 
             switchOn(life->x(),life->y(), col);
 
+
         }
+
+
     }
+
+    gridWidget()->repaint();
 }
 
-void LifeEngineView::setLifeFilter(const QString &lifeName)
+void LifeEngineView::addFilter(const QString &lifeName, const QString &geneName)
 {
-    mCurrentLifeName = lifeName;
-
+    mGenesFilter[lifeName] = geneName;
 }
 
-void LifeEngineView::setGeneFilter(const QString &geneName)
+
+void LifeEngineView::clearFilter()
 {
-    mCurrentGeneName = geneName;
+    mGenesFilter.clear();
+}
+
+void LifeEngineView::remFilter(const QString &lifeName)
+{
+    mGenesFilter.remove(lifeName);
 }
 
 void LifeEngineView::selectLife(const QPoint &pos)
@@ -82,3 +99,4 @@ void LifeEngineView::selectLife(const QPoint &pos)
     selectOn(pos.x(),pos.y());
 
 }
+

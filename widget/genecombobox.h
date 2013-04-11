@@ -24,45 +24,25 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
+#ifndef GENECOMBOBOX_H
+#define GENECOMBOBOX_H
 
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include <QComboBox>
+#include "life.h"
+class GeneComboBox : public QComboBox
 {
     Q_OBJECT
 public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
-
-
-protected slots:
-    void setRange();
-    void nameChanged(const QString& name);
+    explicit GeneComboBox(QWidget *parent = 0);
+    void setLife(const Life& life);
+     Gene currentGene() const;
+    
+signals:
+    
+public slots:
 
 private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-    QSpinBox * mMinSpinBox;
-    QSpinBox * mMaxSpinBox;
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
-
-
-
-
-    
+Life mLife;
 };
 
-#endif // GENEDIALOG_H
+#endif // GENECOMBOBOX_H

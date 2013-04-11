@@ -19,7 +19,7 @@ void Genom::mutate()
     }
 }
 
-void Genom::add(Gene gene)
+void Genom::append(Gene gene)
 {
     if ( mGenes.contains(gene.name()))
     {
@@ -29,9 +29,14 @@ void Genom::add(Gene gene)
     mGenes.insert(gene.name(),gene);
 }
 
-void Genom::rem(Gene gene)
+void Genom::remove(Gene gene)
 {
-    mGenes.remove(gene.name());
+   remove(gene.name());
+}
+
+void Genom::remove(const QString &name)
+{
+    mGenes.remove(name);
 }
 
 Gene& Genom::gene(const QString &name)

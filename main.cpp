@@ -10,8 +10,11 @@
 #include "life.h"
 #include "jsedit.h"
 #include "lifeengineview.h"
-#include "lifesview.h"
+#include "lifelistview.h"
 #include "genomview.h"
+#include "mainwindow.h"
+#include "genecombobox.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -26,23 +29,14 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
-    LifeEngine * engine = new LifeEngine;
-    engine->addLife(new Life());
-    engine->addLife(new Life(4,3));
-    engine->addLife(new Life(14,3));
+    MainWindow * window = new MainWindow;
+
+    window->show();
 
 
 
-//    GenomView * gv = new GenomView(new Life);
-//    gv->show();
-
-    Life * life = new Life;
-    life->addGene(Gene("sexe"));
-    life->addGene(Gene("taille"));
 
 
-    GeneDialog * g = new GeneDialog;
-    g->show();
 
 
 

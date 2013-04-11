@@ -24,45 +24,51 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
+#include "lifeengineviewfilterdelegate.h"
 
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+LifeEngineViewFilterDelegate::LifeEngineViewFilterDelegate(QObject *parent) :
+    QItemDelegate(parent)
 {
-    Q_OBJECT
-public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+}
 
+QWidget *LifeEngineViewFilterDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+   QString name = index.data(Qt::UserRole+1).toString();
+   GeneComboBox * combo = new GeneComboBox(parent);
 
-protected slots:
-    void setRange();
-    void nameChanged(const QString& name);
+   qDebug()<<"name : "<<name;
+   qDebug()<<"life is "<<mLifes[name].name();
 
-private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-    QSpinBox * mMinSpinBox;
-    QSpinBox * mMaxSpinBox;
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
+   combo->setLife(mLifes[name]);
+   return combo;
+}
+
+void LifeEngineViewFilterDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    GeneComboBox *combo = qobject_cast<GeneComboBox*>(editor);
 
 
 
+}
 
-    
-};
+void LifeEngineViewFilterDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    GeneComboBox *combo = qobject_cast<GeneComboBox*>(editor);
+    model->setData(index, combo->currentGene().name());
 
-#endif // GENEDIALOG_H
+    QPixmap pix(16,16);
+    pix.fill(combo->currentGene().rootColor());
+
+
+
+}
+
+void LifeEngineViewFilterDelegate::addLife(const QString &name, const Life &life)
+{
+    mLifes[name] = Life(life);
+}
+
+void LifeEngineViewFilterDelegate::clearLife()
+{
+    mLifes.clear();
+}

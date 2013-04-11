@@ -4,19 +4,20 @@
 #include <QWidget>
 #include <QSlider>
 #include <QPainter>
-#include "gene.h"
-class GeneColorWidget : public QWidget
+class ColorGradientWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GeneColorWidget(QWidget *parent = 0);
+    explicit ColorGradientWidget(QWidget *parent = 0);
     void paintEvent(QPaintEvent *);
 
-    void setGene(const Gene& gene);
+public slots:
+    void setColor(const QColor& col);
+
     
 
 private:
-    Gene mGene;
+    QColor mColor;
 
     
 };

@@ -67,7 +67,7 @@ public:
     void setValue(int val);
 
     //! \brief set the minimum and maximum of the current gene value
-    void setLimit(int min, int max);
+    void setRange(int min, int max);
 
     //! \brief set the current gene name
     void setName(const QString& name);

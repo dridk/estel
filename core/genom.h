@@ -19,13 +19,16 @@ public:
     void mutate();
 
     //! \brief add gene
-    void add(Gene gene);
+    void append(Gene gene);
 
-    //! \brief add gene
-    void rem(Gene gene);
+    //! \brief remove gene
+    void remove(Gene gene);
+
+    //! \brief remove gene
+    void remove(const QString& name);
 
     //! \return all genes in a QList
-    const QList<Gene> genes()const{return mGenes.values();}
+     QList<Gene> genes()const{return mGenes.values();}
 
     //! \return gene by his name
     //! \param name : the name of gene

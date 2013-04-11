@@ -4,15 +4,18 @@
 #include "lifeengine.h"
 #include <QStandardItemModel>
 #include "lifedialog.h"
-class LifesView : public ActionListView
+class LifeListView : public ActionListView
 {
     Q_OBJECT
 public:
-    explicit LifesView(LifeEngine * engine,QWidget *parent = 0);
+    explicit LifeListView(QWidget *parent = 0);
 
     void refresh();
+    void add();
     void remove();
     void edit();
+
+    void setEngine(LifeEngine * engine);
 
 private:
     LifeEngine * mEngine;

@@ -58,6 +58,7 @@ public:
     void clear();
     void clearSelection();
     void setCellSize(int size);
+
     QPixmap * snap() ;
 
     const QList<QPoint>& selection() const {return mSelection;}
@@ -143,6 +144,11 @@ public:
     QPixmap * snap() {
         return mGridWidget->snap();
     }
+
+    GridWidget * gridWidget() {
+    return mGridWidget;
+    }
+
 signals:
     void cellClicked(QPoint pos);
 
