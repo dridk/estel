@@ -31,7 +31,9 @@
 #include "lifeengine.h"
 #include "lifeengineview.h"
 #include "lifelistview.h"
-#include "lifeengineviewfilterwidget.h"
+#include "lifefilterwidget.h"
+#include "genefilterwidget.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -49,12 +51,16 @@ public slots:
     void open();
     void save();
     void saveAs();
+
+protected slots:
+
 private:
     Ui::MainWindow *ui;
     LifeEngine * mEngine;
     LifeEngineView * mEngineView;
     LifeListView * mLifeListView;
-    LifeEngineViewFilterWidget * mFilterWidget;
+    LifeFilterWidget * mLifeFilterWidget;
+    GeneFilterWidget * mGeneFilterWidget;
 
 };
 

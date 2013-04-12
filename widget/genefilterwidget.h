@@ -24,36 +24,31 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef LIFEENGINEFILTERWIDGET_H
-#define LIFEENGINEFILTERWIDGET_H
+#ifndef GENEFILTERWIDGET_H
+#define GENEFILTERWIDGET_H
 
 #include <QListView>
-#include <QTableView>
+#include <QStandardItemModel>
 #include "lifeengineview.h"
-#include "lifeengineviewfilterdelegate.h"
-class LifeEngineViewFilterWidget : public QTableView
+class GeneFilterWidget : public QListView
 {
     Q_OBJECT
 public:
-    explicit LifeEngineViewFilterWidget(QWidget * parent = 0);
+    explicit GeneFilterWidget(QWidget *parent = 0);
     void setEngineView(LifeEngineView * view);
-     QString lifeName(int row) const;
-     QString geneName(int row) const;
-    bool checked(int row)const;
-    int count() const;
 
+signals:
+    
 public slots:
     void refresh();
 
-signals:
-    void changed();
+protected slots:
+    void setFilter();
 
 private:
     LifeEngineView * mEngineView;
-    LifeEngineViewFilterDelegate * mDelegate;
     QStandardItemModel * mModel;
-    QHash<QString,QString> mGenesFilter;
     
 };
 
-#endif // LIFEENGINEFILTERWIDGET_H
+#endif // GENEFILTERWIDGET_H

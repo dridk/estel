@@ -3,7 +3,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 LifeEngineView::LifeEngineView(QWidget *parent):
-    GridView(100,100,parent)
+    GridView(500,500,parent)
 {
     mEngine = NULL;
 
@@ -14,6 +14,7 @@ LifeEngineView::LifeEngineView(QWidget *parent):
     connect(action,SIGNAL(triggered()),this,SLOT(refresh()));
     connect(this,SIGNAL(cellClicked(QPoint)),this,SLOT(selectLife(QPoint)));
 
+
 }
 
 LifeEngineView::~LifeEngineView()
@@ -23,6 +24,8 @@ LifeEngineView::~LifeEngineView()
 void LifeEngineView::setEngine(LifeEngine *engine)
 {
     mEngine = engine;
+    setGridSize(engine->rows(),engine->columns());
+    connect(mEngine,SIGNAL(changed()),this,SLOT(refresh()));
     refresh();
 }
 
@@ -59,16 +62,16 @@ void LifeEngineView::refresh()
     foreach (Life * life, mEngine->lifes())
     {
 
-        if (mGenesFilter.contains(life->name()))
+        if (mLifeFilter.contains(life->name()))
         {
             QColor col = Qt::black;
-            QString geneName = mGenesFilter[life->name()];
-            if (life->genom().contains(geneName))
-                col = life->gene(geneName).color();
 
+            foreach (Gene gene, life->genom().genes())
+            {
+                if (mGeneFilter.contains(gene.name()))
+                    col = gene.color();
+            }
             switchOn(life->x(),life->y(), col);
-
-
         }
 
 
@@ -77,22 +80,14 @@ void LifeEngineView::refresh()
     gridWidget()->repaint();
 }
 
-void LifeEngineView::addFilter(const QString &lifeName, const QString &geneName)
+void LifeEngineView::setLifeFilter(const QStringList &names)
 {
-    mGenesFilter[lifeName] = geneName;
+    mLifeFilter = names;
 }
-
-
-void LifeEngineView::clearFilter()
+void LifeEngineView::setGeneFilter(const QStringList &names)
 {
-    mGenesFilter.clear();
+    mGeneFilter = names;
 }
-
-void LifeEngineView::remFilter(const QString &lifeName)
-{
-    mGenesFilter.remove(lifeName);
-}
-
 void LifeEngineView::selectLife(const QPoint &pos)
 {
     qDebug()<<pos;

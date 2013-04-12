@@ -35,8 +35,9 @@ LifeEngineViewFilterWidget::LifeEngineViewFilterWidget(QWidget *parent):
     mDelegate = new LifeEngineViewFilterDelegate;
     mModel->setColumnCount(2);
     setItemDelegate(mDelegate);
-   verticalHeader()->hide();
-   verticalHeader()->setMinimumSectionSize(10);
+    verticalHeader()->hide();
+    verticalHeader()->setDefaultSectionSize(22);
+    setShowGrid(false);
     setModel(mModel);
     setWindowTitle("Filter");
 
@@ -51,6 +52,8 @@ LifeEngineViewFilterWidget::LifeEngineViewFilterWidget(QWidget *parent):
     setSelectionBehavior(QAbstractItemView::SelectRows);
     horizontalHeader()->setDefaultSectionSize(10);
 
+    connect(mModel,SIGNAL(itemChanged(QStandardItem*)),this,SIGNAL(changed()));
+
 
 
 }
@@ -59,7 +62,33 @@ void LifeEngineViewFilterWidget::setEngineView(LifeEngineView *view)
 {
     mEngineView = view;
 
+}
 
+QString LifeEngineViewFilterWidget::lifeName(int row) const
+{
+    if (mModel->hasIndex(0,0))
+        return mModel->item(row)->text();
+    else
+        return QString();
+
+}
+
+QString LifeEngineViewFilterWidget::geneName(int row) const
+{
+    if (mModel->hasIndex(0,1))
+        return mModel->item(row,1)->text();
+    else
+        return QString();
+}
+
+bool LifeEngineViewFilterWidget::checked(int row) const
+{
+    return mModel->item(row)->checkState() == Qt::Checked;
+}
+
+int LifeEngineViewFilterWidget::count() const
+{
+    return mModel->rowCount();
 }
 
 void LifeEngineViewFilterWidget::refresh()
@@ -71,29 +100,44 @@ void LifeEngineViewFilterWidget::refresh()
     mModel->clear();
     mDelegate->clearLife();
 
-    foreach (Life * life, mEngineView->engine()->lifes()){
-        mGenesFilter[life->name()] ="";
+    foreach (Life * life, mEngineView->engine()->lifes())
         mDelegate->addLife(life->name(),*life);
 
-    }
 
-    foreach (QString name, mGenesFilter.keys())
+    foreach (Life life, mDelegate->lifes())
     {
         QStandardItem * item = new QStandardItem;
-        item->setText(name);
+        item->setText(life.name());
+
+
         item->setCheckable(true);
         item->setCheckState(Qt::Checked);
         item->setEditable(false);
 
         QStandardItem * geneItem = new QStandardItem;
-        geneItem->setText("gene");
-        geneItem->setEditable(true);
-        geneItem->setData(name);
+
+        if (life.genom().count() > 0)
+        {
+            geneItem->setText(life.genom().genes().first().name());
+            geneItem->setEditable(true);
+            geneItem->setEnabled(true);
+        }
+        else
+        {
+            geneItem->setText("no genes");
+            geneItem->setEditable(false);
+            QFont font = geneItem->font();
+            font.setItalic(true);
+            geneItem->setFont(font);
+            geneItem->setData(Qt::lightGray,Qt::TextColorRole);
+        }
+
+        geneItem->setData(life.name());
+
 
         QList<QStandardItem*> list;
         list.append(item);
         list.append(geneItem);
-
         mModel->appendRow(list);
 
     }

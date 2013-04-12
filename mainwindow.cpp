@@ -34,13 +34,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mEngine = new LifeEngine;
+    mEngine = new LifeEngine(500,500);
     mEngineView = new LifeEngineView;
     mLifeListView = new LifeListView;
-    mFilterWidget = new LifeEngineViewFilterWidget;
+    mLifeFilterWidget = new LifeFilterWidget;
+    mGeneFilterWidget = new GeneFilterWidget;
+
     mEngineView->setEngine(mEngine);
     mLifeListView->setEngine(mEngine);
-    mFilterWidget->setEngineView(mEngineView);
+    mLifeFilterWidget->setEngineView(mEngineView);
+    mGeneFilterWidget->setEngineView(mEngineView);
+
 
     setCentralWidget(mEngineView);
 
@@ -49,21 +53,29 @@ MainWindow::MainWindow(QWidget *parent) :
     lifeListDock->setWindowTitle(mLifeListView->windowTitle());
     lifeListDock->setWindowIcon(mLifeListView->windowIcon());
 
-    QDockWidget * filterDock = new QDockWidget;
-    filterDock->setWidget(mFilterWidget);
-    filterDock->setWindowTitle(mFilterWidget->windowTitle());
-    filterDock->setWindowIcon(mFilterWidget->windowIcon());
+    QDockWidget * lifeFilterDock = new QDockWidget;
+    lifeFilterDock->setWidget(mLifeFilterWidget);
+    lifeFilterDock->setWindowTitle(mLifeFilterWidget->windowTitle());
+    lifeFilterDock->setWindowIcon(mLifeFilterWidget->windowIcon());
+
+    QDockWidget * geneFilterDock = new QDockWidget;
+    geneFilterDock->setWidget(mGeneFilterWidget);
+    geneFilterDock->setWindowTitle(mGeneFilterWidget->windowTitle());
+    geneFilterDock->setWindowIcon(mGeneFilterWidget->windowIcon());
 
 
     addDockWidget(Qt::LeftDockWidgetArea, lifeListDock);
-    addDockWidget(Qt::LeftDockWidgetArea, filterDock);
+    addDockWidget(Qt::LeftDockWidgetArea, lifeFilterDock);
+    addDockWidget(Qt::LeftDockWidgetArea, geneFilterDock);
 
 
-    connect(mLifeListView,SIGNAL(changed()),mEngineView,SLOT(refresh()));
+
+
+
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(open()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(save()));
     connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAs()));
-
+    connect(ui->actionStep,SIGNAL(triggered()),mEngine,SLOT(step()));
 
 
 }
@@ -101,4 +113,5 @@ void MainWindow::saveAs()
     setWindowTitle(fileName);
 
 }
+
 

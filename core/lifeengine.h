@@ -18,27 +18,25 @@ public:
     //! \brief Constructor
     //! \param rows : the number of rows
     //! \param columns : the number of rows
-    LifeEngine(int rows =100 , int columns=100);
+    LifeEngine(int rows =500 , int columns=500);
     ~LifeEngine();
 
     //! \brief add life
     //! \param life : life pointer
-    Q_INVOKABLE void addLife(Life * life);
+    Q_INVOKABLE bool addLife(Life * life);
 
     //! \brief rem life
     //! \param x : x position of the life to remove
     //! \param y : y position of the life to remove
-    Q_INVOKABLE void remLife(int x, int y);
+    Q_INVOKABLE bool remLife(int x, int y);
 
     //! \brief rem life
     //! \param Life* : Life pointer
-    Q_INVOKABLE void remLife(Life * life);
+    Q_INVOKABLE bool remLife(Life * life);
 
     //! \return return all lifes
     Q_INVOKABLE QList<Life*> lifes() const;
 
-    //! \brief clear all lifes
-    Q_INVOKABLE void clear();
 
     //! \return lifes count
     Q_INVOKABLE int population();
@@ -61,9 +59,10 @@ public:
     //! \return Life* if life exist, otherwise return NULL
     Q_INVOKABLE Life* life(int x, int y) const;
 
-    //! \brief evaluate the logic script of life
-    //! \return true if success, otherwise return false
-    bool evaluateLife(Life * life);
+
+public slots:
+    //! \brief clear all lifes
+    Q_INVOKABLE void clear();
 
     //! \brief load a simulation from a json file
     //! \return true is success, otherwise return false
@@ -81,11 +80,8 @@ public:
     //! if Life::step() return false, remove it. Otherwise do nothing.
     void step();
 
-    Q_INVOKABLE void debug(const QString& msg);
-    Q_INVOKABLE void error(const QString& msg);
-
-    const QString& lastDebug() const;
-    const QString& lastError() const;
+signals:
+    void changed();
 
 private:
     QHash<int,Life*> mLifeList;

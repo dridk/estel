@@ -37,7 +37,9 @@ SOURCES += main.cpp\
     mainwindow.cpp \
     widget/genecombobox.cpp \
     widget/lifeengineviewfilterwidget.cpp \
-    widget/lifeengineviewfilterdelegate.cpp
+    widget/lifeengineviewfilterdelegate.cpp \
+    widget/genefilterwidget.cpp \
+    widget/lifefilterwidget.cpp
 #    qxtjson/jsonmodel.cpp \
 #    widget/lifefileview.cpp \
 #    widget/addlifecommand.cpp \
@@ -70,7 +72,9 @@ HEADERS  += gene.h \
     mainwindow.h \
     widget/genecombobox.h \
     widget/lifeengineviewfilterwidget.h \
-    widget/lifeengineviewfilterdelegate.h
+    widget/lifeengineviewfilterdelegate.h \
+    widget/genefilterwidget.h \
+    widget/lifefilterwidget.h
 #    qxtjson/jsonmodel.h \
 #    widget/addlifecommand.h \
 #    widget/aboutdialog.h

@@ -63,24 +63,23 @@ LifeDialog::~LifeDialog()
 
 void LifeDialog::setLife(const Life &life)
 {
+    mLife = life;
     mNameEdit->setText(life.name());
     mAgeSpinBox->setValue(life.age());
     mXSpinBox->setValue(life.x());
     mYSpinBox->setValue(life.y());
-
-   Genom genom = life.genom();
-
+    Genom genom = life.genom();
     mGenomView->setGenom(genom);
 }
 
- Life LifeDialog::life()
+const Life& LifeDialog::life()
 {
-    Life life;
-    life.setName(mNameEdit->text());
-    life.setAge(mAgeSpinBox->value());
-    life.setX(mXSpinBox->value());
-    life.setY(mYSpinBox->value());
-    life.setGenom(mGenomView->genom());
-    return life;
+
+    mLife.setName(mNameEdit->text());
+    mLife.setAge(mAgeSpinBox->value());
+    mLife.setX(mXSpinBox->value());
+    mLife.setY(mYSpinBox->value());
+    mLife.setGenom(mGenomView->genom());
+    return mLife;
 
 }

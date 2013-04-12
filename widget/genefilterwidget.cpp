@@ -24,36 +24,64 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef LIFEENGINEFILTERWIDGET_H
-#define LIFEENGINEFILTERWIDGET_H
+#include "genefilterwidget.h"
 
-#include <QListView>
-#include <QTableView>
-#include "lifeengineview.h"
-#include "lifeengineviewfilterdelegate.h"
-class LifeEngineViewFilterWidget : public QTableView
+GeneFilterWidget::GeneFilterWidget(QWidget *parent) :
+    QListView(parent)
 {
-    Q_OBJECT
-public:
-    explicit LifeEngineViewFilterWidget(QWidget * parent = 0);
-    void setEngineView(LifeEngineView * view);
-     QString lifeName(int row) const;
-     QString geneName(int row) const;
-    bool checked(int row)const;
-    int count() const;
+    mEngineView = NULL;
+    mModel = new QStandardItemModel;
+    setModel(mModel);
 
-public slots:
-    void refresh();
+    setWindowTitle("Gene filter");
 
-signals:
-    void changed();
+    QAction * refreshAction = new QAction("refresh",this);
+    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
+    connect(mModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(setFilter()));
+    addAction(refreshAction);
 
-private:
-    LifeEngineView * mEngineView;
-    LifeEngineViewFilterDelegate * mDelegate;
-    QStandardItemModel * mModel;
-    QHash<QString,QString> mGenesFilter;
-    
-};
+    setContextMenuPolicy(Qt::ActionsContextMenu);
 
-#endif // LIFEENGINEFILTERWIDGET_H
+}
+
+void GeneFilterWidget::setEngineView(LifeEngineView *view)
+{
+    mEngineView = view;
+}
+
+void GeneFilterWidget::refresh()
+{
+    mModel->clear();
+    QHash<QString, Gene> genes;
+    foreach (Life * life, mEngineView->engine()->lifes())
+    {
+        foreach (Gene gene, life->genom().genes())
+            genes.insert(gene.name(), gene);
+
+    }
+    foreach (Gene gene, genes)
+    {
+        QStandardItem * item = new QStandardItem;
+        item->setText(gene.name());
+        item->setCheckable(true);
+        item->setCheckState(Qt::Checked);
+        item->setEditable(false);
+
+        mModel->appendRow(item);
+    }
+}
+
+void GeneFilterWidget::setFilter()
+{
+    QStringList names;
+    for (int i=0; i<mModel->rowCount(); ++i)
+    {
+        if (mModel->item(i)->checkState() == Qt::Checked)
+            names.append(mModel->item(i)->text());
+    }
+
+    mEngineView->setGeneFilter(names);
+    mEngineView->refresh();
+
+
+}

@@ -24,36 +24,65 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef LIFEENGINEFILTERWIDGET_H
-#define LIFEENGINEFILTERWIDGET_H
+#include "lifefilterwidget.h"
 
-#include <QListView>
-#include <QTableView>
-#include "lifeengineview.h"
-#include "lifeengineviewfilterdelegate.h"
-class LifeEngineViewFilterWidget : public QTableView
+LifeFilterWidget::LifeFilterWidget(QWidget *parent) :
+    QListView(parent)
 {
-    Q_OBJECT
-public:
-    explicit LifeEngineViewFilterWidget(QWidget * parent = 0);
-    void setEngineView(LifeEngineView * view);
-     QString lifeName(int row) const;
-     QString geneName(int row) const;
-    bool checked(int row)const;
-    int count() const;
+    mEngineView = NULL;
+    mModel = new QStandardItemModel;
+    setModel(mModel);
 
-public slots:
-    void refresh();
+    setWindowTitle("Life filter");
 
-signals:
-    void changed();
 
-private:
-    LifeEngineView * mEngineView;
-    LifeEngineViewFilterDelegate * mDelegate;
-    QStandardItemModel * mModel;
-    QHash<QString,QString> mGenesFilter;
-    
-};
+    QAction * refreshAction = new QAction("refresh",this);
+    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
+    addAction(refreshAction);
 
-#endif // LIFEENGINEFILTERWIDGET_H
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+
+}
+
+void LifeFilterWidget::setEngineView(LifeEngineView *view)
+{
+    mEngineView = view;
+
+    connect(mModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(setFilter()));
+}
+
+void LifeFilterWidget::refresh()
+{
+    mModel->clear();
+
+    QHash<QString,Life*> lifes;
+
+    foreach (Life * life,mEngineView->engine()->lifes())
+        lifes.insert(life->name(),life);
+
+    foreach (Life * life, lifes.values())
+    {
+
+        QStandardItem * item  = new QStandardItem;
+        item->setText(life->name());
+        item->setCheckable(true);
+        item->setEditable(false);
+        item->setCheckState(Qt::Checked);
+        mModel->appendRow(item);
+    }
+}
+
+void LifeFilterWidget::setFilter()
+{
+    QStringList names;
+
+    for (int i=0; i<mModel->rowCount(); ++i)
+    {
+        if (mModel->item(i)->checkState() == Qt::Checked)
+            names.append(mModel->item(i)->text());
+    }
+
+    mEngineView->setLifeFilter(names);
+    mEngineView->refresh();
+
+}

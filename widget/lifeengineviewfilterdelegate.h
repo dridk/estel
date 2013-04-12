@@ -39,6 +39,7 @@ public:
     virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
     void addLife(const QString& name, const Life& life);
+    QList<Life> lifes() const;
     void clearLife();
 
 

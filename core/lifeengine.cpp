@@ -19,47 +19,54 @@ LifeEngine::~LifeEngine()
     mLifeList.clear();
 }
 
-void LifeEngine::addLife(Life *life)
+bool LifeEngine::addLife(Life *life)
 {
 
     int index =  mColumns * life->x()  + life->y();
 
+    if (life->x() > mRows ||life->x()<0 || life->y() > mColumns || life->y()<0)
+    {
+        qDebug()<<"life pos out of grid";
+        return false;
+    }
+
     if (mLifeList.keys().contains(index)) {
         qDebug()<<"life already set for this position "<<life->pos();
-        return;
+        return false;
     }
 
     if (index >= mRows * mColumns){
         qDebug()<<"life position out of range";
-        return;
+        return false;
     }
 
     mLifeList.insert(index,life);
     life->setEngine(this);
     life->init();
+    return true;
 }
 
-void LifeEngine::remLife(int x, int y)
+bool LifeEngine::remLife(int x, int y)
 {
     int index =  mColumns * x + y;
-    if (mLifeList.keys().contains(index))
+    if (mLifeList.keys().contains(index)){
         mLifeList.remove(index);
+        return true;
+    }
+    return false;
 }
 
-void LifeEngine::remLife(Life *life)
+bool LifeEngine::remLife(Life *life)
 {
-
-        int index =  mColumns * life->x()+ life->y();
-
-        if (mLifeList.keys().contains(index))
-        {
-            qDebug()<<"yes"<<index;
-            qDebug()<<mLifeList[index]->name();
-            mLifeList.remove(index);
-        }
-
+    int index =  mColumns * life->x()+ life->y();
+    if (mLifeList.keys().contains(index))
+    {
+        qDebug()<<"yes"<<index;
+        mLifeList.remove(index);
+        return true;
+    }
+    return false;
 }
-
 
 QList<Life*> LifeEngine::lifes() const
 {
@@ -88,17 +95,33 @@ void LifeEngine::run(int iteration)
 
 void LifeEngine::step()
 {
-    QHash<int,Life*> ::iterator i = mLifeList.begin();
-    while (i != mLifeList.end()) {
+    QList<Life*> lifes = mLifeList.values();
+    QList<Life*>::iterator it = lifes.begin();
 
-        Life * currentLife = mLifeList[i.key()];
-        bool isLive = evaluateLife(currentLife);
+    while (it != lifes.end()) {
 
-        if (!isLive){
-            i = mLifeList.erase(i);
-        }
-        else i++;
+       Life * currentLife = *it;
+       bool isLive = currentLife->step();
+       if (!isLive){
+           int index = currentLife->index();
+            it = lifes.erase(it);
+            mLifeList.remove(index);
+       }
+       else it++;
     }
+
+    emit changed();
+
+//    while (it != mLifeList.end()) {
+
+//        Life * currentLife = it;
+////        bool isLive = currentLife->step();
+
+////        if (!isLive){
+////            i = mLifeList.erase(i);
+////        }
+////        else i++;
+//    }
 
 }
 
@@ -106,44 +129,6 @@ int LifeEngine::population()
 {
     return mLifeList.count();
 }
-
-
-
-bool LifeEngine::evaluateLife(Life *life)
-{
-    //    mLastError.clear();
-    //    mLastDebug.clear();
-
-    //    // Set context Property ....
-    //    QScriptValue lifeObj = mScriptEngine.newQObject(life);
-    //    mScriptEngine.globalObject().setProperty("life",lifeObj);
-
-    //    //evaluate script
-
-    //    QScriptValue result = mScriptEngine.evaluate(life->script());
-    //    if (result.isError())
-    //    {
-    //        error("Error in script("
-    //              +result.property("lineNumber").toString()+"):"
-    //              +result.property("message").toString());
-    //        qDebug()<<"script error";
-    //        return true;
-    //    }
-    //    //evaluate function
-    //    QScriptValue runFunction = mScriptEngine.globalObject().property("step");
-    //    if (!runFunction.isFunction())
-    //    {
-    //        qDebug()<<"cannot find step function";
-    //        error("cannot find step function");
-    //    }
-
-
-    //    qDebug()<<lastError();
-    //    return runFunction.call().toBool();
-}
-
-
-
 
 
 bool LifeEngine::load(const QString &filename)
@@ -201,9 +186,11 @@ int LifeEngine::columns() const
 
 bool LifeEngine::hasLife(int x, int y) const
 {
-    int index =  mColumns * x + y;
+
+    int index =  columns() * x + y;
     if (mLifeList.contains(index))
         return true;
+
     return false;
 
 }
@@ -216,25 +203,3 @@ Life *LifeEngine::life(int x, int y) const
     else
         return NULL;
 }
-
-void LifeEngine::debug(const QString &msg)
-{
-    mLastDebug.append(msg);
-}
-
-void LifeEngine::error(const QString &msg)
-{
-    mLastError.append(msg);
-}
-
-const QString &LifeEngine::lastDebug() const
-{
-    return mLastDebug;
-}
-
-const QString &LifeEngine::lastError() const
-{
-    return mLastError;
-}
-
-

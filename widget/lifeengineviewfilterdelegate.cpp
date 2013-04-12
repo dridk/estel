@@ -33,19 +33,20 @@ LifeEngineViewFilterDelegate::LifeEngineViewFilterDelegate(QObject *parent) :
 
 QWidget *LifeEngineViewFilterDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-   QString name = index.data(Qt::UserRole+1).toString();
-   GeneComboBox * combo = new GeneComboBox(parent);
+    if (index.column() == 1)
+    {
+        QString name = index.data(Qt::UserRole+1).toString();
+        GeneComboBox * combo = new GeneComboBox(parent);
 
-   qDebug()<<"name : "<<name;
-   qDebug()<<"life is "<<mLifes[name].name();
-
-   combo->setLife(mLifes[name]);
-   return combo;
+        combo->setLife(mLifes[name]);
+        return combo;
+    }
 }
 
 void LifeEngineViewFilterDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    GeneComboBox *combo = qobject_cast<GeneComboBox*>(editor);
+    if (index.column() == 1)
+        GeneComboBox *combo = qobject_cast<GeneComboBox*>(editor);
 
 
 
@@ -53,12 +54,12 @@ void LifeEngineViewFilterDelegate::setEditorData(QWidget *editor, const QModelIn
 
 void LifeEngineViewFilterDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-    GeneComboBox *combo = qobject_cast<GeneComboBox*>(editor);
-    model->setData(index, combo->currentGene().name());
-
-    QPixmap pix(16,16);
-    pix.fill(combo->currentGene().rootColor());
-
+    if (index.column() == 1) {
+        GeneComboBox *combo = qobject_cast<GeneComboBox*>(editor);
+        model->setData(index, combo->currentGene().name());
+        QPixmap pix(16,16);
+        pix.fill(combo->currentGene().rootColor());
+    }
 
 
 }
@@ -66,6 +67,11 @@ void LifeEngineViewFilterDelegate::setModelData(QWidget *editor, QAbstractItemMo
 void LifeEngineViewFilterDelegate::addLife(const QString &name, const Life &life)
 {
     mLifes[name] = Life(life);
+}
+
+QList<Life> LifeEngineViewFilterDelegate::lifes() const
+{
+    return mLifes.values();
 }
 
 void LifeEngineViewFilterDelegate::clearLife()

@@ -80,6 +80,13 @@ int Life::age() const
     return mAge;
 }
 
+int Life::index() const
+{
+    if (mEngine == NULL)
+        return -1;
+    return mEngine->columns()*x() + y();
+}
+
 const Genom &Life::genom() const
 {
     return mGenom;
@@ -99,6 +106,40 @@ void Life::setGenom(const Genom &genom)
 
 bool Life::step()
 {
+    mAge++;
+
+    int i =  qrand()%7;
+
+    qDebug()<<"val" <<i;
+
+    int ax=0;
+    int ay=0;
+
+    switch ( i)
+    {
+    case 0 : ax=-1; ay=-1;break;
+    case 1 : ax=0; ay=-1;break;
+    case 2 : ax=1; ay=-1;break;
+    case 3 : ax=-1; ay=0;break;
+    case 4 : ax=1; ay=0;break;
+    case 5 : ax=-1; ay=1;break;
+    case 6 : ax=-0; ay=1;break;
+    case 7 : ax=1; ay=1;break;
+
+    }
+
+    int d = qrand()%4 + 1;
+
+
+    replicate(x() + ax * d, y() + ay * d);
+
+
+    if ( mAge > 4)
+        return false;
+
+    return true;
+
+
 
 }
 
@@ -130,15 +171,19 @@ Gene& Life::gene(const QString &name)
 
 void Life::replicate(int x, int y)
 {
-//    if (!engine()->hasLife(x,y))
-//    {
-//        Life * child = muted();
-//        child->setPos(x,y);
-//        child->setAge(0);
-//        engine()->addLife(child);
-//        child->genom().debug();
+    if (engine() == NULL)
+        return;
 
-//    }
+    if (!engine()->hasLife(x,y))
+    {
+        Life * child = new Life;
+        child->setName(name());
+        child->setGenom(genom());
+        child->setPos(x,y);
+        child->setAge(0);
+        child->mutate();
+        engine()->addLife(child);
+    }
 }
 
 

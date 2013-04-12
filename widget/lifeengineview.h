@@ -20,9 +20,9 @@ public:
 
 public slots:
     void refresh();
-    void addFilter(const QString& lifeName, const QString& geneName);
-    void remFilter(const QString& lifeName);
-    void clearFilter();
+    void setLifeFilter(const QStringList& names);
+    void setGeneFilter(const QStringList& names);
+
 
 
 protected slots:
@@ -31,7 +31,8 @@ protected slots:
 
 private:
     LifeEngine * mEngine;
-    QHash<QString, QString> mGenesFilter;
+    QStringList mLifeFilter;
+    QStringList mGeneFilter;
 
 
     

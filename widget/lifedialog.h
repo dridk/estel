@@ -16,7 +16,7 @@ public:
     ~LifeDialog();
 
     void setLife(const Life& life);
-     Life life();
+    const Life& life();
 
     
 private:

@@ -47,6 +47,7 @@
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
    <addaction name="actionSaveAs"/>
+   <addaction name="actionStep"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
@@ -61,6 +62,11 @@
   <action name="actionSaveAs">
    <property name="text">
     <string>saveAs</string>
+   </property>
+  </action>
+  <action name="actionStep">
+   <property name="text">
+    <string>step</string>
    </property>
   </action>
  </widget>

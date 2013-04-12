@@ -50,6 +50,8 @@ public:
      //! \return current age
     int age() const;
 
+    int index() const;
+
      //! \return the gene from his name
      //! \param name : the name of gene
     Gene & gene(const QString& name);
