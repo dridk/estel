@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     widget/lifeengineviewfilterwidget.cpp \
     widget/lifeengineviewfilterdelegate.cpp \
     widget/genefilterwidget.cpp \
-    widget/lifefilterwidget.cpp
+    widget/lifefilterwidget.cpp \
+    widget/qcustomplot.cpp
 #    qxtjson/jsonmodel.cpp \
 #    widget/lifefileview.cpp \
 #    widget/addlifecommand.cpp \
@@ -74,7 +75,8 @@ HEADERS  += gene.h \
     widget/lifeengineviewfilterwidget.h \
     widget/lifeengineviewfilterdelegate.h \
     widget/genefilterwidget.h \
-    widget/lifefilterwidget.h
+    widget/lifefilterwidget.h \
+    widget/qcustomplot.h
 #    qxtjson/jsonmodel.h \
 #    widget/addlifecommand.h \
 #    widget/aboutdialog.h

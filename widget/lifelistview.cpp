@@ -11,6 +11,7 @@ LifeListView::LifeListView(QWidget *parent) :
     setWindowTitle("Lifes");
 
 
+
 }
 
 void LifeListView::refresh()
@@ -36,7 +37,6 @@ void LifeListView::refresh()
     }
 
     showMessage(QString::number(mEngine->lifes().count()));
-    emit changed();
 }
 
 void LifeListView::add()
@@ -52,7 +52,9 @@ void LifeListView::add()
 
     mEngine->addLife(life);
 
-    refresh();
+  //  refresh();
+    emit changed();
+
 
 }
 
@@ -71,6 +73,8 @@ void LifeListView::remove()
         mEngine->remLife(life);
 
     refresh();
+  //  emit changed();
+
 }
 
 void LifeListView::edit()
@@ -87,9 +91,12 @@ void LifeListView::edit()
             return;
 
         *life = dialog->life();
+
     }
 
-    refresh();
+    emit changed();
+   // refresh();
+
 
 }
 
@@ -97,4 +104,8 @@ void LifeListView::setEngine(LifeEngine *engine)
 {
     mEngine = engine;
     refresh();
+
+    connect(this,SIGNAL(changed()),mEngine,SIGNAL(changed()));
+    connect(mEngine,SIGNAL(changed()),this,SLOT(refresh()));
+
 }

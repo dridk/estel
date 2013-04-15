@@ -38,6 +38,8 @@ LifeFilterWidget::LifeFilterWidget(QWidget *parent) :
 
     QAction * refreshAction = new QAction("refresh",this);
     connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
+    connect(mModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(setFilter()));
+
     addAction(refreshAction);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -47,8 +49,7 @@ LifeFilterWidget::LifeFilterWidget(QWidget *parent) :
 void LifeFilterWidget::setEngineView(LifeEngineView *view)
 {
     mEngineView = view;
-
-    connect(mModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(setFilter()));
+    connect(mEngineView->engine(),SIGNAL(changed()),this,SLOT(refresh()));
 }
 
 void LifeFilterWidget::refresh()
@@ -74,6 +75,9 @@ void LifeFilterWidget::refresh()
 
 void LifeFilterWidget::setFilter()
 {
+    if (mEngineView == NULL)
+        return;
+
     QStringList names;
 
     for (int i=0; i<mModel->rowCount(); ++i)
