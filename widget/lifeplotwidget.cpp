@@ -24,47 +24,81 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QMainWindow>
-#include "lifeengine.h"
-#include "lifeengineview.h"
-#include "lifelistview.h"
-#include "lifefilterwidget.h"
-#include "genefilterwidget.h"
 #include "lifeplotwidget.h"
+#include <QAction>
+LifePlotWidget::LifePlotWidget(QWidget *parent) :
+    QCustomPlot(parent)
+{
+    mEngine = NULL;
+    mBars = new QCPBars(xAxis,yAxis);
 
-namespace Ui {
-class MainWindow;
+
+    QAction * refreshAction = new QAction("refresh",this);
+    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
+
+    addAction(refreshAction);
+
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+
+
 }
 
-class MainWindow : public QMainWindow
+void LifePlotWidget::setEngine(LifeEngine *engine)
 {
-    Q_OBJECT
-    
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    
+    mEngine = engine;
+    addPlottable(mBars);
+    mBars->setName("Lifes");
+    connect(mEngine,SIGNAL(changed()),this,SLOT(refresh()));
+}
 
-public slots:
-    void open();
-    void save();
-    void saveAs();
+void LifePlotWidget::refresh()
+{
+    if (mEngine == NULL)
+        return;
 
-protected slots:
+    QHash<QString, int> lifes;
 
-private:
-    Ui::MainWindow *ui;
-    LifeEngine * mEngine;
-    LifeEngineView * mEngineView;
-    LifeListView * mLifeListView;
-    LifePlotWidget * mLifePlotWidget;
-    LifeFilterWidget * mLifeFilterWidget;
-    GeneFilterWidget * mGeneFilterWidget;
+    foreach (Life * life, mEngine->lifes())
+    {
+        if (!lifes.contains(life->name()))
+            lifes[life->name()] = 1;
+        else
+            lifes[life->name()]++;
+
+    }
 
 
-};
+    QVector<double> keyData;
+    QVector<double> valueData;
+    QVector<QString> labels;
 
-#endif // MAINWINDOW_H
+    int index = 0;
+    foreach (QString key, lifes.keys())
+    {
+        keyData.append(index);
+        valueData.append(lifes[key]);
+        labels.append(key);
+        ++index;
+    }
+
+
+
+
+
+    xAxis->setTickLabels(true);
+    xAxis->setTickStep(1);
+    xAxis->setAutoTickLabels(false);
+    xAxis->setTickVectorLabels(labels);
+    xAxis->setTickLabelRotation(30);
+    xAxis->setRange(0,labels.size());
+    xAxis->setTickStep(30);
+    yAxis->setTickStep(1);
+
+    xAxis->setGrid(false);
+    yAxis->setGrid(false);
+    mBars->setData(keyData,valueData);
+    rescaleAxes();
+    replot();
+
+
+}

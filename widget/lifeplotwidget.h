@@ -24,47 +24,25 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef LIFEPLOTWIDGET_H
+#define LIFEPLOTWIDGET_H
 
-#include <QMainWindow>
+#include "qcustomplot.h"
 #include "lifeengine.h"
-#include "lifeengineview.h"
-#include "lifelistview.h"
-#include "lifefilterwidget.h"
-#include "genefilterwidget.h"
-#include "lifeplotwidget.h"
-
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow
+class LifePlotWidget : public QCustomPlot
 {
     Q_OBJECT
-    
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    
+    explicit LifePlotWidget(QWidget *parent = 0);
+    void setEngine(LifeEngine * engine);
 
 public slots:
-    void open();
-    void save();
-    void saveAs();
-
-protected slots:
+    void refresh();
 
 private:
-    Ui::MainWindow *ui;
     LifeEngine * mEngine;
-    LifeEngineView * mEngineView;
-    LifeListView * mLifeListView;
-    LifePlotWidget * mLifePlotWidget;
-    LifeFilterWidget * mLifeFilterWidget;
-    GeneFilterWidget * mGeneFilterWidget;
-
-
+    QCPBars * mBars;
+    
 };
 
-#endif // MAINWINDOW_H
+#endif // LIFEPLOTWIDGET_H
