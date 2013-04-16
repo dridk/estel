@@ -24,43 +24,30 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
+#ifndef PREVIEWWIDGET_H
+#define PREVIEWWIDGET_H
 
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include <QWidget>
+#include <QMouseEvent>
+#include "lifeengineview.h"
+class PreviewWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+    explicit PreviewWidget(QWidget *parent = 0);
+    void setEngineView(LifeEngineView * view);
 
-
-protected slots:
-    void nameChanged(const QString& name);
+protected:
+    void mouseMoveEvent(QMouseEvent *ev);
+    void paintEvent(QPaintEvent *);
+        
+public slots:
+    void refresh();
 
 private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
-
-
-
-
+    LifeEngineView * mEngineView;
+    QPixmap mPix;
     
 };
 
-#endif // GENEDIALOG_H
+#endif // PREVIEWWIDGET_H

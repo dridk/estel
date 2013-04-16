@@ -89,8 +89,7 @@ void GenomView::refresh()
         item->setEditable(false);
         item->setIcon(QIcon(pix));
         item->setText(QString("%1 : %2").arg(g.name()).arg(g.value()));
-        item->setToolTip(QString("[%1-%2] v:%3 p:%4").arg(g.min()).arg(g.max())
-                         .arg(g.variance()).arg(g.mutationProbability()));
+
         mModel->appendRow(item);
     }
 

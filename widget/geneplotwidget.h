@@ -28,21 +28,21 @@
 #define GENEPLOTWIDGET_H
 
 #include "qcustomplot.h"
-#include "lifeengine.h"
+#include "lifeengineview.h"
 
 class GenePlotWidget : public QCustomPlot
 {
     Q_OBJECT
 public:
     explicit GenePlotWidget(QWidget *parent = 0);
-    void setEngine(LifeEngine * engine);
+    void setEngineView(LifeEngineView * engineView);
 
 public slots:
     void refresh();
 
 
 private:
-    LifeEngine * mEngine;
+    LifeEngineView * mEngineView;
     
 
     

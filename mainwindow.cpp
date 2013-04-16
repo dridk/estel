@@ -40,12 +40,14 @@ MainWindow::MainWindow(QWidget *parent) :
     mLifePlotWidget = new LifePlotWidget;
     mGenePlotWidget = new GenePlotWidget;
     mLifeFilterWidget = new LifeFilterWidget;
+    mPreviewWidget = new PreviewWidget;
 
     mEngineView->setEngine(mEngine);
     mLifeListView->setEngine(mEngine);
     mLifePlotWidget->setEngine(mEngine);
-    mGenePlotWidget->setEngine(mEngine);
+    mGenePlotWidget->setEngineView(mEngineView);
     mLifeFilterWidget->setEngineView(mEngineView);
+    mPreviewWidget->setEngineView(mEngineView);
 
 
     setCentralWidget(mEngineView);
@@ -70,11 +72,18 @@ MainWindow::MainWindow(QWidget *parent) :
     genePlotDock->setWindowTitle(mGenePlotWidget->windowTitle());
     genePlotDock->setWindowIcon(mGenePlotWidget->windowIcon());
 
+    QDockWidget * previewDock = new QDockWidget;
+    previewDock->setWidget(mPreviewWidget);
+    previewDock->setWindowTitle(mPreviewWidget->windowTitle());
+    previewDock->setWindowIcon(mPreviewWidget->windowIcon());
+
 
     addDockWidget(Qt::LeftDockWidgetArea, lifeListDock);
     addDockWidget(Qt::LeftDockWidgetArea, lifeFilterDock);
     addDockWidget(Qt::LeftDockWidgetArea, lifePlotDock);
     addDockWidget(Qt::RightDockWidgetArea, genePlotDock);
+    addDockWidget(Qt::RightDockWidgetArea, previewDock);
+
 
 
 
@@ -84,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAs()));
     connect(ui->actionStep,SIGNAL(triggered()),mEngine,SLOT(step()));
 
+    showMaximized();
 
 }
 

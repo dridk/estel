@@ -41,7 +41,9 @@ SOURCES += main.cpp\
     widget/lifefilterwidget.cpp \
     widget/qcustomplot.cpp \
     widget/lifeplotwidget.cpp \
-    widget/geneplotwidget.cpp
+    widget/geneplotwidget.cpp \
+    widget/lifescripteditor.cpp \
+    widget/previewwidget.cpp
 #    qxtjson/jsonmodel.cpp \
 #    widget/lifefileview.cpp \
 #    widget/addlifecommand.cpp \
@@ -78,7 +80,9 @@ HEADERS  += gene.h \
     widget/lifefilterwidget.h \
     widget/qcustomplot.h \
     widget/lifeplotwidget.h \
-    widget/geneplotwidget.h
+    widget/geneplotwidget.h \
+    widget/lifescripteditor.h \
+    widget/previewwidget.h
 #    qxtjson/jsonmodel.h \
 #    widget/addlifecommand.h \
 #    widget/aboutdialog.h

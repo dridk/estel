@@ -14,8 +14,10 @@ public:
     ~LifeEngineView();
     void setEngine(LifeEngine * engine);
     LifeEngine * engine();
-
      QList<Life*> lifeSelected() const;
+
+     const QStringList& lifeFilter() const {return mLifeFilter;}
+     const QStringList& geneFilter() const {return mGeneFilter;}
 
 
 public slots:

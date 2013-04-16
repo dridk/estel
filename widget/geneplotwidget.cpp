@@ -29,7 +29,7 @@
 GenePlotWidget::GenePlotWidget(QWidget *parent) :
     QCustomPlot(parent)
 {
-    mEngine = NULL;
+    mEngineView = NULL;
 
     QAction * refreshAction = new QAction("refresh",this);
     connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
@@ -41,58 +41,64 @@ GenePlotWidget::GenePlotWidget(QWidget *parent) :
 
 }
 
-void GenePlotWidget::setEngine(LifeEngine *engine)
+void GenePlotWidget::setEngineView(LifeEngineView *engineView)
 {
-    mEngine = engine;
+    mEngineView = engineView;
 }
 
 void GenePlotWidget::refresh()
 {
-    if (mEngine == NULL)
+    if (mEngineView == NULL)
         return;
 
     QHash<QString, QHash<QString, double > > datas;
     QHash<QString,Gene> genes;
-    foreach (Life * life, mEngine->lifes())
+    foreach (Life * life, mEngineView->engine()->lifes())
     {
 
         foreach (Gene gene, life->genom().genes())
         {
             QString key = QString::number(gene.value());
-            datas[gene.name()][key] = datas[gene.name()].value(key,0) + 1;
 
+            datas[gene.name()][key] = datas[gene.name()].value(key,0) + 1;
             genes[gene.name()] = gene;
+
         }
     }
 
 
     int index = 0;
+    clearGraphs();
     foreach (QString name, datas.keys())
     {
 
-        addGraph();
-        graph(index)->setName(name);
+        if (mEngineView->geneFilter().contains(name)) {
+            addGraph();
+            graph(index)->setName(name);
 
 
-        QVector<double> keys;
-        QVector<double> values;
+            QVector<double> keys;
+            QVector<double> values;
 
-        foreach (QString key, datas.value(name).keys())
-        {
-            keys.append(key.toDouble());
-            values.append(datas.value(name).value(key));
+            foreach (QString key, datas.value(name).keys())
+            {
+                keys.append(key.toDouble());
+                values.append(datas.value(name).value(key));
+            }
+
+
+            graph(index)->setData(keys,values);
+            graph(index)->setScatterStyle(QCP::ssCross);
+            graph(index)->setPen(QPen(genes[name].rootColor()));
+            ++index;
+
         }
-
-
-
-        graph(index)->setData(keys,values);
-        graph(index)->setPen(QPen(genes[name].rootColor()));
-        ++index;
 
     }
 
 
     rescaleAxes();
+    xAxis->setRange(0,255);
     replot();
 
 

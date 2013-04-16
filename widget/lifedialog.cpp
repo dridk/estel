@@ -1,6 +1,7 @@
 #include "lifedialog.h"
 #include "ui_lifedialog.h"
 #include <QFormLayout>
+#include <QSplitter>
 LifeDialog::LifeDialog(QWidget *parent) :
     QDialog(parent)
 {
@@ -10,6 +11,7 @@ LifeDialog::LifeDialog(QWidget *parent) :
     mNameEdit = new QLineEdit;
     mXSpinBox = new QSpinBox;
     mYSpinBox = new QSpinBox;
+    mEditor = new LifeScriptEditor;
     mDialogBox = new QDialogButtonBox(QDialogButtonBox::Cancel|QDialogButtonBox::Save);
 
     setWindowIcon(QIcon(":rabbit"));
@@ -37,13 +39,23 @@ LifeDialog::LifeDialog(QWidget *parent) :
     genomGroupBox->layout()->addWidget(mGenomView);
     genomGroupBox->layout()->setMargin(0);
 
-    QVBoxLayout * mainLayout = new QVBoxLayout;
-    mainLayout->setSpacing(0);
-    mainLayout->addWidget(groupBox);
-    mainLayout->addWidget(genomGroupBox);
-    mainLayout->addStretch();
-    mainLayout->addWidget(mDialogBox);
-    setLayout(mainLayout);
+    QWidget * mainWidget = new QWidget;
+    mainWidget->setLayout(new QVBoxLayout);
+    mainWidget->layout()->setSpacing(0);
+    mainWidget->layout()->addWidget(groupBox);
+    mainWidget->layout()->addWidget(genomGroupBox);
+
+    QSplitter * splitter = new QSplitter;
+    splitter->addWidget(mainWidget);
+    splitter->addWidget(mEditor);
+
+    QVBoxLayout * rootLayout = new QVBoxLayout;
+    rootLayout->addWidget(splitter);
+    rootLayout->addStretch();
+    rootLayout->addWidget(mDialogBox);
+    setLayout(rootLayout);
+
+
 
     connect(mDialogBox,SIGNAL(accepted()),this,SLOT(accept()));
     connect(mDialogBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -68,8 +80,13 @@ void LifeDialog::setLife(const Life &life)
     mAgeSpinBox->setValue(life.age());
     mXSpinBox->setValue(life.x());
     mYSpinBox->setValue(life.y());
+    mXSpinBox->setRange(0, life.engine()->rows());
+    mYSpinBox->setRange(0,life.engine()->columns());
+    mEditor->setScript(life.script());
     Genom genom = life.genom();
     mGenomView->setGenom(genom);
+
+    qDebug()<<"LIFE SCRIPT IS "<< life.script();
 }
 
 const Life& LifeDialog::life()
@@ -80,6 +97,7 @@ const Life& LifeDialog::life()
     mLife.setX(mXSpinBox->value());
     mLife.setY(mYSpinBox->value());
     mLife.setGenom(mGenomView->genom());
+    mLife.setScript(mEditor->script());
     return mLife;
 
 }

@@ -1,11 +1,10 @@
 #include "gene.h"
 #include <QDebug>
 #include <QColor>
-Gene::Gene(const QString& name, int val, int min, int max, int var, double proba)
+Gene::Gene(const QString& name, int val, int var, double proba)
 
 {
     mName = name;
-    setRange(min,max);
     setVariance(var);
     setMutationProbability(proba);
     setValue(val);
@@ -14,7 +13,6 @@ Gene::Gene(const QString& name, int val, int min, int max, int var, double proba
 Gene::Gene(int val)
 {
     mName = "unknown-gene";
-    setRange(0,100);
     setVariance(1);
     setMutationProbability(0);
     setValue(val);
@@ -24,7 +22,6 @@ Gene::Gene(const Gene & other)
 {
     setName(other.name());
     setMutationProbability(other.mutationProbability());
-    setRange(other.min(),other.max());
     setVariance(other.variance());
     setValue(other.value());
     setRootColor(other.rootColor());
@@ -67,15 +64,6 @@ int Gene::value() const
     return mValue;
 }
 
-int Gene::min() const
-{
-    return mMin;
-}
-
-int Gene::max() const
-{
-    return mMax;
-}
 int Gene::variance() const
 {
     return mVariance;
@@ -92,17 +80,9 @@ double Gene::mutationProbability() const
 }
 void Gene::setValue(int val)
 {
-    mValue = qBound(min(),val,max());
+    mValue = qBound(0,val,255);
     generateColor();
 }
-
-void Gene::setRange(int min, int max)
-{
-    mMin = min;
-    mMax = max;
-
-}
-
 void Gene::setName(const QString &name)
 {
     mName = name;
@@ -132,7 +112,7 @@ void Gene::setRootColor(const QColor &col)
 
 void Gene::debug()
 {
-    qDebug()<<name()<<"="<<value()<<"["<<min()<<"-"<<max()<<"] {"<<mutationProbability()<<"?"<<variance()<<"}";
+    qDebug()<<name()<<"="<<value()<<"["<<"] {"<<mutationProbability()<<"?"<<variance()<<"}";
 }
 
 const QColor &Gene::color() const
@@ -146,9 +126,9 @@ const QColor &Gene::rootColor() const
 }
 void Gene::generateColor()
 {
-    int sat = 255 * mValue / (mMax - mMin);
+    int sat = mValue;
 
-    sat = qBound(0,sat,255);
+    sat = qBound(0,255-sat,255);
     mColor = mRootColor;
     mColor.setHsv(mColor.hue(),mColor.saturation(),sat);
 

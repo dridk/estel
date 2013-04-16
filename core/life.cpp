@@ -16,6 +16,7 @@ Life::Life(const Life &life)
     setName(life.name());
     setEngine(life.engine());
     setGenom(life.genom());
+    setScript(life.script());
 }
 
 
@@ -224,7 +225,10 @@ QString Life::serialize(Life *life)
     dataMap.insert("x", life->x());
     dataMap.insert("y", life->y());
     dataMap.insert("age", life->age());
-    dataMap.insert("script", life->script());
+
+    QString script = life->script();
+    script = script.replace("\"", "&quot;");
+    dataMap.insert("script", script);
 
     QVariantList geneList;
     foreach (Gene  gene,life->genom().genes())
@@ -232,8 +236,6 @@ QString Life::serialize(Life *life)
         QVariantHash gMap;
         gMap.insert("name",gene.name());
         gMap.insert("value",gene.value());
-        gMap.insert("min",gene.min());
-        gMap.insert("max",gene.max());
         gMap.insert("proba",gene.mutationProbability());
         gMap.insert("variance",gene.variance());
         gMap.insert("rootcolor",gene.rootColor().name());
@@ -263,8 +265,6 @@ void Life::parse(const QString &json, Life *life)
         Gene gene;
         gene.setName(geneData.toMap().value("name").toString());
         gene.setValue(geneData.toMap().value("value").toInt());
-        gene.setRange(geneData.toMap().value("min").toInt(),
-                      geneData.toMap().value("max").toInt());
         gene.setVariance(geneData.toMap().value("variance").toInt());
         gene.setMutationProbability(geneData.toMap().value("proba").toDouble());
         gene.setRootColor(QColor(geneData.toMap().value("rootcolor").toString()));
@@ -273,7 +273,9 @@ void Life::parse(const QString &json, Life *life)
     }
 
     //=== load script
-    QString script = data.toMap().value("script").toString();
+    QString array = data.toMap().value("script").toString();
+    array = array.replace("&quot;", "\"");
+    QString script = array;
     life->setScript(script);
 
 }

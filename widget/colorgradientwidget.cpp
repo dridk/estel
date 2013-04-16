@@ -15,8 +15,8 @@ void ColorGradientWidget::paintEvent(QPaintEvent *)
     painter.begin(this);
     painter.setPen(QPen(Qt::transparent));
     QLinearGradient linearGrad(QPointF(0, 0), QPointF(width(), 0));
-    linearGrad.setColorAt(1, mColor);
-    linearGrad.setColorAt(0, Qt::black);
+    linearGrad.setColorAt(0, mColor);
+    linearGrad.setColorAt(1, Qt::black);
     painter.setBrush(QBrush(linearGrad));
     painter.drawRect(rect());
 

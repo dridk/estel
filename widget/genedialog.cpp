@@ -32,8 +32,6 @@ GeneDialog::GeneDialog(QWidget *parent) :
 {
     mNameEdit     = new QLineEdit;
     mValueSpinBox = new QSpinBox;
-    mMinSpinBox   = new QSpinBox;
-    mMaxSpinBox   = new QSpinBox;
     mVarSpinBox   = new QSpinBox;
     mProbSpinBox  = new QDoubleSpinBox;
     mButtonBox    = new QDialogButtonBox(QDialogButtonBox::Cancel|QDialogButtonBox::Save);
@@ -42,13 +40,10 @@ GeneDialog::GeneDialog(QWidget *parent) :
 
     mNameEdit->setPlaceholderText("Gene's name");
     mValueSpinBox->setPrefix("v: ");
-    mValueSpinBox->setToolTip("Value of the gene between min and max");
-    mMinSpinBox->setPrefix("min: ");
-    mMinSpinBox->setRange(0,1000);
-    mMaxSpinBox->setPrefix("max: ");
-    mMaxSpinBox->setRange(0,1000);
+    mValueSpinBox->setToolTip("Value of the gene between 0 and 255");
+    mValueSpinBox->setRange(0,255);
     mVarSpinBox->setPrefix("var: ");
-    mVarSpinBox->setRange(0,1000);
+    mVarSpinBox->setRange(0,255);
     mProbSpinBox->setPrefix("prob: ");
     mProbSpinBox->setRange(0,1);
     mProbSpinBox->setSingleStep(0.01);
@@ -64,12 +59,6 @@ GeneDialog::GeneDialog(QWidget *parent) :
     headerWidget->layout()->setAlignment(Qt::AlignTop);
 
 
-    QWidget * limitWidget = new QWidget;
-    limitWidget->setLayout(new QHBoxLayout);
-    limitWidget->layout()->addWidget(mMinSpinBox);
-    limitWidget->layout()->addWidget(mMaxSpinBox);
-    limitWidget->layout()->setMargin(0);
-    limitWidget->layout()->setAlignment(Qt::AlignTop);
 
 
 
@@ -78,7 +67,6 @@ GeneDialog::GeneDialog(QWidget *parent) :
 
     mainLayout->addWidget(headerWidget);
     mainLayout->addWidget(mValueSpinBox);
-    mainLayout->addWidget(limitWidget);
     mainLayout->addWidget(mVarSpinBox);
     mainLayout->addWidget(mProbSpinBox);
     mainLayout->addWidget(mColorWidget);
@@ -89,8 +77,6 @@ GeneDialog::GeneDialog(QWidget *parent) :
 
     setFixedSize(minimumSize());
 
-    connect(mMinSpinBox,SIGNAL(valueChanged(int)),this,SLOT(setRange()));
-    connect(mMaxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(setRange()));
     connect(mNameEdit,SIGNAL(textChanged(QString)),this,SLOT(nameChanged(QString)));
     connect(mButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
     connect(mButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -110,8 +96,6 @@ void GeneDialog::setGene(const Gene &gene)
     mGene = gene;
     mNameEdit->setText(mGene.name());
     mValueSpinBox->setValue(mGene.value());
-    mMinSpinBox->setValue(mGene.min());
-    mMaxSpinBox->setValue(mGene.max());
     mVarSpinBox->setValue(mGene.variance());
     mProbSpinBox->setValue(mGene.mutationProbability());
     mColorButton->setColor(mGene.rootColor());
@@ -125,17 +109,12 @@ Gene GeneDialog::gene() const
     Gene g;
     g.setName(mNameEdit->text());
     g.setValue(mValueSpinBox->value());
-    g.setRange(mMinSpinBox->value(), mMaxSpinBox->value());
     g.setVariance(mVarSpinBox->value());
     g.setMutationProbability(mProbSpinBox->value());
     g.setRootColor(mColorButton->color());
     return g;
 }
 
-void GeneDialog::setRange()
-{
-    mValueSpinBox->setRange(mMinSpinBox->value(), mMaxSpinBox->value());
-}
 
 void GeneDialog::nameChanged(const QString &name)
 {

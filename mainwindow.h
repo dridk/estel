@@ -34,7 +34,7 @@
 #include "lifefilterwidget.h"
 #include "lifeplotwidget.h"
 #include "geneplotwidget.h"
-
+#include "previewwidget.h"
 namespace Ui {
 class MainWindow;
 }
@@ -63,6 +63,7 @@ private:
     LifePlotWidget * mLifePlotWidget;
     GenePlotWidget * mGenePlotWidget;
     LifeFilterWidget * mLifeFilterWidget;
+    PreviewWidget * mPreviewWidget;
 
 
 };

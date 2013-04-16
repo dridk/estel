@@ -24,43 +24,75 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
-
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include "previewwidget.h"
+#include <QSize>
+PreviewWidget::PreviewWidget(QWidget *parent) :
+    QWidget(parent)
 {
-    Q_OBJECT
-public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+    mEngineView = NULL;
+    setMinimumSize(200,200);
 
 
-protected slots:
-    void nameChanged(const QString& name);
-
-private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
-
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
+    QAction * refreshAction = new QAction("refresh",this);
+    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
+    addAction(refreshAction);
+    setContextMenuPolicy(Qt::ActionsContextMenu);
 
 
+}
+
+void PreviewWidget::setEngineView(LifeEngineView *view)
+{
+    mEngineView = view;
+}
+
+void PreviewWidget::mouseMoveEvent(QMouseEvent *ev)
+{
+    if (mEngineView == NULL)
+        return;
 
 
-    
-};
+   int ax  = ev->x() * mEngineView->horizontalScrollBar()->maximum()/width();
+   int ay  = ev->y() * mEngineView->verticalScrollBar()->maximum()/height();
 
-#endif // GENEDIALOG_H
+   qDebug()<<ax<<" "<<ay;
+
+   mEngineView->horizontalScrollBar()->setValue(ax);
+   mEngineView->verticalScrollBar()->setValue(ay);
+
+
+
+
+}
+
+void PreviewWidget::paintEvent(QPaintEvent * event)
+{
+
+    QPainter painter(this);
+
+    painter.drawPixmap(0,0,width(),height(),mPix.scaled(size()));
+
+
+}
+
+void PreviewWidget::refresh()
+{
+    if (mEngineView == NULL)
+        return;
+
+    mPix = QPixmap(mEngineView->engine()->rows(), mEngineView->engine()->columns());
+    mPix.fill(Qt::white);
+    QPainter painter(&mPix);
+
+    foreach (Life * life, mEngineView->engine()->lifes())
+    {
+        qDebug()<<"test";
+        QPen pen;
+        pen.setColor(Qt::black);
+        pen.setWidth(1);
+        painter.setPen(pen);
+        painter.drawPoint(life->x(),life->y());
+    }
+
+    repaint();
+}

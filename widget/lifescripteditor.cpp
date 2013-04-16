@@ -24,43 +24,27 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEDIALOG_H
-#define GENEDIALOG_H
-
-#include <QDialog>
-#include <QtGui>
-#include <QDialogButtonBox>
-#include "gene.h"
-#include "colorgradientwidget.h"
-#include "colorbutton.h"
-class GeneDialog : public QDialog
+#include "lifescripteditor.h"
+#include <QVBoxLayout>
+#include <QSplitter>
+#include <QDebug>
+LifeScriptEditor::LifeScriptEditor(QWidget *parent) :
+    QWidget(parent)
 {
-    Q_OBJECT
-public:
-    explicit GeneDialog(QWidget *parent = 0);
-    ~GeneDialog();
-    void setGene(const Gene& gene);
-    Gene gene() const;
+    mJSEdit = new JSEdit;
+    setLayout(new QVBoxLayout);
+    layout()->addWidget(mJSEdit);
 
+}
 
-protected slots:
-    void nameChanged(const QString& name);
+ QString LifeScriptEditor::script() const
+{
+     qDebug()<<mJSEdit->toPlainText();
+     return mJSEdit->toPlainText();
+ }
 
-private:
-    Gene mGene;
-    QLineEdit * mNameEdit;
-    QSpinBox * mValueSpinBox;
+ void LifeScriptEditor::setScript( QString script)
+ {
+     mJSEdit->setPlainText(script);
+ }
 
-    QSpinBox * mVarSpinBox;
-    QDoubleSpinBox * mProbSpinBox;
-    QDialogButtonBox * mButtonBox;
-    ColorGradientWidget * mColorWidget;
-    ColorButton * mColorButton;
-
-
-
-
-    
-};
-
-#endif // GENEDIALOG_H

@@ -6,6 +6,7 @@
 #include <QDialogButtonBox>
 #include "life.h"
 #include "genomview.h"
+#include "lifescripteditor.h"
 
 class LifeDialog : public QDialog
 {
@@ -26,6 +27,7 @@ private:
     QSpinBox * mXSpinBox;
     QSpinBox * mYSpinBox;
     GenomView * mGenomView;
+    LifeScriptEditor * mEditor;
     QDialogButtonBox * mDialogBox;
 };
 
