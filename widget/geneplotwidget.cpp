@@ -24,64 +24,81 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "genefilterwidget.h"
-
-GeneFilterWidget::GeneFilterWidget(QWidget *parent) :
-    QListView(parent)
+#include "geneplotwidget.h"
+#include <QAction>
+GenePlotWidget::GenePlotWidget(QWidget *parent) :
+    QCustomPlot(parent)
 {
-    mEngineView = NULL;
-    mModel = new QStandardItemModel;
-    setModel(mModel);
-
-    setWindowTitle("Gene filter");
+    mEngine = NULL;
 
     QAction * refreshAction = new QAction("refresh",this);
     connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
-    connect(mModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(setFilter()));
+
     addAction(refreshAction);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
 
+
 }
 
-void GeneFilterWidget::setEngineView(LifeEngineView *view)
+void GenePlotWidget::setEngine(LifeEngine *engine)
 {
-    mEngineView = view;
+    mEngine = engine;
 }
 
-void GeneFilterWidget::refresh()
+void GenePlotWidget::refresh()
 {
-    mModel->clear();
-    QHash<QString, Gene> genes;
-    foreach (Life * life, mEngineView->engine()->lifes())
+    if (mEngine == NULL)
+        return;
+
+    QHash<QString, QHash<QString, double > > datas;
+    QHash<QString,Gene> genes;
+    foreach (Life * life, mEngine->lifes())
     {
+
         foreach (Gene gene, life->genom().genes())
-            genes.insert(gene.name(), gene);
+        {
+            QString key = QString::number(gene.value());
+            datas[gene.name()][key] = datas[gene.name()].value(key,0) + 1;
 
+            genes[gene.name()] = gene;
+        }
     }
-    foreach (Gene gene, genes)
+
+
+    int index = 0;
+    foreach (QString name, datas.keys())
     {
-        QStandardItem * item = new QStandardItem;
-        item->setText(gene.name());
-        item->setCheckable(true);
-        item->setCheckState(Qt::Checked);
-        item->setEditable(false);
 
-        mModel->appendRow(item);
+        addGraph();
+        graph(index)->setName(name);
+
+
+        QVector<double> keys;
+        QVector<double> values;
+
+        foreach (QString key, datas.value(name).keys())
+        {
+            keys.append(key.toDouble());
+            values.append(datas.value(name).value(key));
+        }
+
+
+
+        graph(index)->setData(keys,values);
+        graph(index)->setPen(QPen(genes[name].rootColor()));
+        ++index;
+
     }
-}
 
-void GeneFilterWidget::setFilter()
-{
-    QStringList names;
-    for (int i=0; i<mModel->rowCount(); ++i)
-    {
-        if (mModel->item(i)->checkState() == Qt::Checked)
-            names.append(mModel->item(i)->text());
-    }
 
-    mEngineView->setGeneFilter(names);
-    mEngineView->refresh();
+    rescaleAxes();
+    replot();
+
+
+
+
+
 
 
 }

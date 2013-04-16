@@ -38,14 +38,14 @@ MainWindow::MainWindow(QWidget *parent) :
     mEngineView = new LifeEngineView;
     mLifeListView = new LifeListView;
     mLifePlotWidget = new LifePlotWidget;
+    mGenePlotWidget = new GenePlotWidget;
     mLifeFilterWidget = new LifeFilterWidget;
-    mGeneFilterWidget = new GeneFilterWidget;
 
     mEngineView->setEngine(mEngine);
     mLifeListView->setEngine(mEngine);
     mLifePlotWidget->setEngine(mEngine);
+    mGenePlotWidget->setEngine(mEngine);
     mLifeFilterWidget->setEngineView(mEngineView);
-    mGeneFilterWidget->setEngineView(mEngineView);
 
 
     setCentralWidget(mEngineView);
@@ -65,11 +65,16 @@ MainWindow::MainWindow(QWidget *parent) :
     lifePlotDock->setWindowTitle(mLifePlotWidget->windowTitle());
     lifePlotDock->setWindowIcon(mLifePlotWidget->windowIcon());
 
+    QDockWidget * genePlotDock = new QDockWidget;
+    genePlotDock->setWidget(mGenePlotWidget);
+    genePlotDock->setWindowTitle(mGenePlotWidget->windowTitle());
+    genePlotDock->setWindowIcon(mGenePlotWidget->windowIcon());
+
 
     addDockWidget(Qt::LeftDockWidgetArea, lifeListDock);
     addDockWidget(Qt::LeftDockWidgetArea, lifeFilterDock);
     addDockWidget(Qt::LeftDockWidgetArea, lifePlotDock);
-
+    addDockWidget(Qt::RightDockWidgetArea, genePlotDock);
 
 
 

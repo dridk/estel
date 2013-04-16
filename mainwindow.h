@@ -32,8 +32,8 @@
 #include "lifeengineview.h"
 #include "lifelistview.h"
 #include "lifefilterwidget.h"
-#include "genefilterwidget.h"
 #include "lifeplotwidget.h"
+#include "geneplotwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -61,8 +61,8 @@ private:
     LifeEngineView * mEngineView;
     LifeListView * mLifeListView;
     LifePlotWidget * mLifePlotWidget;
+    GenePlotWidget * mGenePlotWidget;
     LifeFilterWidget * mLifeFilterWidget;
-    GeneFilterWidget * mGeneFilterWidget;
 
 
 };

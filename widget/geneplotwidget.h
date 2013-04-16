@@ -24,31 +24,28 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef GENEFILTERWIDGET_H
-#define GENEFILTERWIDGET_H
+#ifndef GENEPLOTWIDGET_H
+#define GENEPLOTWIDGET_H
 
-#include <QListView>
-#include <QStandardItemModel>
-#include "lifeengineview.h"
-class GeneFilterWidget : public QListView
+#include "qcustomplot.h"
+#include "lifeengine.h"
+
+class GenePlotWidget : public QCustomPlot
 {
     Q_OBJECT
 public:
-    explicit GeneFilterWidget(QWidget *parent = 0);
-    void setEngineView(LifeEngineView * view);
+    explicit GenePlotWidget(QWidget *parent = 0);
+    void setEngine(LifeEngine * engine);
 
-signals:
-    
 public slots:
     void refresh();
 
-protected slots:
-    void setFilter();
 
 private:
-    LifeEngineView * mEngineView;
-    QStandardItemModel * mModel;
+    LifeEngine * mEngine;
+    
+
     
 };
 
-#endif // GENEFILTERWIDGET_H
+#endif // GENEPLOTWIDGET_H

@@ -27,10 +27,10 @@
 #ifndef LIFEFILTERWIDGET_H
 #define LIFEFILTERWIDGET_H
 
-#include <QListView>
+#include <QTreeView>
 #include <QStandardItemModel>
 #include "lifeengineview.h"
-class LifeFilterWidget : public QListView
+class LifeFilterWidget : public QTreeView
 {
     Q_OBJECT
 public:
@@ -42,7 +42,7 @@ public slots:
     void refresh();
 
 protected slots:
-    void setFilter();
+    void itemChanged(QStandardItem * item);
 
 private:
     LifeEngineView * mEngineView;
