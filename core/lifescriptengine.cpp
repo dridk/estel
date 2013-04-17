@@ -81,6 +81,11 @@ QVariantMap LifeObject::genom()
     return list;
 
 }
+
+void LifeObject::replicate(int x, int y)
+{
+    mLife->replicate(x,y);
+}
 //========= LIFE engine ========================================
 LifeScriptEngine::LifeScriptEngine(QObject *parent) :
     QScriptEngine(parent)
@@ -96,14 +101,15 @@ void LifeScriptEngine::setLifeEngine(LifeEngine *lifeEngine)
 bool LifeScriptEngine::evaluateLife(Life *life)
 {
 
-    globalObject().setProperty("engine", newQObject(mLifeEngine));
+    globalObject().setProperty("engine", newQObject(life->engine()));
     globalObject().setProperty("console",newQObject(this));
     globalObject().setProperty("life",newQObject(new LifeObject(life)));
 
     mLastError.clear();
     mLastDebug.clear();
 
-    qDebug()<<life->script();
+    qDebug()<<"evaluate life ";
+
     QScriptValue result = evaluate(life->script());
 
     if (result.isError())

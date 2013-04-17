@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
-    LifeEditorWindow * window = new LifeEditorWindow;
+    MainWindow * window = new MainWindow;
 
 
     window->show();

@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QFileDialog>
 LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
-    QWidget(parent)
+    QDialog(parent)
 {
     mToolBar = new QToolBar;
     mEditor = new JSEdit;
@@ -152,9 +152,9 @@ void LifeEditorWindow::clear()
 void LifeEditorWindow::run()
 {
     Life tempLife = life();
-
     mEngine->clear();
     mScriptEngine->setLifeEngine(mEngine);
+    mEngine->addLife(&tempLife);
     bool result = mScriptEngine->evaluateLife(&tempLife);
 
     if (!mScriptEngine->lastError().isEmpty())
@@ -185,5 +185,5 @@ void LifeEditorWindow::help()
 void LifeEditorWindow::save()
 {
     mLife = life();
-    emit saved();
+    accept();
 }

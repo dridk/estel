@@ -101,28 +101,28 @@ void LifeEngine::step()
 
     while (it != lifes.end()) {
 
-       Life * currentLife = *it;
-       bool isLive = currentLife->step();
-       if (!isLive){
-           int index = currentLife->index();
+        Life * currentLife = *it;
+        bool isLive = mScriptEngine->evaluateLife(currentLife);
+        if (!isLive){
+            int index = currentLife->index();
             it = lifes.erase(it);
             mLifeList.remove(index);
-       }
-       else it++;
+        }
+        else it++;
     }
 
     emit changed();
 
-//    while (it != mLifeList.end()) {
+    //    while (it != mLifeList.end()) {
 
-//        Life * currentLife = it;
-////        bool isLive = currentLife->step();
+    //        Life * currentLife = it;
+    ////        bool isLive = currentLife->step();
 
-////        if (!isLive){
-////            i = mLifeList.erase(i);
-////        }
-////        else i++;
-//    }
+    ////        if (!isLive){
+    ////            i = mLifeList.erase(i);
+    ////        }
+    ////        else i++;
+    //    }
 
 }
 
@@ -189,9 +189,9 @@ bool LifeEngine::hasLife(int x, int y) const
 {
 
     int index =  columns() * x + y;
-    if (mLifeList.contains(index))
+    if (mLifeList.contains(index)){
         return true;
-
+    }
     return false;
 
 }
@@ -203,4 +203,18 @@ Life *LifeEngine::life(int x, int y) const
         return mLifeList[index];
     else
         return NULL;
+}
+
+QObject *LifeEngine::lifeAt(int x, int y)
+{
+    Life * lf = life(x,y);
+    if (lf)
+        return new LifeObject(lf);
+    else
+        return NULL;
+}
+
+int LifeEngine::count() const
+{
+    return lifes().count();
 }

@@ -43,7 +43,7 @@ void LifeListView::add()
 {
     Q_ASSERT_X (mEngine != NULL,"LifeListView", "No engine set");
 
-    LifeDialog * dialog = new LifeDialog;
+    LifeEditorWindow * dialog = new LifeEditorWindow;
 
     if (dialog->exec() == QDialog::Rejected)
         return;
@@ -85,7 +85,7 @@ void LifeListView::edit()
     {
         int row = view()->selectionModel()->selectedIndexes().first().row();
         Life * life = mEngine->lifes().at(row);
-        LifeDialog * dialog = new LifeDialog;
+        LifeEditorWindow * dialog = new LifeEditorWindow;
         dialog->setLife(*life);
         if (dialog->exec() == QDialog::Rejected)
             return;

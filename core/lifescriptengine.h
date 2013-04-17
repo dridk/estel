@@ -62,6 +62,9 @@ public:
 
     QVariantMap genom();
 
+public slots:
+    Q_INVOKABLE void replicate(int x, int y);
+
 
 
 private:

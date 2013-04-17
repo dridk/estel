@@ -13,9 +13,11 @@
 class Life;
 class LifeEngine;
 class LifeScriptEngine;
+class LifeObject;
 class LifeEngine : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY (int count READ count)
 public:
     //! \brief Constructor
     //! \param rows : the number of rows
@@ -60,6 +62,16 @@ public:
     //! \param y : y position
     //! \return Life* if life exist, otherwise return NULL
     Q_INVOKABLE Life* life(int x, int y) const;
+
+    //! \brief return lifeObject at position x,y. Use hasLife before using this function
+    //! \param x : x position
+    //! \param y : y position
+    //! \return Life* if life exist, otherwise return NULL
+    Q_INVOKABLE QObject* lifeAt(int x, int y);
+
+
+
+    int count() const;
 
 
 public slots:

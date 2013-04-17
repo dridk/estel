@@ -4,6 +4,7 @@
 #include "lifeengine.h"
 #include <QStandardItemModel>
 #include "lifedialog.h"
+#include "lifeeditorwindow.h"
 class LifeListView : public ActionListView
 {
     Q_OBJECT

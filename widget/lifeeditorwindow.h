@@ -35,7 +35,7 @@
 #include "lifeformwidget.h"
 #include "lifescriptengine.h"
 #include <QTextEdit>
-class LifeEditorWindow : public QWidget
+class LifeEditorWindow : public QDialog
 {
     Q_OBJECT
 public:
