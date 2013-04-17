@@ -178,6 +178,7 @@ void Life::replicate(int x, int y)
     {
         Life * child = new Life(*this);
         child->setPos(x,y);
+        child->setAge(0);
         child->mutate();
         engine()->addLife(child);
     }
