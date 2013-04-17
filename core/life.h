@@ -17,6 +17,8 @@ public:
     Life(int x=0, int y=0 , int age = 0);
     Life(const Life& life);
 
+    void clone(const Life& life);
+
     //! \brief Set the current life position
     void setPos(const QPoint& pos);
 

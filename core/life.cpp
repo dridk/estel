@@ -11,6 +11,11 @@ Life::Life(int x, int y, int age)
 
 Life::Life(const Life &life)
 {
+    clone(life);
+}
+
+void Life::clone(const Life &life)
+{
     setAge(life.age());
     setPos(life.pos().x(),life.pos().y());
     setName(life.name());

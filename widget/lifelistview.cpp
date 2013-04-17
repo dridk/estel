@@ -61,8 +61,12 @@ void LifeListView::remove()
 
     QList<Life*> lifes;
 
+
     foreach (QModelIndex  i, view()->selectionModel()->selectedRows())
         lifes.append(mEngine->lifes().at(i.row()));
+
+
+    qDebug()<<lifes.count()<<" a suppr";
 
     foreach (Life * life, lifes)
         mEngine->remLife(life);
@@ -86,7 +90,8 @@ void LifeListView::edit()
         if (dialog->exec() == QDialog::Rejected)
             return;
 
-        (*life) = dialog->life();
+        life->clone(dialog->life());
+
 
 
     }
