@@ -40,6 +40,7 @@ class LifeEditorWindow : public QDialog
     Q_OBJECT
 public:
     explicit LifeEditorWindow(QWidget *parent = 0);
+    ~LifeEditorWindow();
     void setLife(const Life& life);
     const Life& life();
 
@@ -49,11 +50,9 @@ public slots:
     void clear();
     void run();
     void help();
-    void save();
 
 
 signals:
-    void saved();
 
 
 private:

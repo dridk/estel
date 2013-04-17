@@ -108,10 +108,7 @@ bool LifeScriptEngine::evaluateLife(Life *life)
     mLastError.clear();
     mLastDebug.clear();
 
-    qDebug()<<"evaluate life ";
-
     QScriptValue result = evaluate(life->script());
-
     if (result.isError())
     {
 

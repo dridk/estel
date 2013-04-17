@@ -50,7 +50,7 @@ const QPoint &Life::pos() const
     return mPos;
 }
 
-Life  Life::muted() const
+Life Life::muted() const
 {
     Life newLife = Life(x(),y(),0);
     newLife.setGenom(genom());
@@ -171,11 +171,8 @@ void Life::replicate(int x, int y)
 
     if (!engine()->hasLife(x,y))
     {
-        Life * child = new Life;
-        child->setName(name());
-        child->setGenom(genom());
+        Life * child = new Life(*this);
         child->setPos(x,y);
-        child->setAge(0);
         child->mutate();
         engine()->addLife(child);
     }

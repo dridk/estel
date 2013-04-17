@@ -1,5 +1,4 @@
 #include "lifedialog.h"
-#include "ui_lifedialog.h"
 #include <QFormLayout>
 #include <QSplitter>
 LifeDialog::LifeDialog(QWidget *parent) :

@@ -27,7 +27,6 @@ void LifeListView::refresh()
         item->setText(life->name());
         item->setIcon(QIcon(":dna"));
 
-
         QStandardItem * item2 =new QStandardItem();
         item2->setEditable(false);
         item2->setText(life->genom().identity());
@@ -49,10 +48,8 @@ void LifeListView::add()
         return;
 
     Life * life = new Life(dialog->life());
-
     mEngine->addLife(life);
 
-  //  refresh();
     emit changed();
 
 
@@ -63,8 +60,6 @@ void LifeListView::remove()
     Q_ASSERT_X (mEngine != NULL,"LifeListView", "No engine set");
 
     QList<Life*> lifes;
-
-    qDebug()<<"count"<<view()->selectionModel()->selectedRows().count();
 
     foreach (QModelIndex  i, view()->selectionModel()->selectedRows())
         lifes.append(mEngine->lifes().at(i.row()));
@@ -86,11 +81,13 @@ void LifeListView::edit()
         int row = view()->selectionModel()->selectedIndexes().first().row();
         Life * life = mEngine->lifes().at(row);
         LifeEditorWindow * dialog = new LifeEditorWindow;
-        dialog->setLife(*life);
+
+   dialog->setLife(*life);
         if (dialog->exec() == QDialog::Rejected)
             return;
 
-        *life = dialog->life();
+        (*life) = dialog->life();
+
 
     }
 

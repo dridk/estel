@@ -65,7 +65,7 @@ LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
 
 
 
-    connect(saveAction,SIGNAL(triggered()),this,SLOT(save()));
+    connect(saveAction,SIGNAL(triggered()),this,SLOT(accept()));
     connect(exportAction,SIGNAL(triggered()),this,SLOT(exportLife()));
     connect(importAction,SIGNAL(triggered()),this,SLOT(importLife()));
     connect(stepAction,SIGNAL(triggered()),this,SLOT(run()));
@@ -96,13 +96,21 @@ LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
 
 }
 
+LifeEditorWindow::~LifeEditorWindow()
+{
+    delete mEngine;
+    delete mToolBar;
+    delete mEditor;
+    delete mDebugEdit;
+    delete mFormWidget;
+    delete mScriptEngine;
+}
+
 void LifeEditorWindow::setLife(const Life &life)
 {
-    mEngine->clear();
     mLife = life;
-    mEngine->addLife(&mLife);
     mFormWidget->setLife(life);
-    mEditor->setPlainText(mLife.script());
+    mEditor->setPlainText(life.script());
 }
 
 const Life &LifeEditorWindow::life()
@@ -164,15 +172,6 @@ void LifeEditorWindow::run()
         mDebugEdit->append(QString("<i><font color='darkgray'>%1</font></i>").arg(mScriptEngine->lastDebug()));
 
     mDebugEdit->append(QString("<font color='green'>Life returned %1</font>").arg(result?"LIVE":"DEAD"));
-
-
-
-
-
-
-
-
-
     mEngine->step();
 
 
@@ -182,8 +181,3 @@ void LifeEditorWindow::help()
 {
 }
 
-void LifeEditorWindow::save()
-{
-    mLife = life();
-    accept();
-}
