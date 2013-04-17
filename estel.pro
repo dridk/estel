@@ -36,8 +36,6 @@ SOURCES += main.cpp\
     widget/lifelistview.cpp \
     mainwindow.cpp \
     widget/genecombobox.cpp \
-    widget/lifeengineviewfilterwidget.cpp \
-    widget/lifeengineviewfilterdelegate.cpp \
     widget/lifefilterwidget.cpp \
     widget/qcustomplot.cpp \
     widget/lifeplotwidget.cpp \
@@ -46,7 +44,8 @@ SOURCES += main.cpp\
     widget/previewwidget.cpp \
     core/lifescriptengine.cpp \
     widget/lifeformwidget.cpp \
-    widget/lifeeditorwindow.cpp
+    widget/lifeeditorwindow.cpp \
+    widget/progressstatusbar.cpp
 #    qxtjson/jsonmodel.cpp \
 #    widget/lifefileview.cpp \
 #    widget/addlifecommand.cpp \
@@ -78,8 +77,6 @@ HEADERS  += gene.h \
     widget/lifelistview.h \
     mainwindow.h \
     widget/genecombobox.h \
-    widget/lifeengineviewfilterwidget.h \
-    widget/lifeengineviewfilterdelegate.h \
     widget/lifefilterwidget.h \
     widget/qcustomplot.h \
     widget/lifeplotwidget.h \
@@ -88,7 +85,9 @@ HEADERS  += gene.h \
     widget/previewwidget.h \
     core/lifescriptengine.h \
     widget/lifeformwidget.h \
-    widget/lifeeditorwindow.h
+    widget/lifeeditorwindow.h \
+    core/gene.h \
+    widget/progressstatusbar.h
 #    qxtjson/jsonmodel.h \
 #    widget/addlifecommand.h \
 #    widget/aboutdialog.h

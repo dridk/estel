@@ -39,7 +39,7 @@ public:
     Q_INVOKABLE bool remLife(Life * life);
 
     //! \return return all lifes
-    Q_INVOKABLE QList<Life*> lifes() const;
+    Q_INVOKABLE QList<Life*> lifes();
 
 
     //! \return lifes count
@@ -61,7 +61,7 @@ public:
     //! \param x : x position
     //! \param y : y position
     //! \return Life* if life exist, otherwise return NULL
-    Q_INVOKABLE Life* life(int x, int y) const;
+    Q_INVOKABLE Life* life(int x, int y) ;
 
     //! \brief return lifeObject at position x,y. Use hasLife before using this function
     //! \param x : x position
@@ -96,6 +96,7 @@ public slots:
 
 signals:
     void changed();
+    void progressed(int value);
 
 private:
     QHash<int,Life*> mLifeList;

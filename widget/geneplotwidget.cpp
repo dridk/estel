@@ -38,6 +38,10 @@ GenePlotWidget::GenePlotWidget(QWidget *parent) :
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
 
+    setRangeZoom(Qt::Horizontal | Qt::Vertical);
+
+
+
 
 }
 
@@ -77,6 +81,7 @@ void GenePlotWidget::refresh()
             graph(index)->setName(name);
 
 
+
             QVector<double> keys;
             QVector<double> values;
 
@@ -98,7 +103,7 @@ void GenePlotWidget::refresh()
 
 
     rescaleAxes();
-    xAxis->setRange(0,255);
+    //xAxis->setRange(0,255);
     replot();
 
 

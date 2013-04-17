@@ -14,6 +14,10 @@ Life::Life(const Life &life)
     clone(life);
 }
 
+Life::~Life()
+{
+}
+
 void Life::clone(const Life &life)
 {
     setAge(life.age());

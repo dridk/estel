@@ -28,6 +28,7 @@
 
 //======== LIFE object to be accessible for script engine =======
 LifeObject::LifeObject(Life *life, QObject *parent)
+    :QObject(parent)
 {
     mLife = life;
 }

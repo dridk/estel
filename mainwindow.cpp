@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mGenePlotWidget = new GenePlotWidget;
     mLifeFilterWidget = new LifeFilterWidget;
     mPreviewWidget = new PreviewWidget;
+    mStatusBar = new ProgressStatusBar;
 
     mEngineView->setEngine(mEngine);
     mLifeListView->setEngine(mEngine);
@@ -88,12 +89,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
+    setStatusBar(mStatusBar);
+
+    connect(mEngine,SIGNAL(progressed(int)),mStatusBar,SLOT(setValue(int)));
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(open()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(save()));
     connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAs()));
     connect(ui->actionStep,SIGNAL(triggered()),mEngine,SLOT(step()));
+    connect(ui->actionClear,SIGNAL(triggered()),mEngine,SLOT(clear()));
 
     showMaximized();
+
 
 }
 
@@ -104,13 +110,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::open()
 {
+//    setEnabled(false);
+    mStatusBar->setActive(true);
     QString fileName = QFileDialog::getOpenFileName(this,"open estel file",
                                                     QString(),"Estel (*.estel)");
-
     mEngine->load(fileName);
     mLifeListView->refresh();
     setWindowTitle(fileName);
-
+//    setEnabled(true);
+    mStatusBar->setActive(false);
 
 }
 
@@ -130,6 +138,8 @@ void MainWindow::saveAs()
     setWindowTitle(fileName);
 
 }
+
+
 
 
 

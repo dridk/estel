@@ -60,6 +60,7 @@ void ActionListView::remove()
 
 void ActionListView::showMessage(const QString &msg)
 {
+
 }
 
 

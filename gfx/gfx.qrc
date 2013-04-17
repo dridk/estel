@@ -19,5 +19,6 @@
         <file alias="save">save.png</file>
         <file alias="save_as">save_as.png</file>
         <file alias="folder">folder.png</file>
+        <file>loading.gif</file>
     </qresource>
 </RCC>

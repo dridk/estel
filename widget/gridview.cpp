@@ -82,7 +82,7 @@ void GridWidget::mousePressEvent(QMouseEvent * event)
 
 void GridWidget::mouseMoveEvent(QMouseEvent * event)
 {
-
+    Q_UNUSED(event);
 
 }
 
@@ -104,6 +104,7 @@ void GridWidget::switchOff(int x, int y)
 
 void GridWidget::selectOn(int x, int y)
 {
+
 
 }
 

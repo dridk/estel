@@ -44,7 +44,6 @@ void Gene::mutate()
     //get the random value between 0 and 1/probability
 
     int R = qrand()%mutationRate();
-    qDebug()<<"R"<<R;
 
     if (!R)
     {

@@ -59,17 +59,16 @@ bool LifeEngine::remLife(int x, int y)
 
 bool LifeEngine::remLife(Life *life)
 {
-    int index =  mColumns * life->x()+ life->y();
-    if (mLifeList.keys().contains(index))
+
+    if (mLifeList.values().contains(life))
     {
-        qDebug()<<"yes"<<index;
-        mLifeList.remove(index);
-        return true;
+       mLifeList.remove(mLifeList.key(life));
+       return true;
     }
     return false;
 }
 
-QList<Life*> LifeEngine::lifes() const
+QList<Life*> LifeEngine::lifes()
 {
     return mLifeList.values();
 }
@@ -77,6 +76,7 @@ QList<Life*> LifeEngine::lifes() const
 void LifeEngine::clear()
 {
     mLifeList.clear();
+    emit changed();
 }
 void LifeEngine::run(int iteration)
 {
@@ -196,7 +196,7 @@ bool LifeEngine::hasLife(int x, int y) const
 
 }
 
-Life *LifeEngine::life(int x, int y) const
+Life *LifeEngine::life(int x, int y)
 {
     int index =  mColumns * x + y;
     if (mLifeList.contains(index))
@@ -216,5 +216,7 @@ QObject *LifeEngine::lifeAt(int x, int y)
 
 int LifeEngine::count() const
 {
-    return lifes().count();
+ return mLifeList.count();
 }
+
+

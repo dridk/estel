@@ -24,7 +24,7 @@ void LifeListView::refresh()
         QList<QStandardItem*> items;
         QStandardItem * item =new QStandardItem();
         item->setEditable(false);
-        item->setText(life->name());
+        item->setText(life->name() +"-"+ life->genom().identity());
         item->setIcon(QIcon(":dna"));
 
         QStandardItem * item2 =new QStandardItem();
@@ -67,9 +67,15 @@ void LifeListView::remove()
 
 
     qDebug()<<lifes.count()<<" a suppr";
+    qDebug()<<mEngine->count();
 
-    foreach (Life * life, lifes)
+
+
+    foreach (Life * life, lifes) {
         mEngine->remLife(life);
+
+    }
+
 
     refresh();
   //  emit changed();
@@ -83,10 +89,10 @@ void LifeListView::edit()
     if (view()->selectionModel()->selectedIndexes().count())
     {
         int row = view()->selectionModel()->selectedIndexes().first().row();
-        Life * life = mEngine->lifes().at(row);
+        Life * life = mEngine->lifes()[row];
         LifeEditorWindow * dialog = new LifeEditorWindow;
 
-   dialog->setLife(*life);
+        dialog->setLife(Life(*life));
         if (dialog->exec() == QDialog::Rejected)
             return;
 

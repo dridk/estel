@@ -16,6 +16,7 @@ class Life
 public:
     Life(int x=0, int y=0 , int age = 0);
     Life(const Life& life);
+    ~Life();
 
     void clone(const Life& life);
 

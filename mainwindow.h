@@ -35,6 +35,8 @@
 #include "lifeplotwidget.h"
 #include "geneplotwidget.h"
 #include "previewwidget.h"
+
+#include "progressstatusbar.h"
 namespace Ui {
 class MainWindow;
 }
@@ -53,7 +55,6 @@ public slots:
     void save();
     void saveAs();
 
-protected slots:
 
 private:
     Ui::MainWindow *ui;
@@ -64,6 +65,8 @@ private:
     GenePlotWidget * mGenePlotWidget;
     LifeFilterWidget * mLifeFilterWidget;
     PreviewWidget * mPreviewWidget;
+
+    ProgressStatusBar * mStatusBar;
 
 
 };
