@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QtScript>
 #include "life.h"
+#include "lifescriptengine.h"
 //! \class LifeEngine
 //! \brief LifeEngine contains all life in a grid and can make a simulation
 //! by executing logic script of each life.
@@ -11,6 +12,7 @@
 
 class Life;
 class LifeEngine;
+class LifeScriptEngine;
 class LifeEngine : public QObject
 {
     Q_OBJECT
@@ -88,10 +90,7 @@ private:
     int mRows;
     int mColumns;
     QVariant mDatas;
-    QScriptEngine mScriptEngine;
-    QString mLastError;
-    QString mLastDebug;
-
+    LifeScriptEngine * mScriptEngine;
 };
 
 #endif // LIFEENGINE_H

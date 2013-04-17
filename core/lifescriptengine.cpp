@@ -24,74 +24,77 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "previewwidget.h"
-#include <QSize>
-PreviewWidget::PreviewWidget(QWidget *parent) :
-    QWidget(parent)
+#include "lifescriptengine.h"
+
+//======== LIFE object to be accessible for script engine =======
+LifeObject::LifeObject(Life *life, QObject *parent)
 {
-    mEngineView = NULL;
-    setMinimumSize(200,200);
-
-
-    QAction * refreshAction = new QAction("refresh",this);
-    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
-    addAction(refreshAction);
-    setContextMenuPolicy(Qt::ActionsContextMenu);
-
-
+    mLife = life;
 }
 
-void PreviewWidget::setEngineView(LifeEngineView *view)
+const QString &LifeObject::name() const
 {
-    mEngineView = view;
+    return mLife->name();
 }
 
-void PreviewWidget::mouseMoveEvent(QMouseEvent *ev)
+void LifeObject::setName(const QString &name)
 {
-    if (mEngineView == NULL)
-        return;
-
-
-   int ax  = ev->x() * mEngineView->horizontalScrollBar()->maximum()/width();
-   int ay  = ev->y() * mEngineView->verticalScrollBar()->maximum()/height();
-
-   qDebug()<<ax<<" "<<ay;
-
-   mEngineView->horizontalScrollBar()->setValue(ax);
-   mEngineView->verticalScrollBar()->setValue(ay);
-
-
-
-
+    mLife->setName(name);
 }
 
-void PreviewWidget::paintEvent(QPaintEvent * event)
+int LifeObject::age()
 {
-
-    QPainter painter(this);
-    painter.drawPixmap(0,0,width(),height(),mPix.scaled(size()));
-
-
+    return mLife->age();
 }
 
-void PreviewWidget::refresh()
+void LifeObject::setAge(int a)
 {
-    if (mEngineView == NULL)
-        return;
+    mLife->setAge(a);
+}
+//========= LIFE engine ========================================
+LifeScriptEngine::LifeScriptEngine(QObject *parent) :
+    QScriptEngine(parent)
+{
+    mLifeEngine = NULL;
+}
 
-    mPix = QPixmap(mEngineView->engine()->rows(), mEngineView->engine()->columns());
-    mPix.fill(Qt::white);
-    QPainter painter(&mPix);
+void LifeScriptEngine::setLifeEngine(LifeEngine *lifeEngine)
+{
+    mLifeEngine = lifeEngine;
+}
 
-    foreach (Life * life, mEngineView->engine()->lifes())
+bool LifeScriptEngine::evaluateLife(Life *life)
+{
+
+    globalObject().setProperty("engine", newQObject(mLifeEngine));
+    globalObject().setProperty("console",newQObject(this));
+    globalObject().setProperty("life",newQObject(new LifeObject(life)));
+
+    QScriptValue result = evaluate(life->script());
+
+    if (result.isError())
     {
-        qDebug()<<"test";
-        QPen pen;
-        pen.setColor(Qt::black);
-        pen.setWidth(1);
-        painter.setPen(pen);
-        painter.drawPoint(life->x(),life->y());
+
+        mLastError = QString("line %1 : %2 ")
+                .arg(result.property("lineNumber").toString())
+                .arg(result.property("message").toString());
+        return false; // and kill the life
     }
 
-    repaint();
+    QScriptValue runFunction = globalObject().property("main");
+    if (!runFunction.isFunction())
+    {
+        mLastError = QString("cannot find main() function");
+        return false;
+    }
+
+    return runFunction.call().toBool();
+    return true;
 }
+
+void LifeScriptEngine::debug(const QString &message)
+{
+    mLastDebug = message;
+}
+
+

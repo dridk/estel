@@ -24,74 +24,30 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "previewwidget.h"
-#include <QSize>
-PreviewWidget::PreviewWidget(QWidget *parent) :
-    QWidget(parent)
+#ifndef LIFEFORMWIDGET_H
+#define LIFEFORMWIDGET_H
+
+#include <QWidget>
+#include "life.h"
+#include <QtGui>
+#include "genomview.h"
+
+class LifeFormWidget : public QWidget
 {
-    mEngineView = NULL;
-    setMinimumSize(200,200);
+    Q_OBJECT
+public:
+    explicit LifeFormWidget(QWidget *parent = 0);
+    void setLife(const Life& life);
+    const Life& life();
+    
+private:
+    QSpinBox * mAgeSpinBox;
+    QLineEdit * mNameEdit;
+    QSpinBox * mXSpinBox;
+    QSpinBox * mYSpinBox;
+    GenomView * mGenomView;
+    Life mLife;
+    
+};
 
-
-    QAction * refreshAction = new QAction("refresh",this);
-    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
-    addAction(refreshAction);
-    setContextMenuPolicy(Qt::ActionsContextMenu);
-
-
-}
-
-void PreviewWidget::setEngineView(LifeEngineView *view)
-{
-    mEngineView = view;
-}
-
-void PreviewWidget::mouseMoveEvent(QMouseEvent *ev)
-{
-    if (mEngineView == NULL)
-        return;
-
-
-   int ax  = ev->x() * mEngineView->horizontalScrollBar()->maximum()/width();
-   int ay  = ev->y() * mEngineView->verticalScrollBar()->maximum()/height();
-
-   qDebug()<<ax<<" "<<ay;
-
-   mEngineView->horizontalScrollBar()->setValue(ax);
-   mEngineView->verticalScrollBar()->setValue(ay);
-
-
-
-
-}
-
-void PreviewWidget::paintEvent(QPaintEvent * event)
-{
-
-    QPainter painter(this);
-    painter.drawPixmap(0,0,width(),height(),mPix.scaled(size()));
-
-
-}
-
-void PreviewWidget::refresh()
-{
-    if (mEngineView == NULL)
-        return;
-
-    mPix = QPixmap(mEngineView->engine()->rows(), mEngineView->engine()->columns());
-    mPix.fill(Qt::white);
-    QPainter painter(&mPix);
-
-    foreach (Life * life, mEngineView->engine()->lifes())
-    {
-        qDebug()<<"test";
-        QPen pen;
-        pen.setColor(Qt::black);
-        pen.setWidth(1);
-        painter.setPen(pen);
-        painter.drawPoint(life->x(),life->y());
-    }
-
-    repaint();
-}
+#endif // LIFEFORMWIDGET_H

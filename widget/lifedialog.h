@@ -5,8 +5,9 @@
 #include <QtGui>
 #include <QDialogButtonBox>
 #include "life.h"
-#include "genomview.h"
+#include "lifeformwidget.h"
 #include "lifescripteditor.h"
+
 
 class LifeDialog : public QDialog
 {
@@ -22,11 +23,7 @@ public:
     
 private:
     Life mLife;
-    QSpinBox * mAgeSpinBox;
-    QLineEdit * mNameEdit;
-    QSpinBox * mXSpinBox;
-    QSpinBox * mYSpinBox;
-    GenomView * mGenomView;
+    LifeFormWidget * mLifeFormWidget;
     LifeScriptEditor * mEditor;
     QDialogButtonBox * mDialogBox;
 };

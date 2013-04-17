@@ -24,74 +24,76 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "previewwidget.h"
-#include <QSize>
-PreviewWidget::PreviewWidget(QWidget *parent) :
+#include "lifeformwidget.h"
+#include <QVBoxLayout>
+#include <QFrame>
+LifeFormWidget::LifeFormWidget(QWidget *parent) :
     QWidget(parent)
 {
-    mEngineView = NULL;
-    setMinimumSize(200,200);
+    QVBoxLayout * layout = new QVBoxLayout;
+    QFrame * groupBox = new QFrame;
+    mAgeSpinBox = new QSpinBox;
+    mNameEdit = new QLineEdit;
+    mXSpinBox = new QSpinBox;
+    mYSpinBox = new QSpinBox;
+
+    setWindowIcon(QIcon(":rabbit"));
+
+    mNameEdit->setPlaceholderText("Name");
+    mAgeSpinBox->setPrefix("age: ");
+    mXSpinBox->setPrefix("x: ");
+    mYSpinBox->setPrefix("y: ");
+    mGenomView = new GenomView;
+    QWidget * coordWidget = new QWidget;
+    coordWidget->setLayout(new QHBoxLayout);
+    coordWidget->layout()->setMargin(0);
+    coordWidget->layout()->addWidget(mXSpinBox);
+    coordWidget->layout()->addWidget(mYSpinBox);
+
+    layout->addWidget( mNameEdit);
+    layout->addWidget( mAgeSpinBox);
+    layout->addWidget( coordWidget);
+
+    groupBox->setLayout(layout);
+    groupBox->layout()->setMargin(0);
+
+    QFrame * genomGroupBox = new QFrame;
+    genomGroupBox->setLayout(new QVBoxLayout);
+    genomGroupBox->layout()->addWidget(mGenomView);
+    genomGroupBox->layout()->setMargin(0);
 
 
-    QAction * refreshAction = new QAction("refresh",this);
-    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
-    addAction(refreshAction);
-    setContextMenuPolicy(Qt::ActionsContextMenu);
+    QVBoxLayout * mainLayout = new QVBoxLayout;
+    mainLayout->setSpacing(0);
+    mainLayout->addWidget(groupBox);
+    mainLayout->addWidget(genomGroupBox);
+
+    setLayout(mainLayout);
 
 
 }
 
-void PreviewWidget::setEngineView(LifeEngineView *view)
+void LifeFormWidget::setLife(const Life &life)
 {
-    mEngineView = view;
-}
-
-void PreviewWidget::mouseMoveEvent(QMouseEvent *ev)
-{
-    if (mEngineView == NULL)
-        return;
-
-
-   int ax  = ev->x() * mEngineView->horizontalScrollBar()->maximum()/width();
-   int ay  = ev->y() * mEngineView->verticalScrollBar()->maximum()/height();
-
-   qDebug()<<ax<<" "<<ay;
-
-   mEngineView->horizontalScrollBar()->setValue(ax);
-   mEngineView->verticalScrollBar()->setValue(ay);
-
-
-
+    mLife = life;
+    mNameEdit->setText(life.name());
+    mAgeSpinBox->setValue(life.age());
+    mXSpinBox->setValue(life.x());
+    mYSpinBox->setValue(life.y());
+    mXSpinBox->setRange(0, life.engine()->rows());
+    mYSpinBox->setRange(0,life.engine()->columns());
+    Genom genom = life.genom();
+    mGenomView->setGenom(genom);
 
 }
 
-void PreviewWidget::paintEvent(QPaintEvent * event)
+const Life &LifeFormWidget::life()
 {
+    mLife.setName(mNameEdit->text());
+    mLife.setAge(mAgeSpinBox->value());
+    mLife.setX(mXSpinBox->value());
+    mLife.setY(mYSpinBox->value());
+    mLife.setGenom(mGenomView->genom());
+    return mLife;
 
-    QPainter painter(this);
-    painter.drawPixmap(0,0,width(),height(),mPix.scaled(size()));
-
-
-}
-
-void PreviewWidget::refresh()
-{
-    if (mEngineView == NULL)
-        return;
-
-    mPix = QPixmap(mEngineView->engine()->rows(), mEngineView->engine()->columns());
-    mPix.fill(Qt::white);
-    QPainter painter(&mPix);
-
-    foreach (Life * life, mEngineView->engine()->lifes())
-    {
-        qDebug()<<"test";
-        QPen pen;
-        pen.setColor(Qt::black);
-        pen.setWidth(1);
-        painter.setPen(pen);
-        painter.drawPoint(life->x(),life->y());
-    }
-
-    repaint();
 }

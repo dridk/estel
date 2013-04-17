@@ -24,74 +24,53 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "previewwidget.h"
-#include <QSize>
-PreviewWidget::PreviewWidget(QWidget *parent) :
-    QWidget(parent)
+#ifndef LIFESCRIPTENGINE_H
+#define LIFESCRIPTENGINE_H
+#include <QScriptEngine>
+#include "lifeengine.h"
+class LifeScriptEngine;
+class LifeEngine;
+class Life;
+class LifeObject : public QObject
 {
-    mEngineView = NULL;
-    setMinimumSize(200,200);
+    Q_OBJECT
+    Q_PROPERTY (QString name READ name WRITE setName)
+    Q_PROPERTY (int age READ age WRITE setAge)
 
 
-    QAction * refreshAction = new QAction("refresh",this);
-    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
-    addAction(refreshAction);
-    setContextMenuPolicy(Qt::ActionsContextMenu);
+public:
+    LifeObject(Life * life, QObject * parent =0);
+
+    const QString& name() const;
+    void setName(const QString& name);
+
+    int age();
+    void setAge(int a);
 
 
-}
 
-void PreviewWidget::setEngineView(LifeEngineView *view)
+private:
+    Life * mLife;
+};
+
+
+
+class LifeScriptEngine : public QScriptEngine
 {
-    mEngineView = view;
-}
+    Q_OBJECT
+public:
+    explicit LifeScriptEngine(QObject *parent = 0);
+    void setLifeEngine(LifeEngine * lifeEngine);
+    bool evaluateLife(Life * life);
+    
 
-void PreviewWidget::mouseMoveEvent(QMouseEvent *ev)
-{
-    if (mEngineView == NULL)
-        return;
+    Q_INVOKABLE void debug(const QString& message);
 
+private:
+    LifeEngine * mLifeEngine;
+    QString mLastError;
+    QString mLastDebug;
 
-   int ax  = ev->x() * mEngineView->horizontalScrollBar()->maximum()/width();
-   int ay  = ev->y() * mEngineView->verticalScrollBar()->maximum()/height();
+};
 
-   qDebug()<<ax<<" "<<ay;
-
-   mEngineView->horizontalScrollBar()->setValue(ax);
-   mEngineView->verticalScrollBar()->setValue(ay);
-
-
-
-
-}
-
-void PreviewWidget::paintEvent(QPaintEvent * event)
-{
-
-    QPainter painter(this);
-    painter.drawPixmap(0,0,width(),height(),mPix.scaled(size()));
-
-
-}
-
-void PreviewWidget::refresh()
-{
-    if (mEngineView == NULL)
-        return;
-
-    mPix = QPixmap(mEngineView->engine()->rows(), mEngineView->engine()->columns());
-    mPix.fill(Qt::white);
-    QPainter painter(&mPix);
-
-    foreach (Life * life, mEngineView->engine()->lifes())
-    {
-        qDebug()<<"test";
-        QPen pen;
-        pen.setColor(Qt::black);
-        pen.setWidth(1);
-        painter.setPen(pen);
-        painter.drawPoint(life->x(),life->y());
-    }
-
-    repaint();
-}
+#endif // LIFESCRIPTENGINE_H

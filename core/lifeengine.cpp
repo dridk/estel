@@ -8,9 +8,10 @@ LifeEngine::LifeEngine(int rows, int columns)
 {
     mRows = rows;
     mColumns = columns;
+    mScriptEngine = new LifeScriptEngine;
+    mScriptEngine->setLifeEngine(this);
 
-    QScriptValue object = mScriptEngine.newQObject(this);
-    mScriptEngine.globalObject().setProperty("engine",object);
+
 
 }
 

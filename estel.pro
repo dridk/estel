@@ -43,7 +43,9 @@ SOURCES += main.cpp\
     widget/lifeplotwidget.cpp \
     widget/geneplotwidget.cpp \
     widget/lifescripteditor.cpp \
-    widget/previewwidget.cpp
+    widget/previewwidget.cpp \
+    core/lifescriptengine.cpp \
+    widget/lifeformwidget.cpp
 #    qxtjson/jsonmodel.cpp \
 #    widget/lifefileview.cpp \
 #    widget/addlifecommand.cpp \
@@ -82,7 +84,9 @@ HEADERS  += gene.h \
     widget/lifeplotwidget.h \
     widget/geneplotwidget.h \
     widget/lifescripteditor.h \
-    widget/previewwidget.h
+    widget/previewwidget.h \
+    core/lifescriptengine.h \
+    widget/lifeformwidget.h
 #    qxtjson/jsonmodel.h \
 #    widget/addlifecommand.h \
 #    widget/aboutdialog.h
