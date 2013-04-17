@@ -31,18 +31,20 @@ LifeFormWidget::LifeFormWidget(QWidget *parent) :
     QWidget(parent)
 {
     QVBoxLayout * layout = new QVBoxLayout;
-    QFrame * groupBox = new QFrame;
+    QGroupBox * groupBox = new QGroupBox;
     mAgeSpinBox = new QSpinBox;
     mNameEdit = new QLineEdit;
     mXSpinBox = new QSpinBox;
     mYSpinBox = new QSpinBox;
 
     setWindowIcon(QIcon(":rabbit"));
+    groupBox->setTitle("Properties");
 
     mNameEdit->setPlaceholderText("Name");
     mAgeSpinBox->setPrefix("age: ");
     mXSpinBox->setPrefix("x: ");
     mYSpinBox->setPrefix("y: ");
+
     mGenomView = new GenomView;
     QWidget * coordWidget = new QWidget;
     coordWidget->setLayout(new QHBoxLayout);
@@ -55,18 +57,20 @@ LifeFormWidget::LifeFormWidget(QWidget *parent) :
     layout->addWidget( coordWidget);
 
     groupBox->setLayout(layout);
-    groupBox->layout()->setMargin(0);
+    groupBox->layout()->setContentsMargins(0,10,0,0);
 
-    QFrame * genomGroupBox = new QFrame;
+    QGroupBox * genomGroupBox = new QGroupBox;
+    genomGroupBox->setTitle("Genom");
     genomGroupBox->setLayout(new QVBoxLayout);
     genomGroupBox->layout()->addWidget(mGenomView);
     genomGroupBox->layout()->setMargin(0);
 
 
     QVBoxLayout * mainLayout = new QVBoxLayout;
-    mainLayout->setSpacing(0);
+    mainLayout->setSpacing(10);
     mainLayout->addWidget(groupBox);
     mainLayout->addWidget(genomGroupBox);
+    mainLayout->setContentsMargins(0,0,0,0);
 
     setLayout(mainLayout);
 
@@ -80,8 +84,12 @@ void LifeFormWidget::setLife(const Life &life)
     mAgeSpinBox->setValue(life.age());
     mXSpinBox->setValue(life.x());
     mYSpinBox->setValue(life.y());
-    mXSpinBox->setRange(0, life.engine()->rows());
-    mYSpinBox->setRange(0,life.engine()->columns());
+
+    if (life.engine() != NULL) {
+        mXSpinBox->setRange(0, life.engine()->rows());
+        mYSpinBox->setRange(0,life.engine()->columns());
+    }
+
     Genom genom = life.genom();
     mGenomView->setGenom(genom);
 

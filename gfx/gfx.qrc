@@ -9,8 +9,15 @@
         <file>plasmid.png</file>
         <file alias="rabbit">rabbit.png</file>
         <file>research-26.png</file>
-        <file>services.png</file>
+        <file alias="run">services.png</file>
         <file>speed.png</file>
         <file>test_tube.png</file>
+        <file alias="download">download.png</file>
+        <file alias="upload">upload.png</file>
+        <file alias="help">help.png</file>
+        <file alias="clear">clear.png</file>
+        <file alias="save">save.png</file>
+        <file alias="save_as">save_as.png</file>
+        <file alias="folder">folder.png</file>
     </qresource>
 </RCC>

@@ -42,6 +42,26 @@ void LifeObject::setName(const QString &name)
     mLife->setName(name);
 }
 
+int LifeObject::x() const
+{
+    return mLife->x();
+}
+
+void LifeObject::setX(int x)
+{
+    mLife->setX(x);
+}
+
+int LifeObject::y() const
+{
+    return mLife->y();
+}
+
+void LifeObject::setY(int y)
+{
+    mLife->setY(y);
+}
+
 int LifeObject::age()
 {
     return mLife->age();
@@ -50,6 +70,16 @@ int LifeObject::age()
 void LifeObject::setAge(int a)
 {
     mLife->setAge(a);
+}
+
+QVariantMap LifeObject::genom()
+{
+    QVariantMap list;
+    foreach (Gene gene, mLife->genom().genes())
+      list.insert(gene.name(),gene.value());
+
+    return list;
+
 }
 //========= LIFE engine ========================================
 LifeScriptEngine::LifeScriptEngine(QObject *parent) :
@@ -70,6 +100,10 @@ bool LifeScriptEngine::evaluateLife(Life *life)
     globalObject().setProperty("console",newQObject(this));
     globalObject().setProperty("life",newQObject(new LifeObject(life)));
 
+    mLastError.clear();
+    mLastDebug.clear();
+
+    qDebug()<<life->script();
     QScriptValue result = evaluate(life->script());
 
     if (result.isError())
@@ -94,7 +128,17 @@ bool LifeScriptEngine::evaluateLife(Life *life)
 
 void LifeScriptEngine::debug(const QString &message)
 {
-    mLastDebug = message;
+    mLastDebug.append(message+"\n");
+}
+
+const QString &LifeScriptEngine::lastError() const
+{
+    return mLastError;
+}
+
+const QString &LifeScriptEngine::lastDebug() const
+{
+    return mLastDebug;
 }
 
 

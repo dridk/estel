@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "genecombobox.h"
 
+#include "lifeeditorwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,7 +30,8 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
-    MainWindow * window = new MainWindow;
+    LifeEditorWindow * window = new LifeEditorWindow;
+
 
     window->show();
 

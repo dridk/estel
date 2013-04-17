@@ -24,70 +24,48 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef LIFESCRIPTENGINE_H
-#define LIFESCRIPTENGINE_H
-#include <QScriptEngine>
+#ifndef LIFEEDITORWINDOW_H
+#define LIFEEDITORWINDOW_H
+
+#include <QMainWindow>
+#include <QtGui>
+#include "life.h"
 #include "lifeengine.h"
-class LifeScriptEngine;
-class LifeEngine;
-class Life;
-class LifeObject : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY (QString name READ name WRITE setName)
-    Q_PROPERTY (int age READ age WRITE setAge)
-    Q_PROPERTY (int x READ x WRITE setX)
-    Q_PROPERTY (int y READ y WRITE setY)
-    Q_PROPERTY (QVariantMap genom READ genom)
-    Q_CLASSINFO("DefaultProperty", "genom")
-
-
-
-
-
-public:
-    LifeObject(Life * life, QObject * parent =0);
-
-    const QString& name() const;
-    void setName(const QString& name);
-
-    int x() const;
-    void setX(int x);
-
-    int y() const;
-    void setY(int y);
-
-    int age();
-    void setAge(int a);
-
-    QVariantMap genom();
-
-
-
-private:
-    Life * mLife;
-};
-
-
-
-class LifeScriptEngine : public QScriptEngine
+#include "jsedit.h"
+#include "lifeformwidget.h"
+#include "lifescriptengine.h"
+#include <QTextEdit>
+class LifeEditorWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit LifeScriptEngine(QObject *parent = 0);
-    void setLifeEngine(LifeEngine * lifeEngine);
-    bool evaluateLife(Life * life);
-    Q_INVOKABLE void debug(const QString& message);
+    explicit LifeEditorWindow(QWidget *parent = 0);
+    void setLife(const Life& life);
+    const Life& life();
+
+public slots:
+    void importLife();
+    void exportLife();
+    void clear();
+    void run();
+    void help();
+    void save();
 
 
-    const QString& lastError() const;
-    const QString& lastDebug() const;
+signals:
+    void saved();
+
 
 private:
-    LifeEngine * mLifeEngine;
-    QString mLastError;
-    QString mLastDebug;
+    Life mLife;
+    LifeEngine * mEngine;
+    QToolBar * mToolBar;
+    JSEdit * mEditor;
+    QTextEdit * mDebugEdit;
+    LifeFormWidget * mFormWidget;
+    LifeScriptEngine * mScriptEngine;
 
+    
 };
 
-#endif // LIFESCRIPTENGINE_H
+#endif // LIFEEDITORWINDOW_H

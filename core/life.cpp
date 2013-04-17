@@ -108,14 +108,10 @@ void Life::setGenom(const Genom &genom)
 bool Life::step()
 {
     mAge++;
-
     int i =  qrand()%7;
-
     qDebug()<<"val" <<i;
-
     int ax=0;
     int ay=0;
-
     switch ( i)
     {
     case 0 : ax=-1; ay=-1;break;
@@ -139,10 +135,8 @@ bool Life::step()
         return false;
 
     return true;
-
-
-
 }
+
 
 void Life::init()
 {
