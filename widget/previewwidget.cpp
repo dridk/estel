@@ -30,8 +30,14 @@ PreviewWidget::PreviewWidget(QWidget *parent) :
     QWidget(parent)
 {
     mEngineView = NULL;
-    setMinimumSize(200,200);
+    setFixedSize(256,256);
 
+    mPix = QPixmap(size());
+    mPix.fill(Qt::white);
+
+
+    setWindowTitle("MiniMap");
+    setWindowIcon(QIcon(":grid.png"));
 
     QAction * refreshAction = new QAction("refresh",this);
     connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
@@ -52,14 +58,22 @@ void PreviewWidget::mouseMoveEvent(QMouseEvent *ev)
         return;
 
 
-   int ax  = ev->x() * mEngineView->horizontalScrollBar()->maximum()/width();
-   int ay  = ev->y() * mEngineView->verticalScrollBar()->maximum()/height();
+    int rx = mEngineView->viewport()->width()  * width() / mEngineView->widget()->width();
+    int ry = mEngineView->viewport()->height() * height() / mEngineView->widget()->height();
 
-   qDebug()<<ax<<" "<<ay;
 
-   mEngineView->horizontalScrollBar()->setValue(ax);
-   mEngineView->verticalScrollBar()->setValue(ay);
+    mZone.setRect(0,0,rx,ry);
 
+    mZone.moveTo(ev->pos() - mZone.center());
+
+    int ax  = (mZone.x()) * mEngineView->horizontalScrollBar()->maximum()/width();
+    int ay  = (mZone.y()) * mEngineView->verticalScrollBar()->maximum()/height();
+
+
+    mEngineView->horizontalScrollBar()->setValue(ax);
+    mEngineView->verticalScrollBar()->setValue(ay);
+
+    repaint();
 
 
 
@@ -70,6 +84,13 @@ void PreviewWidget::paintEvent(QPaintEvent * event)
 
     QPainter painter(this);
     painter.drawPixmap(0,0,width(),height(),mPix.scaled(size()));
+
+    painter.setPen(QPen(Qt::lightGray));
+    painter.setBrush(Qt::NoBrush);
+    painter.drawRect(0,0,size().width()-1, size().height()-1);
+
+    painter.setBrush(QBrush(QColor(255,255,0,50)));
+    painter.drawRect(mZone);
 
 
 }
@@ -85,12 +106,22 @@ void PreviewWidget::refresh()
 
     foreach (Life * life, mEngineView->engine()->lifes())
     {
-        qDebug()<<"test";
-        QPen pen;
-        pen.setColor(Qt::black);
-        pen.setWidth(1);
-        painter.setPen(pen);
-        painter.drawPoint(life->x(),life->y());
+
+        if (mEngineView->lifeFilter().contains(life->name())) {
+
+
+            QColor col = Qt::black;
+            foreach (Gene gene, life->genom().genes())
+            {
+                if (mEngineView->geneFilter().contains(gene.name()))
+                    col = gene.color();
+            }
+
+
+            painter.setPen(QPen(col));
+            painter.drawPoint(life->x(),life->y());
+
+        }
     }
 
     repaint();

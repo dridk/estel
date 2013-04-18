@@ -47,6 +47,7 @@ public slots:
 private:
     LifeEngineView * mEngineView;
     QPixmap mPix;
+    QRect mZone;
     
 };
 
