@@ -8,7 +8,7 @@ QT       += core gui script
 
 TARGET = estel
 TEMPLATE = app
-
+CONFIG+=thread
 
 SOURCES += main.cpp\
     core/gene.cpp \

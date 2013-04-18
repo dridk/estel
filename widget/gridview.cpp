@@ -127,6 +127,12 @@ void GridWidget::setCellSize(int size)
     mCellSize = size;
 }
 
+void GridWidget::showGrid(bool show)
+{
+    mShowGrid = show;
+    repaint();
+}
+
 QPixmap * GridWidget::snap()
 {
     QPixmap * pix = new QPixmap(size());
@@ -140,6 +146,8 @@ void GridWidget::drawGrid(QPaintDevice *device)
 
     QPainter paint;
     paint.begin(device);
+    mGridPix.fill(Qt::white);
+    if (mShowGrid)
     paint.drawPixmap(0,0,mGridPix);
     //Draw Square
     foreach (int index , mColors.keys())

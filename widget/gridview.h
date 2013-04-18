@@ -58,6 +58,7 @@ public:
     void clear();
     void clearSelection();
     void setCellSize(int size);
+    void showGrid(bool show);
 
     QPixmap * snap() ;
 
@@ -84,6 +85,7 @@ private:
     QHash<int, QColor >mColors;
     QList<QPoint> mSelection;
     int mSelectorSize;
+    bool mShowGrid;
 
 };
 /*! \class GridView
@@ -143,6 +145,10 @@ public:
 
     QPixmap * snap() {
         return mGridWidget->snap();
+    }
+
+    void showGrid(bool show){
+        mGridWidget->showGrid(show);
     }
 
     GridWidget * gridWidget() {

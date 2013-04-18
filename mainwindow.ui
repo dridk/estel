@@ -13,28 +13,14 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>20</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -72,6 +58,7 @@
    <addaction name="actionSaveAs"/>
    <addaction name="actionStep"/>
    <addaction name="actionClear"/>
+   <addaction name="actionExport"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
@@ -112,6 +99,11 @@
   <action name="actionClear">
    <property name="text">
     <string>clear</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>export</string>
    </property>
   </action>
  </widget>

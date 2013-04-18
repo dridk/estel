@@ -97,6 +97,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAs()));
     connect(ui->actionStep,SIGNAL(triggered()),mEngine,SLOT(step()));
     connect(ui->actionClear,SIGNAL(triggered()),mEngine,SLOT(clear()));
+    connect(ui->actionExport,SIGNAL(triggered()),this,SLOT(exportImage()));
 
     showMaximized();
 
@@ -110,14 +111,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::open()
 {
-//    setEnabled(false);
+    //    setEnabled(false);
     mStatusBar->setActive(true);
     QString fileName = QFileDialog::getOpenFileName(this,"open estel file",
                                                     QString(),"Estel (*.estel)");
+
+
     mEngine->load(fileName);
     mLifeListView->refresh();
     setWindowTitle(fileName);
-//    setEnabled(true);
+    //    setEnabled(true);
     mStatusBar->setActive(false);
 
 }
@@ -136,6 +139,17 @@ void MainWindow::saveAs()
                                                     QString(),"Estel (*.estel)");
     mEngine->save(fileName);
     setWindowTitle(fileName);
+
+}
+
+void MainWindow::exportImage()
+{
+    QString filename = QFileDialog::getSaveFileName();
+
+   mEngineView->showGrid(false);
+    mEngineView->snap()->save(filename);
+    mEngineView->showGrid(true);
+
 
 }
 

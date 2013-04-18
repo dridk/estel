@@ -54,6 +54,7 @@ public slots:
     void open();
     void save();
     void saveAs();
+    void exportImage();
 
 
 private:

@@ -94,6 +94,8 @@ public slots:
     //! if Life::step() return false, remove it. Otherwise do nothing.
     void step();
 
+
+
 signals:
     void changed();
     void progressed(int value);
