@@ -124,9 +124,10 @@ void LifeEditorWindow::importLife()
 {
     QString fileName = QFileDialog::getOpenFileName(
                 this,"Save life","", "Lifes (*.life)");
+
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
-        qDebug()<<"cannot open Life";
+        return;
 
     Life::parse(file.readAll(), &mLife);
     file.close();
@@ -139,14 +140,11 @@ void LifeEditorWindow::exportLife()
                 this,"Save life","", "Lifes (*.life)");
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly))
-        qDebug()<<"cannot open Life";
+        return;
 
     mLife = life();
-
     file.write(Life::serialize(&mLife).toUtf8());
-
     file.close();
-
 
 }
 
