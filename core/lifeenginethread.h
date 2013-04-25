@@ -38,6 +38,8 @@ public:
     enum Mode{LoadMode = 1,SaveMode = 2,StepMode = 3, MultiStepMode = 4 };
     explicit LifeEngineThread(QObject *parent = 0);
     void setEngine(LifeEngine * engine);
+
+public slots:
     void save(const QString& filename);
     void load(const QString& filename);
     void step();

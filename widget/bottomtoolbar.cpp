@@ -94,13 +94,10 @@ void BottomToolBar::setEngineView(LifeEngineView *view)
 
 }
 
-void BottomToolBar::setProgress(int value)
+void BottomToolBar::setProgress(int value, const QString &message)
 {
-
-    qDebug()<<"PROGRESSS" <<value;
-
     if (value > 0) {
-        mProgressLabel->setText(QString("Loading....%1%").arg(value));
+        mProgressLabel->setText(QString(message+"...%1%").arg(value));
         mAnimMovie->start();
         mAnimLabel->setVisible(true);
         setEnabled(false);

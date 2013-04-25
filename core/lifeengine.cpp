@@ -27,17 +27,17 @@ bool LifeEngine::addLife(Life *life)
 
     if (life->x() > mRows ||life->x()<0 || life->y() > mColumns || life->y()<0)
     {
-        qDebug()<<"life pos out of grid";
+        //qDebug()<<"life pos out of grid";
         return false;
     }
 
     if (mLifeList.keys().contains(index)) {
-        qDebug()<<"life already set for this position "<<life->pos();
+        //qDebug()<<"life already set for this position "<<life->pos();
         return false;
     }
 
     if (index >= mRows * mColumns){
-        qDebug()<<"life position out of range";
+        //qDebug()<<"life position out of range";
         return false;
     }
 
@@ -98,7 +98,8 @@ void LifeEngine::step()
 {
     QList<Life*> lifes = mLifeList.values();
     QList<Life*>::iterator it = lifes.begin();
-
+    int total = lifes.count();
+    int now   = 0;
     while (it != lifes.end()) {
 
         Life * currentLife = *it;
@@ -109,8 +110,10 @@ void LifeEngine::step()
             mLifeList.remove(index);
         }
         else it++;
+        emit progress(qRound(float(now)*100/float(total)), QString("computing life %1").arg(now));
+        ++now;
     }
-
+    emit progress(0);
     emit changed();
 
     //    while (it != mLifeList.end()) {
@@ -143,6 +146,7 @@ bool LifeEngine::load(const QString &filename)
 
     clear();
     QByteArray array = file.readAll();
+    emit progress(1,"uncompressing");
     array = qUncompress(array);
 
     QVariant data = QxtJSON::parse(QString::fromUtf8(array));
@@ -156,12 +160,11 @@ bool LifeEngine::load(const QString &filename)
         Life::parse(QxtJSON::stringify(lifeData),life);
         addLife(life);
 
-        emit progress(qRound(float(now)*100/float(total)));
+        emit progress(qRound(float(now)*100/float(total)),"loading");
         ++now;
     }
-    emit progress(0);
-
     file.close();
+    emit progress(0);
     return true;
 }
 
@@ -175,10 +178,10 @@ bool LifeEngine::save(const QString &filename)
     int now   = 0;
     foreach (Life * l, lifes()){
         lifeList.append(QxtJSON::parse(Life::serialize(l)));
-        emit progress(qRound(float(now)*100/float(total)));
+        emit progress(qRound(float(now)*100/float(total)),"saving");
         ++now;
     }
-    emit progress(0);
+
 
 
     QVariantMap globalMap;
@@ -186,8 +189,10 @@ bool LifeEngine::save(const QString &filename)
     globalMap.insert("lifes", lifeList);
 
     QByteArray array = QxtJSON::stringify(globalMap).toUtf8();
+    emit progress(100,"compressing");
     file.write(qCompress(array,9));
     file.close();
+     emit progress(0);
     return true;
 }
 

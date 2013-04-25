@@ -41,7 +41,8 @@ public:
     void setEngineView(LifeEngineView * view);
 
 public slots:
-    void setProgress(int value);
+    void setProgress(int value, const QString& message = QString());
+
     
 private:
     QAction * mSnapShotAction ;

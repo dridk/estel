@@ -95,16 +95,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //setStatusBar(mStatusBar);
 
-    connect(mEngine,SIGNAL(progressed(int)),mStatusBar,SLOT(setValue(int)));
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(open()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(save()));
     connect(ui->actionSaveAs,SIGNAL(triggered()),this,SLOT(saveAs()));
-    connect(ui->actionStep,SIGNAL(triggered()),mEngine,SLOT(step()));
+    connect(ui->actionStep,SIGNAL(triggered()),mEngineThread,SLOT(step()));
     connect(ui->actionClear,SIGNAL(triggered()),mEngine,SLOT(clear()));
     connect(ui->actionExport,SIGNAL(triggered()),this,SLOT(exportImage()));
     connect(mEngineThread,SIGNAL(runningChanged(bool)),this,SLOT(setDisabled(bool)));
     connect(mEngineThread,SIGNAL(finished()),this,SLOT(refresh()));
-    connect(mEngine,SIGNAL(progress(int)),mBottomBar,SLOT(setProgress(int)));
+    connect(mEngine,SIGNAL(progress(int,QString)),mBottomBar,SLOT(setProgress(int,QString)));
 
 
     showMaximized();
@@ -145,7 +144,7 @@ void MainWindow::saveAs()
 {
     QString fileName = QFileDialog::getSaveFileName(this,"save estel file",
                                                     QString(),"Estel (*.estel)");
-    mEngine->save(fileName);
+    mEngineThread->save(fileName);
     setWindowTitle(fileName);
 
 }
@@ -163,12 +162,11 @@ void MainWindow::exportImage()
 
 void MainWindow::refresh()
 {
-
+mLifeFilterWidget->refresh(); // Need to be in first ! Because it set filter
 mLifeListView->refresh();
 mGenePlotWidget->refresh();
 mLifePlotWidget->refresh();
 mPreviewWidget->refresh();
-mLifeFilterWidget->refresh();
 mEngineView->refresh();
 
 }
