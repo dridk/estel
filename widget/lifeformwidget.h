@@ -29,7 +29,7 @@
 
 #include <QWidget>
 #include "life.h"
-#include <QtGui>
+#include <QtWidgets>
 #include "genomview.h"
 
 class LifeFormWidget : public QWidget

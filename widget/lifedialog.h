@@ -2,7 +2,7 @@
 #define LIFEDIALOG_H
 
 #include <QDialog>
-#include <QtGui>
+#include <QtWidgets>
 #include <QDialogButtonBox>
 #include "life.h"
 #include "lifeformwidget.h"

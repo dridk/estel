@@ -28,7 +28,7 @@
 #define GENEDIALOG_H
 
 #include <QDialog>
-#include <QtGui>
+#include <QtWidgets>
 #include <QDialogButtonBox>
 #include "gene.h"
 #include "colorgradientwidget.h"

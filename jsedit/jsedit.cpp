@@ -30,7 +30,7 @@
 
 #include "jsedit.h"
 
-#include <QtGui>
+#include <QtWidgets>
 
 class JSBlockData: public QTextBlockUserData
 {

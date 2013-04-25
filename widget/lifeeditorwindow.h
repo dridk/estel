@@ -28,7 +28,7 @@
 #define LIFEEDITORWINDOW_H
 
 #include <QMainWindow>
-#include <QtGui>
+#include <QtWidgets>
 #include "life.h"
 #include "lifeengine.h"
 #include "jsedit.h"

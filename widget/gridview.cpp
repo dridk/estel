@@ -34,6 +34,7 @@ GridWidget::GridWidget(int rowCount, int columnCount, QWidget *parent):
     mRowCount = rowCount;
     mColumnCount = columnCount;
     mSelectorSize = 1;
+    mShowGrid = true;
     createGrid();
     setMinimumSize(1000,1000);
     switchOn(63,2,Qt::black);
@@ -146,13 +147,20 @@ void GridWidget::drawGrid(QPaintDevice *device)
 
     QPainter paint;
     paint.begin(device);
-    mGridPix.fill(Qt::white);
+
     if (mShowGrid)
     paint.drawPixmap(0,0,mGridPix);
+
+    else
+    {
+        paint.setBrush(QBrush(Qt::white));
+        paint.drawRect(0,0,width(), height());
+    }
+
     //Draw Square
     foreach (int index , mColors.keys())
     {
-        int y = qRound(index/mColumnCount);
+        int y = qRound(double(index)/double(mColumnCount));
         int x = index % mRowCount;
 
         paint.setBrush(mColors[index]);

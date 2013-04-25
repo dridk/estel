@@ -26,7 +26,7 @@
 #ifndef GRIDVIEW_H
 #define GRIDVIEW_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 class GridWidget;
 class GridView;
