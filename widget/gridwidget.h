@@ -61,6 +61,7 @@ signals:
 
 public slots:
     void showGrid(bool show);
+    void setZoom(short int zoom);
 
 
 
@@ -73,6 +74,7 @@ private:
     QList<QPoint> mSelection;
     int mSelectorSize;
     bool mShowGrid;
+    short int mZoom;
 
 };
 

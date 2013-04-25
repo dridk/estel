@@ -30,6 +30,7 @@
 #include <QSpacerItem>
 #include <QLayout>
 #include <QHBoxLayout>
+#include <QFileDialog>
 BottomToolBar::BottomToolBar(QWidget *parent) :
     QToolBar(parent)
 {
@@ -42,6 +43,8 @@ BottomToolBar::BottomToolBar(QWidget *parent) :
     mAnimLabel        = new QLabel;
     mAnimMovie        = new QMovie;
 
+    mShowGridAction->setCheckable(true);
+    mShowGridAction->setChecked(true);
     mAnimMovie->setFileName(":loading.gif");
     mAnimLabel->setMovie(mAnimMovie);
     mAnimMovie->start();
@@ -69,10 +72,10 @@ BottomToolBar::BottomToolBar(QWidget *parent) :
     addSeparator();
     addWidget(mZoomComboBox);
 
-    mZoomComboBox->addItem("0x");
-    mZoomComboBox->addItem("25x");
-    mZoomComboBox->addItem("50x");
-    mZoomComboBox->addItem("75x");
+    mZoomComboBox->addItem("1x",1);
+    mZoomComboBox->addItem("2x",2);
+    mZoomComboBox->addItem("3x",3);
+    mZoomComboBox->addItem("4x",4);
 
     layout()->setContentsMargins(0,0,0,0);
 
@@ -83,6 +86,9 @@ BottomToolBar::BottomToolBar(QWidget *parent) :
     setIconSize(QSize(16,16));
     setProgress(0);
 
+    connect(mZoomComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(onZoomChanged(int)));
+    connect(mShowGridAction,SIGNAL(triggered(bool)),this,SLOT(onShowGridChecked(bool)));
+    connect(mSnapShotAction,SIGNAL(triggered()),this,SLOT(onSnapShotClicked()));
 
 
 }
@@ -90,7 +96,7 @@ BottomToolBar::BottomToolBar(QWidget *parent) :
 void BottomToolBar::setEngineView(LifeEngineView *view)
 {
     mView = view;
-    //  connect(mFullscreenAction,SIGNAL(triggered()),mView->gridWidget(),SLOT(showGrid(bool)));
+
 
 }
 
@@ -111,6 +117,39 @@ void BottomToolBar::setProgress(int value, const QString &message)
         mAnimLabel->setVisible(false);
         setEnabled(true);
     }
+
+
+}
+
+void BottomToolBar::onZoomChanged(int index)
+{
+    if (mView == NULL)
+        return;
+
+
+    mView->gridWidget()->setZoom(mZoomComboBox->itemData(index).toInt());
+
+
+
+}
+
+void BottomToolBar::onShowGridChecked(bool checked)
+{
+    if (mView == NULL)
+        return;
+    mView->gridWidget()->showGrid(checked);
+
+
+}
+
+void BottomToolBar::onSnapShotClicked()
+{
+
+    QString filename = QFileDialog::getSaveFileName();
+
+    mView->gridWidget()->showGrid(false);
+    mView->gridWidget()->snap()->save(filename);
+    mView->gridWidget()->showGrid(true);
 
 
 }

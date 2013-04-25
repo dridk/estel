@@ -43,6 +43,11 @@ public:
 public slots:
     void setProgress(int value, const QString& message = QString());
 
+
+protected slots:
+    void onZoomChanged(int index);
+    void onShowGridChecked(bool checked);
+    void onSnapShotClicked();
     
 private:
     QAction * mSnapShotAction ;

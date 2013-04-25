@@ -35,6 +35,7 @@ GridWidget::GridWidget(int rowCount, int columnCount, QWidget *parent):
     mColumnCount = columnCount;
     mSelectorSize = 1;
     mShowGrid = true;
+    mZoom = 1;
     createGrid();
     setMinimumSize(1000,1000);
     switchOn(63,2,Qt::black);
@@ -66,14 +67,14 @@ void GridWidget::mousePressEvent(QMouseEvent * event)
     if (event->modifiers() != Qt::ControlModifier)
         clearSelection();
 
-//    for (int y=pos.y()-mSelectorSize; y<pos.y() + mSelectorSize ; ++y)
-//    {
-//        for (int x= pos.x()-mSelectorSize; x<pos.x() + mSelectorSize ; ++x)
-//        {
+    //    for (int y=pos.y()-mSelectorSize; y<pos.y() + mSelectorSize ; ++y)
+    //    {
+    //        for (int x= pos.x()-mSelectorSize; x<pos.x() + mSelectorSize ; ++x)
+    //        {
 
-            mSelection.append(pos);
-//        }
-//    }
+    mSelection.append(pos);
+    //        }
+    //    }
 
     emit cellClicked(pos);
     QWidget::mousePressEvent(event);
@@ -134,6 +135,14 @@ void GridWidget::showGrid(bool show)
     repaint();
 }
 
+void GridWidget::setZoom(short zoom)
+{
+    if (mZoom > 4 || mZoom < 0)
+        return;
+    mZoom = zoom;
+    repaint();
+}
+
 QPixmap * GridWidget::snap()
 {
     QPixmap * pix = new QPixmap(size());
@@ -147,15 +156,11 @@ void GridWidget::drawGrid(QPaintDevice *device)
 
     QPainter paint;
     paint.begin(device);
+    paint.scale(mZoom,mZoom);
 
-    if (mShowGrid)
-    paint.drawPixmap(0,0,mGridPix);
+    paint.setBrush(QBrush(Qt::white));
+    paint.drawRect(0,0,width(), height());
 
-    else
-    {
-        paint.setBrush(QBrush(Qt::white));
-        paint.drawRect(0,0,width(), height());
-    }
 
     //Draw Square
     foreach (int index , mColors.keys())
@@ -164,6 +169,7 @@ void GridWidget::drawGrid(QPaintDevice *device)
         int x = index % mRowCount;
 
         paint.setBrush(mColors[index]);
+        paint.setPen(Qt::NoPen);
         paint.drawRect(x*mCellSize,y*mCellSize, mCellSize, mCellSize);
     }
 
@@ -179,7 +185,11 @@ void GridWidget::drawGrid(QPaintDevice *device)
 
     }
 
+    if (mShowGrid)
+        paint.drawPixmap(0,0,mGridPix);
     paint.end();
+
+
 
 }
 
@@ -189,9 +199,9 @@ void GridWidget::createGrid()
     resize(mRowCount*mCellSize, mColumnCount*mCellSize);
     setFixedSize(size());
     mGridPix = QPixmap(size());
-    mGridPix.fill(Qt::white);
+    mGridPix.fill(Qt::transparent);
     QPainter paint(&mGridPix);
-    paint.setPen(QPen(Qt::lightGray));
+    paint.setPen(QPen(Qt::darkGray));
 
     for ( int x=0;x<width();x+=mCellSize )
         paint.drawLine(x,rect().top(), x, rect().bottom());
