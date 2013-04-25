@@ -35,8 +35,10 @@
 #include "lifeplotwidget.h"
 #include "geneplotwidget.h"
 #include "previewwidget.h"
-
 #include "progressstatusbar.h"
+#include "bottomtoolbar.h"
+#include "lifeenginethread.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -55,19 +57,21 @@ public slots:
     void save();
     void saveAs();
     void exportImage();
+    void refresh();
 
 
 private:
     Ui::MainWindow *ui;
     LifeEngine * mEngine;
+    LifeEngineThread * mEngineThread;
     LifeEngineView * mEngineView;
     LifeListView * mLifeListView;
     LifePlotWidget * mLifePlotWidget;
     GenePlotWidget * mGenePlotWidget;
     LifeFilterWidget * mLifeFilterWidget;
     PreviewWidget * mPreviewWidget;
-
     ProgressStatusBar * mStatusBar;
+    BottomToolBar * mBottomBar;
 
 
 };

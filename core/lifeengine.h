@@ -98,7 +98,7 @@ public slots:
 
 signals:
     void changed();
-    void progressed(int value);
+    void progress(int value);
 
 private:
     QHash<int,Life*> mLifeList;

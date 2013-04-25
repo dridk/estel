@@ -58,20 +58,20 @@ void PreviewWidget::mouseMoveEvent(QMouseEvent *ev)
         return;
 
 
-    int rx = mEngineView->viewport()->width()  * width() / mEngineView->widget()->width();
-    int ry = mEngineView->viewport()->height() * height() / mEngineView->widget()->height();
+    int rx = mEngineView->scrollArea()->viewport()->width()  * width() / mEngineView->gridWidget()->width();
+    int ry = mEngineView->scrollArea()->viewport()->height() * height() / mEngineView->gridWidget()->height();
 
 
     mZone.setRect(0,0,rx,ry);
 
     mZone.moveTo(ev->pos() - mZone.center());
 
-    int ax  = (mZone.x()) * mEngineView->horizontalScrollBar()->maximum()/width();
-    int ay  = (mZone.y()) * mEngineView->verticalScrollBar()->maximum()/height();
+    int ax  = (mZone.x()) * mEngineView->scrollArea()->horizontalScrollBar()->maximum()/width();
+    int ay  = (mZone.y()) * mEngineView->scrollArea()->verticalScrollBar()->maximum()/height();
 
 
-    mEngineView->horizontalScrollBar()->setValue(ax);
-    mEngineView->verticalScrollBar()->setValue(ay);
+    mEngineView->scrollArea()->horizontalScrollBar()->setValue(ax);
+    mEngineView->scrollArea()->verticalScrollBar()->setValue(ay);
 
     repaint();
 

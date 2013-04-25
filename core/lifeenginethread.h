@@ -24,18 +24,38 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "gridview.h"
-#include <QVBoxLayout>
-GridView::GridView(int rowCount, int columnCount, QWidget *parent):
-    QWidget(parent)
+#ifndef LIFEENGINETHREAD_H
+#define LIFEENGINETHREAD_H
+
+#include <QThread>
+#include "lifeengine.h"
+class LifeEngineThread : public QThread
 {
+    Q_OBJECT
 
-    mScrollArea = new QScrollArea;
-    mGridWidget = new GridWidget(rowCount, columnCount);
-    mScrollArea->setWidget(mGridWidget);
-    setLayout(new QVBoxLayout);
-    layout()->addWidget(mScrollArea);
-    layout()->setContentsMargins(0,0,0,0);
+public:
 
-}
+    enum Mode{LoadMode = 1,SaveMode = 2,StepMode = 3, MultiStepMode = 4 };
+    explicit LifeEngineThread(QObject *parent = 0);
+    void setEngine(LifeEngine * engine);
+    void save(const QString& filename);
+    void load(const QString& filename);
+    void step();
+    
+protected:
+    virtual void run();
 
+signals:
+    void runningChanged(bool isRunning);
+    void progressChanged(int value);
+    
+private:
+    LifeEngine * mEngine;
+    Mode mMode;
+    QString mFileName;
+    int mIteration;
+    int mProgress;
+    
+};
+
+#endif // LIFEENGINETHREAD_H

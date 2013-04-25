@@ -55,7 +55,8 @@ void LifeFilterWidget::refresh()
 {
     mModel->clear();
     QHash<QString,Life*> lifes;
-
+    QStringList lifeFilter;
+    QStringList geneFilter;
     foreach (Life * life,mEngineView->engine()->lifes())
         lifes.insert(life->name(),life);
 
@@ -67,6 +68,7 @@ void LifeFilterWidget::refresh()
         rootItem->setCheckable(true);
         rootItem->setEditable(false);
         rootItem->setCheckState(Qt::Checked);
+        lifeFilter.append(life->name());
 
 
         foreach (Gene gene, life->genom().genes())
@@ -76,7 +78,7 @@ void LifeFilterWidget::refresh()
             item->setCheckable(true);
             item->setEditable(false);
             item->setCheckState(Qt::Checked);
-
+            geneFilter.append(gene.name());
             QPixmap pix(16,16);
             pix.fill(Qt::transparent);
             QPainter paint(&pix);
@@ -92,6 +94,14 @@ void LifeFilterWidget::refresh()
 
         mModel->appendRow(rootItem);
     }
+
+
+    mEngineView->setLifeFilter(lifeFilter);
+    mEngineView->setGeneFilter(geneFilter);
+
+
+
+
 }
 
 void LifeFilterWidget::itemChanged(QStandardItem *item)

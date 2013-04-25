@@ -24,18 +24,55 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "gridview.h"
-#include <QVBoxLayout>
-GridView::GridView(int rowCount, int columnCount, QWidget *parent):
-    QWidget(parent)
+#include "lifeenginethread.h"
+#include <QDebug>
+LifeEngineThread::LifeEngineThread(QObject *parent) :
+    QThread(parent)
 {
-
-    mScrollArea = new QScrollArea;
-    mGridWidget = new GridWidget(rowCount, columnCount);
-    mScrollArea->setWidget(mGridWidget);
-    setLayout(new QVBoxLayout);
-    layout()->addWidget(mScrollArea);
-    layout()->setContentsMargins(0,0,0,0);
+    mEngine = NULL;
 
 }
 
+void LifeEngineThread::setEngine(LifeEngine *engine)
+{
+    mEngine = engine;
+}
+
+void LifeEngineThread::run()
+{
+    qDebug()<<"start "<<mEngine;
+    emit runningChanged(true);
+    if (mMode == StepMode)
+        mEngine->step();
+
+    if (mMode == LoadMode)
+        mEngine->load(mFileName);
+
+    if (mMode == SaveMode)
+        mEngine->save(mFileName);
+
+    emit runningChanged(false);
+    qDebug()<<"finished";
+
+
+}
+
+void LifeEngineThread::save(const QString &filename)
+{
+    mFileName = filename;
+    mMode = SaveMode;
+    start();
+}
+
+void LifeEngineThread::load(const QString &filename)
+{
+    mFileName = filename;
+    mMode = LoadMode;
+    start();
+}
+
+void LifeEngineThread::step()
+{
+   mMode = StepMode;
+   start();
+}

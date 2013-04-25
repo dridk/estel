@@ -1,6 +1,7 @@
 /***************************************************************************
 **                                                                        **
-**  GridView, a simple GridView made with Qt4                             **
+**  FcsViewer, a simple cytometry data viewer made with Qt4 and           **
+**  customplot made by Emanuel Eichhammer                                 **
 **  Copyright (C) 2013 Sacha Schutz                                       **
 **                                                                        **
 **  This program is free software: you can redistribute it and/or modify  **
@@ -26,142 +27,27 @@
 #ifndef GRIDVIEW_H
 #define GRIDVIEW_H
 
-#include <QtWidgets>
+#include <QWidget>
+#include <QScrollArea>
+#include "gridwidget.h"
 
-class GridWidget;
-class GridView;
-
-
-/*! \class GridWidget
-  \brief show a GridView without scrolling. If you want to have Scroll option, use
-  \see GridView instead.
-
-  GridWidget is defined by cell size, columncount and
-  row count.See \ref setCellSize, \ref setGridSize.
-  You can also switch on a cell with a specific color using \ref switchOn and select
-  a cell using \ref selectOn
-  Use \ref clear and \ref clearSelection to reset.
-  GridWidget support mouse selection. And send the signal \ref cellClicked associated with grid
-  coord.
-  */
-
-class GridWidget : public QWidget
+class GridView : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GridWidget(int rowCount = 100, int columnCount =100,QWidget *parent = 0);
-    void setGridSize(int rowCount, int columnCount);
-    void switchOn(int x,int y, const QColor& color);
-    void switchOff(int x, int y);
-    void selectOn(int x,int y);
-    void selectOff(int x,int y);
-    void clear();
-    void clearSelection();
-    void setCellSize(int size);
-    void showGrid(bool show);
-
-    QPixmap * snap() ;
-
-    const QList<QPoint>& selection() const {return mSelection;}
-
-protected:
-    void drawGrid(QPaintDevice * device);
-    virtual void paintEvent(QPaintEvent *);
-    virtual void mousePressEvent(QMouseEvent *);
-    virtual void mouseMoveEvent(QMouseEvent *);
-
-protected:
-    void createGrid();
-
+    explicit GridView(int rowCount, int columnCount, QWidget *parent = 0);
+    GridWidget * gridWidget() {return mGridWidget;}
+    QScrollArea * scrollArea() {return mScrollArea;}
+    
 signals:
-    void cellClicked(QPoint pos);
-
+    
+public slots:
 
 private:
-    int mCellSize;
-    int mRowCount;
-    int mColumnCount;
-    QPixmap mGridPix;
-    QHash<int, QColor >mColors;
-    QList<QPoint> mSelection;
-    int mSelectorSize;
-    bool mShowGrid;
-
-};
-/*! \class GridView
-  \brief show a GridView without scrolling. If you want to have Scroll option, use
-  \see GridView instead.
-
-  GridWidget is defined by cell size, columncount and
-  row count.See \ref setCellSize, \ref setGridSize.
-  You can also switch on a cell with a specific color using \ref switchOn and select
-  a cell using \ref selectOn
-  Use \ref clear and \ref clearSelection to reset.
-  GridWidget support mouse selection. And send the signal \ref cellClicked associated with grid
-  coord.
-  */
-class GridView : public QScrollArea
-{
-    Q_OBJECT
-public:
-    explicit GridView(int row = 100, int column=100,QWidget *parent = 0);
-    ~GridView();
-
-    void setGridSize(int rowCount, int columnCount){
-        mGridWidget->setGridSize(rowCount,columnCount);
-    }
-
-    void switchOn(int x,int y, const QColor& color){
-        mGridWidget->switchOn(x,y,color);
-    }
-
-    void switchOff(int x, int y){
-        mGridWidget->switchOff(x,y);
-    }
-
-    void selectOn(int x,int y){
-        mGridWidget->selectOn(x,y);
-    }
-
-    void selectOff(int x,int y){
-        mGridWidget->selectOff(x,y);
-    }
-
-    void clear(){
-        mGridWidget->clear();
-    }
-
-    void clearSelection(){
-        mGridWidget->clearSelection();
-    }
-
-    void setCellSize(int size){
-        mGridWidget->setCellSize(size);
-    }
-
-    const QList<QPoint>& selection()const {
-        return mGridWidget->selection();
-    }
-
-    QPixmap * snap() {
-        return mGridWidget->snap();
-    }
-
-    void showGrid(bool show){
-        mGridWidget->showGrid(show);
-    }
-
-    GridWidget * gridWidget() {
-    return mGridWidget;
-    }
-
-signals:
-    void cellClicked(QPoint pos);
-
-private:
+    QScrollArea * mScrollArea;
     GridWidget * mGridWidget;
+
     
 };
 
-//==== GridWidget
 #endif // GRIDVIEW_H

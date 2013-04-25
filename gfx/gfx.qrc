@@ -21,5 +21,9 @@
         <file alias="folder">folder.png</file>
         <file>loading.gif</file>
         <file alias="grid">grid.png</file>
+        <file alias="split_gridsss">26.png</file>
+        <file alias="expand">expand-26.png</file>
+        <file>resize-26.png</file>
+        <file alias="photo">slr_camera.png</file>
     </qresource>
 </RCC>

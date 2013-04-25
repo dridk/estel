@@ -24,18 +24,37 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#include "gridview.h"
-#include <QVBoxLayout>
-GridView::GridView(int rowCount, int columnCount, QWidget *parent):
-    QWidget(parent)
+#ifndef GRIDVIEWTOOLBAR_H
+#define GRIDVIEWTOOLBAR_H
+
+#include <QToolBar>
+#include <QComboBox>
+#include <QLabel>
+#include <QMovie>
+#include "lifeengineview.h"
+class LifeEngineView;
+class BottomToolBar : public QToolBar
 {
+    Q_OBJECT
+public:
+    explicit BottomToolBar(QWidget *parent = 0);
+    void setEngineView(LifeEngineView * view);
 
-    mScrollArea = new QScrollArea;
-    mGridWidget = new GridWidget(rowCount, columnCount);
-    mScrollArea->setWidget(mGridWidget);
-    setLayout(new QVBoxLayout);
-    layout()->addWidget(mScrollArea);
-    layout()->setContentsMargins(0,0,0,0);
+public slots:
+    void setProgress(int value);
+    
+private:
+    QAction * mSnapShotAction ;
+    QAction * mFullscreenAction;
+    QAction * mShowGridAction;
+    QComboBox * mZoomComboBox;
+    LifeEngineView * mView;
+    QLabel * mProgressLabel;
+    QLabel * mAnimLabel;
+    QMovie * mAnimMovie;
 
-}
 
+    
+};
+
+#endif // GRIDVIEWTOOLBAR_H

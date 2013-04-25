@@ -27,7 +27,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -35,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     mEngine = new LifeEngine(500,500);
+    mEngineThread = new LifeEngineThread;
     mEngineView = new LifeEngineView;
     mLifeListView = new LifeListView;
     mLifePlotWidget = new LifePlotWidget;
@@ -42,16 +42,20 @@ MainWindow::MainWindow(QWidget *parent) :
     mLifeFilterWidget = new LifeFilterWidget;
     mPreviewWidget = new PreviewWidget;
     mStatusBar = new ProgressStatusBar;
+    mBottomBar = new BottomToolBar;
 
+    mEngineThread->setEngine(mEngine);
     mEngineView->setEngine(mEngine);
     mLifeListView->setEngine(mEngine);
     mLifePlotWidget->setEngine(mEngine);
     mGenePlotWidget->setEngineView(mEngineView);
     mLifeFilterWidget->setEngineView(mEngineView);
     mPreviewWidget->setEngineView(mEngineView);
-
+    mBottomBar->setEngineView(mEngineView);
 
     setCentralWidget(mEngineView);
+    addToolBar(Qt::BottomToolBarArea, mBottomBar);
+
 
     QDockWidget * lifeListDock = new QDockWidget;
     lifeListDock->setWidget(mLifeListView);
@@ -89,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    setStatusBar(mStatusBar);
+    //setStatusBar(mStatusBar);
 
     connect(mEngine,SIGNAL(progressed(int)),mStatusBar,SLOT(setValue(int)));
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(open()));
@@ -98,6 +102,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionStep,SIGNAL(triggered()),mEngine,SLOT(step()));
     connect(ui->actionClear,SIGNAL(triggered()),mEngine,SLOT(clear()));
     connect(ui->actionExport,SIGNAL(triggered()),this,SLOT(exportImage()));
+    connect(mEngineThread,SIGNAL(runningChanged(bool)),this,SLOT(setDisabled(bool)));
+    connect(mEngineThread,SIGNAL(finished()),this,SLOT(refresh()));
+    connect(mEngine,SIGNAL(progress(int)),mBottomBar,SLOT(setProgress(int)));
+
 
     showMaximized();
 
@@ -117,10 +125,10 @@ void MainWindow::open()
                                                     QString(),"Estel (*.estel)");
 
 
-    mEngine->load(fileName);
+
+    mEngineThread->load(fileName);
     mLifeListView->refresh();
     setWindowTitle(fileName);
-    //    setEnabled(true);
     mStatusBar->setActive(false);
 
 }
@@ -129,7 +137,7 @@ void MainWindow::save()
 {
     if (windowTitle().isEmpty())
         return;
-    mEngine->save(windowTitle());
+    mEngineThread->save(windowTitle());
     setWindowTitle(windowTitle());
 }
 
@@ -146,10 +154,22 @@ void MainWindow::exportImage()
 {
     QString filename = QFileDialog::getSaveFileName();
 
-   mEngineView->showGrid(false);
-    mEngineView->snap()->save(filename);
-    mEngineView->showGrid(true);
+//    mEngineView->view()->showGrid(false);
+//    mEngineView->view()->snap()->save(filename);
+//    mEngineView->view()->showGrid(true);
 
+
+}
+
+void MainWindow::refresh()
+{
+
+mLifeListView->refresh();
+mGenePlotWidget->refresh();
+mLifePlotWidget->refresh();
+mPreviewWidget->refresh();
+mLifeFilterWidget->refresh();
+mEngineView->refresh();
 
 }
 

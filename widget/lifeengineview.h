@@ -5,7 +5,6 @@
 #include "lifeengine.h"
 #include "gridview.h"
 
-
 class LifeEngineView : public GridView
 {
     Q_OBJECT
@@ -14,10 +13,11 @@ public:
     ~LifeEngineView();
     void setEngine(LifeEngine * engine);
     LifeEngine * engine();
-     QList<Life*> lifeSelected() const;
+     QList<Life*> lifeSelected() ;
 
      const QStringList& lifeFilter() const {return mLifeFilter;}
      const QStringList& geneFilter() const {return mGeneFilter;}
+
 
 
 public slots:
@@ -35,6 +35,7 @@ private:
     LifeEngine * mEngine;
     QStringList mLifeFilter;
     QStringList mGeneFilter;
+
 
 
     

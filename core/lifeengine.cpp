@@ -148,12 +148,18 @@ bool LifeEngine::load(const QString &filename)
     QVariant data = QxtJSON::parse(QString::fromUtf8(array));
     QVariantList lifeList = data.toMap().value("lifes").toList();
 
+    int total = lifeList.count();
+    int now   = 0;
     foreach (QVariant lifeData, lifeList)
     {
         Life * life = new Life;
         Life::parse(QxtJSON::stringify(lifeData),life);
         addLife(life);
+
+        emit progress(qRound(float(now)*100/float(total)));
+        ++now;
     }
+    emit progress(0);
 
     file.close();
     return true;
@@ -165,9 +171,15 @@ bool LifeEngine::save(const QString &filename)
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return false;
     QVariantList lifeList;
+    int total = lifes().count();
+    int now   = 0;
     foreach (Life * l, lifes()){
         lifeList.append(QxtJSON::parse(Life::serialize(l)));
+        emit progress(qRound(float(now)*100/float(total)));
+        ++now;
     }
+    emit progress(0);
+
 
     QVariantMap globalMap;
     globalMap.insert("date",QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm"));
