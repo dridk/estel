@@ -25,13 +25,37 @@
 ****************************************************************************/
 
 #include "estelbrowserwidget.h"
-
+#include <QApplication>
+#include <QUrl>
+#include <QStandardPaths>
 EstelBrowserWidget::EstelBrowserWidget(QWidget *parent) :
     QTreeView(parent)
 {
     mModel = new QFileSystemModel;
     setModel(mModel);
+    setRootIndex(mModel->setRootPath(QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first()));
     mModel->setNameFilters(QStringList()<<"*.estel");
+    mModel->setNameFilterDisables(false);
+
+    hideColumn(1);
+    hideColumn(2);
+    hideColumn(3);
+
+
+    connect(this,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(onDoubleClicked(QModelIndex)));
+
+
+
+}
+
+void EstelBrowserWidget::onDoubleClicked(const QModelIndex &index)
+{
+
+
+    if (!mModel->isDir(index))
+    emit fileSelected(mModel->fileName(index));
+
+
 
 
 

@@ -42,7 +42,10 @@ BottomToolBar::BottomToolBar(QWidget *parent) :
     mProgressLabel    = new QLabel("34%");
     mAnimLabel        = new QLabel;
     mAnimMovie        = new QMovie;
+    mPerfIcon         = new QLabel;
+    mPerfLabel        = new QLabel;
 
+    mPerfIcon->setPixmap(QIcon(":speed").pixmap(16,16));
     mShowGridAction->setCheckable(true);
     mShowGridAction->setChecked(true);
     mAnimMovie->setFileName(":loading.gif");
@@ -54,6 +57,9 @@ BottomToolBar::BottomToolBar(QWidget *parent) :
     progressWidget->setLayout(progressLayout);
     progressLayout->addWidget(mAnimLabel);
     progressLayout->addWidget(mProgressLabel);
+    progressLayout->addWidget(mPerfIcon);
+    progressLayout->addWidget(mPerfLabel);
+
     progressLayout->setContentsMargins(5,0,0,0);
     progressLayout->setSpacing(5);
 
@@ -72,10 +78,13 @@ BottomToolBar::BottomToolBar(QWidget *parent) :
     addSeparator();
     addWidget(mZoomComboBox);
 
-    mZoomComboBox->addItem("1x",1);
-    mZoomComboBox->addItem("2x",2);
-    mZoomComboBox->addItem("3x",3);
-    mZoomComboBox->addItem("4x",4);
+    mZoomComboBox->addItem(QIcon(":zoom"),"1x",1);
+    mZoomComboBox->addItem(QIcon(":zoom"),"2x",2);
+    mZoomComboBox->addItem(QIcon(":zoom"),"3x",3);
+    mZoomComboBox->addItem(QIcon(":zoom"),"4x",4);
+    mZoomComboBox->setFrame(false);
+
+    mZoomComboBox->setIconSize(QSize(16,16));
 
     layout()->setContentsMargins(0,0,0,0);
 
@@ -102,12 +111,22 @@ void BottomToolBar::setEngineView(LifeEngineView *view)
 
 void BottomToolBar::setProgress(int value, const QString &message)
 {
+    if (value == 1)
+    mTime.start();
+
+    if (value == 0) {
+
+        mPerfLabel->setText(QString("%1 ms").arg(mTime.elapsed()));
+
+    }
+
     if (value > 0) {
         mProgressLabel->setText(QString(message+"...%1%").arg(value));
         mAnimMovie->start();
         mAnimLabel->setVisible(true);
+        mPerfIcon->setVisible(false);
+        mPerfLabel->setVisible(false);
         setEnabled(false);
-
     }
 
     else
@@ -115,7 +134,11 @@ void BottomToolBar::setProgress(int value, const QString &message)
         mProgressLabel->setText("");
         mAnimMovie->stop();
         mAnimLabel->setVisible(false);
+        mPerfIcon->setVisible(true);
+        mPerfLabel->setVisible(true);
         setEnabled(true);
+
+
     }
 
 

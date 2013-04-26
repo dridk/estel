@@ -61,13 +61,13 @@ void LifeEngineView::refresh()
     foreach (Life * life, mEngine->lifes())
     {
 
-        if (mLifeFilter.contains(life->name()))
+        if (mEngine->lifeFilter().contains(life->name()))
         {
             QColor col = Qt::black;
 
             foreach (Gene gene, life->genom().genes())
             {
-                if (mGeneFilter.contains(gene.name()))
+                if (mEngine->geneFilter().contains(gene.name()))
                     col = gene.color();
             }
             gridWidget()->switchOn(life->x(),life->y(), col);
@@ -79,14 +79,7 @@ void LifeEngineView::refresh()
     gridWidget()->repaint();
 }
 
-void LifeEngineView::setLifeFilter(const QStringList &names)
-{
-    mLifeFilter = names;
-}
-void LifeEngineView::setGeneFilter(const QStringList &names)
-{
-    mGeneFilter = names;
-}
+
 void LifeEngineView::selectLife(const QPoint &pos)
 {
     qDebug()<<pos;

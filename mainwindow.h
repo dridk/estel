@@ -53,11 +53,12 @@ public:
     
 
 public slots:
-    void open();
+    void open(const QString& fileName = QString());
     void save();
-    void saveAs();
+    void saveAs(const QString& fileName = QString());
     void exportImage();
     void refresh();
+    void makeSimulation();
 
 
 private:

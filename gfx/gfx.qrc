@@ -10,7 +10,7 @@
         <file alias="rabbit">rabbit.png</file>
         <file>research-26.png</file>
         <file alias="run">services.png</file>
-        <file>speed.png</file>
+        <file alias="speed">speed.png</file>
         <file>test_tube.png</file>
         <file alias="download">download.png</file>
         <file alias="upload">upload.png</file>
@@ -25,5 +25,16 @@
         <file alias="expand">expand-26.png</file>
         <file>resize-26.png</file>
         <file alias="photo">slr_camera.png</file>
+        <file>engineering-26.png</file>
+        <file>installing_updates.png</file>
+        <file>running.png</file>
+        <file alias="zoom">search.png</file>
+        <file>self_distract_button-26.png</file>
+        <file>solutions.png</file>
+        <file alias="make">stackoverflow_com.png</file>
+        <file>statistics.png</file>
+        <file>stopwatch.png</file>
+        <file>time.png</file>
+        <file>timeline.png</file>
     </qresource>
 </RCC>

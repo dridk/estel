@@ -107,13 +107,13 @@ void PreviewWidget::refresh()
     foreach (Life * life, mEngineView->engine()->lifes())
     {
 
-        if (mEngineView->lifeFilter().contains(life->name())) {
+        if (mEngineView->engine()->lifeFilter().contains(life->name())) {
 
 
             QColor col = Qt::black;
             foreach (Gene gene, life->genom().genes())
             {
-                if (mEngineView->geneFilter().contains(gene.name()))
+                if (mEngineView->engine()->geneFilter().contains(gene.name()))
                     col = gene.color();
             }
 

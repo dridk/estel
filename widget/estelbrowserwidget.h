@@ -34,10 +34,13 @@ class EstelBrowserWidget : public QTreeView
     Q_OBJECT
 public:
     explicit EstelBrowserWidget(QWidget *parent = 0);
+
     
 signals:
+    void fileSelected(const QString& fileName);
     
 public slots:
+    void onDoubleClicked(const QModelIndex& index);
 
 private:
     QFileSystemModel * mModel;

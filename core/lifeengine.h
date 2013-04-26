@@ -39,7 +39,7 @@ public:
     Q_INVOKABLE bool remLife(Life * life);
 
     //! \return return all lifes
-    Q_INVOKABLE QList<Life*> lifes();
+    Q_INVOKABLE QList<Life*> lifes() const;
 
 
     //! \return lifes count
@@ -69,10 +69,22 @@ public:
     //! \return Life* if life exist, otherwise return NULL
     Q_INVOKABLE QObject* lifeAt(int x, int y);
 
+    int lifeCount(const QString& lifeName) const;
+    int geneCount(const QString& geneName,  const QString& lifeName) const;
+    double genesMeans(const QString& geneName, const QString& lifeName) ;
+    double genesVariance(const QString& geneName, const QString& lifeName) ;
 
+    QPixmap toPixmap() const;
 
     int count() const;
 
+
+
+    const QStringList& lifeFilter() const ;
+    const QStringList& geneFilter() const ;
+
+    void setLifeFilter(const QStringList& names);
+    void setGeneFilter(const QStringList& names);
 
 public slots:
     //! \brief clear all lifes
@@ -94,6 +106,8 @@ public slots:
     //! if Life::step() return false, remove it. Otherwise do nothing.
     void step();
 
+    void makeSimulation(const QString& dirName, int iteration);
+
 
 
 signals:
@@ -106,6 +120,11 @@ private:
     int mColumns;
     QVariant mDatas;
     LifeScriptEngine * mScriptEngine;
+    QStringList mLifeFilter;
+    QStringList mGeneFilter;
+
+
+
 };
 
 #endif // LIFEENGINE_H

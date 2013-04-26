@@ -97,6 +97,11 @@ int Life::index() const
     return mEngine->columns()*x() + y();
 }
 
+bool Life::contains(const QString &geneName) const
+{
+    return mGenom.contains(geneName);
+}
+
 const Genom &Life::genom() const
 {
     return mGenom;

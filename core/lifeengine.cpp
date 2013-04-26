@@ -1,6 +1,9 @@
 #include "lifeengine.h"
 #include <QDebug>
 #include <QFile>
+#include <QDir>
+#include <QPixmap>
+#include <QPainter>
 #include "qxtjson.h"
 LifeEngine::LifeEngine(int rows, int columns)
     :QObject()
@@ -62,13 +65,13 @@ bool LifeEngine::remLife(Life *life)
 
     if (mLifeList.values().contains(life))
     {
-       mLifeList.remove(mLifeList.key(life));
-       return true;
+        mLifeList.remove(mLifeList.key(life));
+        return true;
     }
     return false;
 }
 
-QList<Life*> LifeEngine::lifes()
+QList<Life*> LifeEngine::lifes() const
 {
     return mLifeList.values();
 }
@@ -126,6 +129,12 @@ void LifeEngine::step()
     ////        }
     ////        else i++;
     //    }
+
+}
+
+void LifeEngine::makeSimulation(const QString &dirName, int iteration)
+{
+
 
 }
 
@@ -192,7 +201,7 @@ bool LifeEngine::save(const QString &filename)
     emit progress(100,"compressing");
     file.write(qCompress(array,9));
     file.close();
-     emit progress(0);
+    emit progress(0);
     return true;
 }
 
@@ -237,9 +246,123 @@ QObject *LifeEngine::lifeAt(int x, int y)
         return NULL;
 }
 
+int LifeEngine::lifeCount(const QString &lifeName) const
+{
+    int pop = 0;
+    foreach (Life * life, lifes())
+    {
+        if (life->name() == lifeName)
+            pop++;
+    }
+    return pop;
+}
+
+int LifeEngine::geneCount(const QString &geneName, const QString &lifeName) const
+{
+    int pop = 0;
+    foreach (Life * life, lifes())
+    {
+        if (life->name() == lifeName)
+        {
+            if (life->contains(geneName))
+                pop++;
+        }
+    }
+    return pop;
+}
+
+double LifeEngine::genesMeans(const QString &geneName, const QString &lifeName)
+{
+
+    int total = 0;
+    int value = 0;
+    foreach (Life * life, lifes())
+    {
+        if (life->name() == lifeName)
+        {
+            if (life->contains(geneName))
+            {
+                total++;
+                value += life->gene(geneName).value();
+            }
+        }
+    }
+
+    return double(value)/double(total);
+
+
+}
+
+double LifeEngine::genesVariance(const QString &geneName, const QString &lifeName)
+{
+    double means = genesMeans(geneName,lifeName);
+    double sum   = 0;
+    double total = 0;
+    foreach (Life * life, lifes())
+    {
+        if (life->name() == lifeName)
+        {
+            if (life->contains(geneName)) {
+                sum += (life->gene(geneName).value() - means) * (life->gene(geneName).value() - means);
+                total++;
+            }
+        }
+    }
+
+    return sqrt(sum / (total-1));
+
+
+}
+
+
+
+QPixmap LifeEngine::toPixmap() const
+{
+    QPixmap pix(mRows,mColumns);
+    pix.fill(Qt::white);
+    QPainter paint;
+    paint.begin(&pix);
+    foreach (Life * life,lifes())
+    {
+        if (lifeFilter().contains(life->name()))
+        {
+            QColor col = Qt::black;
+            foreach (Gene gene, life->genom().genes())
+            {
+                if (geneFilter().contains(gene.name()))
+                    col = gene.color();
+            }
+            paint.setPen(QPen(col));
+            paint.drawPoint(life->x(), life->y());
+        }
+    }
+    paint.end();
+    return pix;
+}
+
 int LifeEngine::count() const
 {
- return mLifeList.count();
+    return mLifeList.count();
+}
+
+const QStringList &LifeEngine::lifeFilter() const
+{
+    return mLifeFilter;
+}
+
+const QStringList &LifeEngine::geneFilter() const
+{
+    return mGeneFilter;
+}
+
+void LifeEngine::setLifeFilter(const QStringList &names)
+{
+    mLifeFilter = names;
+}
+
+void LifeEngine::setGeneFilter(const QStringList &names)
+{
+    mGeneFilter = names;
 }
 
 

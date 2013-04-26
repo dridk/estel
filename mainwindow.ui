@@ -67,6 +67,7 @@
    <addaction name="actionSave"/>
    <addaction name="actionSaveAs"/>
    <addaction name="actionStep"/>
+   <addaction name="actionMakeSim"/>
    <addaction name="actionClear"/>
    <addaction name="actionExport"/>
   </widget>
@@ -175,6 +176,18 @@
    </property>
    <property name="text">
     <string>MiniMap</string>
+   </property>
+  </action>
+  <action name="actionMakeSim">
+   <property name="icon">
+    <iconset resource="gfx/gfx.qrc">
+     <normaloff>:/makess</normaloff>:/makess</iconset>
+   </property>
+   <property name="text">
+    <string>make sim</string>
+   </property>
+   <property name="toolTip">
+    <string>make x steps and save as simulation</string>
    </property>
   </action>
  </widget>

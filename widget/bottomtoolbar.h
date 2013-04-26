@@ -58,6 +58,9 @@ private:
     QLabel * mProgressLabel;
     QLabel * mAnimLabel;
     QMovie * mAnimMovie;
+    QLabel * mPerfIcon;
+    QLabel * mPerfLabel;
+    QTime mTime;
 
 
     

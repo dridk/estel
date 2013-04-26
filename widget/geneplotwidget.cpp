@@ -76,7 +76,7 @@ void GenePlotWidget::refresh()
     foreach (QString name, datas.keys())
     {
 
-        if (mEngineView->geneFilter().contains(name)) {
+        if (mEngineView->engine()->geneFilter().contains(name)) {
             addGraph();
             graph(index)->setName(name);
 

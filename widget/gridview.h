@@ -38,6 +38,8 @@ public:
     explicit GridView(int rowCount, int columnCount, QWidget *parent = 0);
     GridWidget * gridWidget() {return mGridWidget;}
     QScrollArea * scrollArea() {return mScrollArea;}
+
+
     
 signals:
     

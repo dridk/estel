@@ -15,15 +15,12 @@ public:
     LifeEngine * engine();
      QList<Life*> lifeSelected() ;
 
-     const QStringList& lifeFilter() const {return mLifeFilter;}
-     const QStringList& geneFilter() const {return mGeneFilter;}
 
 
 
 public slots:
     void refresh();
-    void setLifeFilter(const QStringList& names);
-    void setGeneFilter(const QStringList& names);
+
 
 
 
@@ -33,8 +30,7 @@ protected slots:
 
 private:
     LifeEngine * mEngine;
-    QStringList mLifeFilter;
-    QStringList mGeneFilter;
+
 
 
 

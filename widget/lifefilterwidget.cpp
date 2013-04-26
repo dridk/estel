@@ -64,7 +64,8 @@ void LifeFilterWidget::refresh()
     {
 
         QStandardItem * rootItem  = new QStandardItem;
-        rootItem->setText(life->name());
+        rootItem->setText(life->name() + QString(" (%1)").arg(mEngineView->engine()->lifeCount(life->name())));
+        rootItem->setData(life->name());
         rootItem->setCheckable(true);
         rootItem->setEditable(false);
         rootItem->setCheckState(Qt::Checked);
@@ -74,10 +75,27 @@ void LifeFilterWidget::refresh()
         foreach (Gene gene, life->genom().genes())
         {
             QStandardItem * item  = new QStandardItem;
+
+            double means = qRound(mEngineView->engine()->genesMeans(gene.name(),life->name()) * 100) /100;
+            double sd    = mEngineView->engine()->genesVariance(gene.name(),life->name());
+
+
             item->setText(gene.name());
+            item->setData(gene.name());
             item->setCheckable(true);
             item->setEditable(false);
             item->setCheckState(Qt::Checked);
+
+            QStandardItem * meansItem = new QStandardItem;
+            QStandardItem * sdItem = new QStandardItem;
+
+            meansItem->setText("mean: "+QString::number(means));
+            sdItem->setText("sd: "+QString::number(sd));
+
+            item->appendRow(meansItem);
+            item->appendRow(sdItem);
+
+
             geneFilter.append(gene.name());
             QPixmap pix(16,16);
             pix.fill(Qt::transparent);
@@ -96,8 +114,8 @@ void LifeFilterWidget::refresh()
     }
 
 
-    mEngineView->setLifeFilter(lifeFilter);
-    mEngineView->setGeneFilter(geneFilter);
+    mEngineView->engine()->setLifeFilter(lifeFilter);
+    mEngineView->engine()->setGeneFilter(geneFilter);
 
 
 
@@ -121,16 +139,16 @@ void LifeFilterWidget::itemChanged(QStandardItem *item)
 
         if (mModel->item(i)->checkState() == Qt::Checked)
         {
-            lifeFilter<<mModel->item(i)->text();
+            lifeFilter<<mModel->item(i)->data().toString();
             for (int j=0; j<mModel->item(i)->rowCount(); ++j) {
                 if (mModel->item(i)->child(j)->checkState() == Qt::Checked)
-                    geneFilter<<mModel->item(i)->child(j)->text();
+                    geneFilter<<mModel->item(i)->child(j)->data().toString();
 
             }
         }
     }
 
-    mEngineView->setLifeFilter(lifeFilter);
-    mEngineView->setGeneFilter(geneFilter);
+    mEngineView->engine()->setLifeFilter(lifeFilter);
+    mEngineView->engine()->setGeneFilter(geneFilter);
     mEngineView->refresh();
 }

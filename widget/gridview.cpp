@@ -37,5 +37,6 @@ GridView::GridView(int rowCount, int columnCount, QWidget *parent):
     layout()->addWidget(mScrollArea);
     layout()->setContentsMargins(0,0,0,0);
 
+
 }
 

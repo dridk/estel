@@ -55,6 +55,8 @@ public:
 
     int index() const;
 
+    bool contains(const QString& geneName) const;
+
      //! \return the gene from his name
      //! \param name : the name of gene
     Gene & gene(const QString& name);

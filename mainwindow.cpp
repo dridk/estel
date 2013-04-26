@@ -83,12 +83,18 @@ MainWindow::MainWindow(QWidget *parent) :
     previewDock->setWindowTitle(mPreviewWidget->windowTitle());
     previewDock->setWindowIcon(mPreviewWidget->windowIcon());
 
+    QDockWidget * browserDock = new QDockWidget;
+    browserDock->setWidget(mBrowserWidget);
+    browserDock->setWindowTitle(mBrowserWidget->windowTitle());
+    browserDock->setWindowIcon(mBrowserWidget->windowIcon());
+
 
     addDockWidget(Qt::LeftDockWidgetArea, lifeListDock);
     addDockWidget(Qt::LeftDockWidgetArea, lifeFilterDock);
     addDockWidget(Qt::LeftDockWidgetArea, lifePlotDock);
     addDockWidget(Qt::RightDockWidgetArea, genePlotDock);
     addDockWidget(Qt::RightDockWidgetArea, previewDock);
+    addDockWidget(Qt::RightDockWidgetArea, browserDock);
 
 
 
@@ -114,6 +120,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mEngineThread,SIGNAL(runningChanged(bool)),this,SLOT(setDisabled(bool)));
     connect(mEngineThread,SIGNAL(finished()),this,SLOT(refresh()));
     connect(mEngine,SIGNAL(progress(int,QString)),mBottomBar,SLOT(setProgress(int,QString)));
+    connect(mBrowserWidget,SIGNAL(fileSelected(QString)),this,SLOT(open(QString)));
+    connect(ui->actionMakeSim,SIGNAL(triggered()),this,SLOT(makeSimulation()));
 
 
     showMaximized();
@@ -126,18 +134,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::open()
+void MainWindow::open(const QString &fileName)
 {
     //    setEnabled(false);
     mStatusBar->setActive(true);
-    QString fileName = QFileDialog::getOpenFileName(this,"open estel file",
-                                                    QString(),"Estel (*.estel)");
+    QString name = fileName;
+    if (name.isEmpty())
+        name = QFileDialog::getOpenFileName(this,"open estel file",
+                                            QString(),"Estel (*.estel)");
 
 
-
-    mEngineThread->load(fileName);
+    mEngineThread->load(name);
     mLifeListView->refresh();
-    setWindowTitle(fileName);
+    setWindowTitle(name);
     mStatusBar->setActive(false);
 
 }
@@ -145,17 +154,88 @@ void MainWindow::open()
 void MainWindow::save()
 {
     if (windowTitle().isEmpty())
+    {
+        saveAs();
         return;
+    }
+
     mEngineThread->save(windowTitle());
     setWindowTitle(windowTitle());
 }
 
-void MainWindow::saveAs()
+void MainWindow::saveAs(const QString &fileName)
 {
-    QString fileName = QFileDialog::getSaveFileName(this,"save estel file",
-                                                    QString(),"Estel (*.estel)");
-    mEngineThread->save(fileName);
-    setWindowTitle(fileName);
+    QString name = fileName;
+    if (name.isEmpty())
+        name = QFileDialog::getSaveFileName(this,"save estel file",
+                                            QString(),"Estel (*.estel)");
+    mEngineThread->save(name);
+    setWindowTitle(name);
+
+}
+void MainWindow::makeSimulation()
+{
+    int iteration = 2;
+    QString name = QFileDialog::getExistingDirectory(this,"save simulation");
+    QDir dir(name);
+    dir.mkdir("estel");
+    dir.mkdir("cache");
+    QVariantMap data;
+
+
+    for (int i=0; i<iteration; ++i)
+    {
+
+        QString estelFile = dir.path() + QDir::separator() + "estel" + QDir::separator()+ QString("step_%1.estel").arg(i);
+        QString cacheFile = dir.path() + QDir::separator() + "cache" + QDir::separator()+ QString("step_%1.png").arg(i);
+
+        QVariantList lifesList;
+
+//        foreach (Life * life, mEngine->lifes())
+//        {
+//            QVariantMap lifeData;
+//            QVariantMap geneData;
+
+//            lifeData[life->name()] = life->name();
+//            if (!lifeData.contains("population"))
+//                lifeData["population"] = 0;
+//            lifeData["population"] = lifeData["population"].toInt() + 1;
+
+//            foreach ( Gene gene, life->genom().genes())
+//            {
+//                geneData[gene.name()] = gene.name();
+
+
+
+//            }
+
+//        }
+
+
+
+        mEngine->save(estelFile);
+        mEngine->toPixmap().save(cacheFile);
+        mEngine->step();
+
+
+
+    }
+
+    QVariantMap simInfo;
+    simInfo["date"]   = QDateTime::currentDateTime().toString(Qt::ISODate);
+    simInfo["author"] = "sacha schutz";
+    simInfo["duration"] = 454231;
+
+
+
+
+
+    data["simulation"] = simInfo;
+
+
+
+
+
 
 }
 
@@ -180,6 +260,7 @@ void MainWindow::refresh()
     mEngineView->refresh();
 
 }
+
 
 
 
