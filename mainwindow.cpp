@@ -33,16 +33,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mEngine = new LifeEngine(500,500);
-    mEngineThread = new LifeEngineThread;
-    mEngineView = new LifeEngineView;
-    mLifeListView = new LifeListView;
-    mLifePlotWidget = new LifePlotWidget;
-    mGenePlotWidget = new GenePlotWidget;
+    mEngine           = new LifeEngine(500,500);
+    mEngineThread     = new LifeEngineThread;
+    mEngineView       = new LifeEngineView;
+    mLifeListView     = new LifeListView;
+    mLifePlotWidget   = new LifePlotWidget;
+    mGenePlotWidget   = new GenePlotWidget;
     mLifeFilterWidget = new LifeFilterWidget;
-    mPreviewWidget = new PreviewWidget;
-    mStatusBar = new ProgressStatusBar;
-    mBottomBar = new BottomToolBar;
+    mPreviewWidget    = new PreviewWidget;
+    mStatusBar        = new ProgressStatusBar;
+    mBottomBar        = new BottomToolBar;
+    mBrowserWidget    = new EstelBrowserWidget;
 
     mEngineThread->setEngine(mEngine);
     mEngineView->setEngine(mEngine);
@@ -94,6 +95,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //setStatusBar(mStatusBar);
+
+    connect(ui->actionLifeList,SIGNAL(triggered(bool)),lifeListDock,SLOT(setVisible(bool)));
+    connect(ui->actionLifeFilter,SIGNAL(triggered(bool)),lifeListDock,SLOT(setVisible(bool)));
+    connect(ui->actionLifePlot,SIGNAL(triggered(bool)),lifePlotDock,SLOT(setVisible(bool)));
+    connect(ui->actionGenePlot,SIGNAL(triggered(bool)),genePlotDock,SLOT(setVisible(bool)));
+    connect(ui->actionMiniMap,SIGNAL(triggered(bool)),previewDock,SLOT(setVisible(bool)));
+
+
+
 
     connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(open()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(save()));
@@ -153,21 +163,21 @@ void MainWindow::exportImage()
 {
     QString filename = QFileDialog::getSaveFileName();
 
-//    mEngineView->view()->showGrid(false);
-//    mEngineView->view()->snap()->save(filename);
-//    mEngineView->view()->showGrid(true);
+    //    mEngineView->view()->showGrid(false);
+    //    mEngineView->view()->snap()->save(filename);
+    //    mEngineView->view()->showGrid(true);
 
 
 }
 
 void MainWindow::refresh()
 {
-mLifeFilterWidget->refresh(); // Need to be in first ! Because it set filter
-mLifeListView->refresh();
-mGenePlotWidget->refresh();
-mLifePlotWidget->refresh();
-mPreviewWidget->refresh();
-mEngineView->refresh();
+    mLifeFilterWidget->refresh(); // Need to be in first ! Because it set filter
+    mLifeListView->refresh();
+    mGenePlotWidget->refresh();
+    mLifePlotWidget->refresh();
+    mPreviewWidget->refresh();
+    mEngineView->refresh();
 
 }
 

@@ -31,7 +31,18 @@
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionLifeList"/>
+    <addaction name="actionLifePlot"/>
+    <addaction name="actionLifeFilter"/>
+    <addaction name="actionGenePlot"/>
+    <addaction name="actionMiniMap"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -67,6 +78,9 @@
    <property name="text">
     <string>open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionSave">
    <property name="icon">
@@ -75,6 +89,9 @@
    </property>
    <property name="text">
     <string>save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionSaveAs">
@@ -103,6 +120,61 @@
   <action name="actionExport">
    <property name="text">
     <string>export</string>
+   </property>
+  </action>
+  <action name="actionLifeList">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>LifeList</string>
+   </property>
+  </action>
+  <action name="actionLifePlot">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>LifePlot</string>
+   </property>
+  </action>
+  <action name="actionLifeFilter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>LifeFilter</string>
+   </property>
+  </action>
+  <action name="actionGenePlot">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>GenePlot</string>
+   </property>
+  </action>
+  <action name="actionMiniMap">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>MiniMap</string>
    </property>
   </action>
  </widget>

@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     widget/gridwidget.cpp \
     widget/gridview.cpp \
     widget/bottomtoolbar.cpp \
-    core/lifeenginethread.cpp
+    core/lifeenginethread.cpp \
+    widget/estelbrowserwidget.cpp
 
 
 HEADERS  += gene.h \
@@ -75,7 +76,8 @@ HEADERS  += gene.h \
     widget/gridwidget.h \
     widget/gridview.h \
     widget/bottomtoolbar.h \
-    core/lifeenginethread.h
+    core/lifeenginethread.h \
+    widget/estelbrowserwidget.h
 
 
 INCLUDEPATH+= core qxtjson widget script jsedit

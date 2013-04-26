@@ -37,7 +37,7 @@ LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
     mFormWidget = new LifeFormWidget;
     mEngine = new LifeEngine;
     mScriptEngine = new LifeScriptEngine;
-
+    mDialogBox = new QDialogButtonBox(QDialogButtonBox::Cancel|QDialogButtonBox::Save);
 
     mFormWidget->setMaximumWidth(200);
 
@@ -52,20 +52,23 @@ LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
     mainSplitter->addWidget(mFormWidget);
     mainSplitter->addWidget(centerSplitter);
 
-    QAction  * saveAction = new QAction(QIcon(":save"),"Save",this);
+//    QAction  * saveAction = new QAction(QIcon(":save"),"Save",this);
     QAction  * exportAction = new QAction(QIcon(":upload"),"Export",this);
     QAction  * importAction = new QAction(QIcon(":download"),"Import",this);
     QAction  * stepAction = new QAction(QIcon(":run"),"Test",this);
     QAction  * clearAction = new QAction(QIcon(":clear"),"Clear",this);
     QAction  * helpAction = new QAction(QIcon(":help"), "Help",this);
 
-    saveAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_S));
+//    saveAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_S));
     exportAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_E));
     importAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_I));
 
 
 
-    connect(saveAction,SIGNAL(triggered()),this,SLOT(accept()));
+
+
+
+//    connect(saveAction,SIGNAL(triggered()),this,SLOT(accept()));
     connect(exportAction,SIGNAL(triggered()),this,SLOT(exportLife()));
     connect(importAction,SIGNAL(triggered()),this,SLOT(importLife()));
     connect(stepAction,SIGNAL(triggered()),this,SLOT(run()));
@@ -73,7 +76,7 @@ LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
     connect(helpAction,SIGNAL(triggered()),this,SLOT(help()));
 
 
-    mToolBar->addAction(saveAction);
+//    mToolBar->addAction(saveAction);
     mToolBar->addAction(exportAction);
     mToolBar->addAction(importAction);
     mToolBar->addSeparator();
@@ -89,7 +92,11 @@ LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
 
     mainLayout->addWidget(mToolBar);
     mainLayout->addWidget(mainSplitter);
+    mainLayout->addWidget(mDialogBox);
     setLayout(mainLayout);
+
+    connect(mDialogBox,SIGNAL(accepted()),this,SLOT(accept()));
+    connect(mDialogBox,SIGNAL(rejected()),this,SLOT(reject()));
 
     clear();
 

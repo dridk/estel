@@ -24,57 +24,24 @@
 **           Date   : 12.03.12                                            **
 ****************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef ESTELBROWSERWIDGET_H
+#define ESTELBROWSERWIDGET_H
 
-#include <QMainWindow>
-#include "lifeengine.h"
-#include "lifeengineview.h"
-#include "lifelistview.h"
-#include "lifefilterwidget.h"
-#include "lifeplotwidget.h"
-#include "geneplotwidget.h"
-#include "previewwidget.h"
-#include "progressstatusbar.h"
-#include "bottomtoolbar.h"
-#include "lifeenginethread.h"
-#include "estelbrowserwidget.h"
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow
+#include <QTreeView>
+#include <QFileSystemModel>
+class EstelBrowserWidget : public QTreeView
 {
     Q_OBJECT
-    
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit EstelBrowserWidget(QWidget *parent = 0);
     
-
+signals:
+    
 public slots:
-    void open();
-    void save();
-    void saveAs();
-    void exportImage();
-    void refresh();
-
 
 private:
-    Ui::MainWindow *ui;
-    LifeEngine * mEngine;
-    LifeEngineThread * mEngineThread;
-    LifeEngineView * mEngineView;
-    LifeListView * mLifeListView;
-    LifePlotWidget * mLifePlotWidget;
-    GenePlotWidget * mGenePlotWidget;
-    LifeFilterWidget * mLifeFilterWidget;
-    PreviewWidget * mPreviewWidget;
-    ProgressStatusBar * mStatusBar;
-    BottomToolBar * mBottomBar;
-    EstelBrowserWidget * mBrowserWidget;
-
-
+    QFileSystemModel * mModel;
+    
 };
 
-#endif // MAINWINDOW_H
+#endif // ESTELBROWSERWIDGET_H

@@ -63,6 +63,7 @@ private:
     QTextEdit * mDebugEdit;
     LifeFormWidget * mFormWidget;
     LifeScriptEngine * mScriptEngine;
+    QDialogButtonBox * mDialogBox;
 
     
 };
