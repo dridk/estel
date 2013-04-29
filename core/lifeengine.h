@@ -107,7 +107,7 @@ public slots:
     void step();
 
     void makeSimulation(const QString& dirName, int iteration);
-
+    void makeCache();
 
 
 signals:
@@ -115,13 +115,19 @@ signals:
     void progress(int value,const QString& message = QString());
 
 private:
-    QHash<int,Life*> mLifeList;
+    QList<Life*> mLifeList;
+    QHash<int, Life*> mPosLifeList;
+
+    QHash<int, Life*> mC;
+
     int mRows;
     int mColumns;
     QVariant mDatas;
     LifeScriptEngine * mScriptEngine;
     QStringList mLifeFilter;
     QStringList mGeneFilter;
+
+
 
 
 

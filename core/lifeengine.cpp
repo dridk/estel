@@ -25,26 +25,19 @@ LifeEngine::~LifeEngine()
 
 bool LifeEngine::addLife(Life *life)
 {
-
-    int index =  mColumns * life->x()  + life->y();
-
     if (life->x() > mRows ||life->x()<0 || life->y() > mColumns || life->y()<0)
     {
         //qDebug()<<"life pos out of grid";
         return false;
     }
 
-    if (mLifeList.keys().contains(index)) {
+    if (hasLife(life->x(), life->y())) {
         //qDebug()<<"life already set for this position "<<life->pos();
         return false;
     }
 
-    if (index >= mRows * mColumns){
-        //qDebug()<<"life position out of range";
-        return false;
-    }
 
-    mLifeList.insert(index,life);
+    mLifeList.append(life);
     life->setEngine(this);
     life->init();
     return true;
@@ -53,83 +46,72 @@ bool LifeEngine::addLife(Life *life)
 bool LifeEngine::remLife(int x, int y)
 {
     int index =  mColumns * x + y;
-    if (mLifeList.keys().contains(index)){
-        mLifeList.remove(index);
-        return true;
-    }
-    return false;
+    if (mPosLifeList.contains(index))
+        return remLife(mPosLifeList.value(index));
+    else
+        return false;
 }
 
 bool LifeEngine::remLife(Life *life)
 {
-
-    if (mLifeList.values().contains(life))
-    {
-        mLifeList.remove(mLifeList.key(life));
-        return true;
-    }
-    return false;
+    return mLifeList.removeOne(life);
 }
 
 QList<Life*> LifeEngine::lifes() const
 {
-    return mLifeList.values();
+    return mLifeList;
 }
 
 void LifeEngine::clear()
 {
     mLifeList.clear();
+    mPosLifeList.clear();
     emit changed();
+
 }
 void LifeEngine::run(int iteration)
 {
-    int currentStep = 0;
+    //    int currentStep = 0;
 
-    while (currentStep < iteration)
-    {
-        step();
-        qDebug()<<currentStep<<" pop"<<population();
-        currentStep++;
+    //    while (currentStep < iteration)
+    //    {
+    //        step();
+    //        qDebug()<<currentStep<<" pop"<<population();
+    //        currentStep++;
 
-    }
+    //    }
 
-    qDebug()<<"end of simulation";
+    //    qDebug()<<"end of simulation";
 
 }
 
 void LifeEngine::step()
 {
-    QList<Life*> lifes = mLifeList.values();
-    QList<Life*>::iterator it = lifes.begin();
-    int total = lifes.count();
+    QList<Life*> temp = mLifeList;
+    QList<Life*>::iterator it = temp.begin();
+    QList<Life*>::iterator end = temp.end();
+
+    int total = temp.count();
     int now   = 0;
-    while (it != lifes.end()) {
+    while (it != end) {
 
         Life * currentLife = *it;
         bool isLive = mScriptEngine->evaluateLife(currentLife);
         if (!isLive){
-            int index = currentLife->index();
-            it = lifes.erase(it);
-            mLifeList.remove(index);
+            mLifeList.removeOne(*it);
+            it = temp.erase(it);
         }
         else it++;
         emit progress(qRound(float(now)*100/float(total)), QString("computing life %1").arg(now));
         ++now;
+
     }
+    emit progress(99,"Making cache");
+    makeCache();
     emit progress(0);
     emit changed();
 
-    //    while (it != mLifeList.end()) {
-
-    //        Life * currentLife = it;
-    ////        bool isLive = currentLife->step();
-
-    ////        if (!isLive){
-    ////            i = mLifeList.erase(i);
-    ////        }
-    ////        else i++;
-    //    }
-
+    qDebug()<<"crash after";
 }
 
 void LifeEngine::makeSimulation(const QString &dirName, int iteration)
@@ -137,6 +119,18 @@ void LifeEngine::makeSimulation(const QString &dirName, int iteration)
 
 
 }
+
+void LifeEngine::makeCache()
+{
+    mPosLifeList.clear();
+    foreach (Life * life, mLifeList)
+    {
+        int index =  mColumns * life->x() + life->y();
+        mPosLifeList.insert(index, life);
+    }
+
+}
+
 
 
 
@@ -173,6 +167,9 @@ bool LifeEngine::load(const QString &filename)
         ++now;
     }
     file.close();
+
+    emit progress(99,"making cache");
+    makeCache();
     emit progress(0);
     return true;
 }
@@ -201,6 +198,8 @@ bool LifeEngine::save(const QString &filename)
     emit progress(100,"compressing");
     file.write(qCompress(array,9));
     file.close();
+    emit progress(99,"making cache");
+    makeCache();
     emit progress(0);
     return true;
 }
@@ -221,7 +220,7 @@ bool LifeEngine::hasLife(int x, int y) const
 {
 
     int index =  columns() * x + y;
-    if (mLifeList.contains(index)){
+    if (mPosLifeList.contains(index)){
         return true;
     }
     return false;
@@ -231,8 +230,8 @@ bool LifeEngine::hasLife(int x, int y) const
 Life *LifeEngine::life(int x, int y)
 {
     int index =  mColumns * x + y;
-    if (mLifeList.contains(index))
-        return mLifeList[index];
+    if (mPosLifeList.contains(index))
+        return mPosLifeList[index];
     else
         return NULL;
 }
@@ -248,68 +247,68 @@ QObject *LifeEngine::lifeAt(int x, int y)
 
 int LifeEngine::lifeCount(const QString &lifeName) const
 {
-    int pop = 0;
-    foreach (Life * life, lifes())
-    {
-        if (life->name() == lifeName)
-            pop++;
-    }
-    return pop;
+    //    int pop = 0;
+    //    foreach (Life * life, lifes())
+    //    {
+    //        if (life->name() == lifeName)
+    //            pop++;
+    //    }
+    //    return pop;
 }
 
 int LifeEngine::geneCount(const QString &geneName, const QString &lifeName) const
 {
-    int pop = 0;
-    foreach (Life * life, lifes())
-    {
-        if (life->name() == lifeName)
-        {
-            if (life->contains(geneName))
-                pop++;
-        }
-    }
-    return pop;
+    //    int pop = 0;
+    //    foreach (Life * life, lifes())
+    //    {
+    //        if (life->name() == lifeName)
+    //        {
+    //            if (life->contains(geneName))
+    //                pop++;
+    //        }
+    //    }
+    //    return pop;
 }
 
 double LifeEngine::genesMeans(const QString &geneName, const QString &lifeName)
 {
 
-    int total = 0;
-    int value = 0;
-    foreach (Life * life, lifes())
-    {
-        if (life->name() == lifeName)
-        {
-            if (life->contains(geneName))
-            {
-                total++;
-                value += life->gene(geneName).value();
-            }
-        }
-    }
+    //    int total = 0;
+    //    int value = 0;
+    //    foreach (Life * life, lifes())
+    //    {
+    //        if (life->name() == lifeName)
+    //        {
+    //            if (life->contains(geneName))
+    //            {
+    //                total++;
+    //                value += life->gene(geneName).value();
+    //            }
+    //        }
+    //    }
 
-    return double(value)/double(total);
+    //    return double(value)/double(total);
 
 
 }
 
 double LifeEngine::genesVariance(const QString &geneName, const QString &lifeName)
 {
-    double means = genesMeans(geneName,lifeName);
-    double sum   = 0;
-    double total = 0;
-    foreach (Life * life, lifes())
-    {
-        if (life->name() == lifeName)
-        {
-            if (life->contains(geneName)) {
-                sum += (life->gene(geneName).value() - means) * (life->gene(geneName).value() - means);
-                total++;
-            }
-        }
-    }
+    //    double means = genesMeans(geneName,lifeName);
+    //    double sum   = 0;
+    //    double total = 0;
+    //    foreach (Life * life, lifes())
+    //    {
+    //        if (life->name() == lifeName)
+    //        {
+    //            if (life->contains(geneName)) {
+    //                sum += (life->gene(geneName).value() - means) * (life->gene(geneName).value() - means);
+    //                total++;
+    //            }
+    //        }
+    //    }
 
-    return sqrt(sum / (total-1));
+    //    return sqrt(sum / (total-1));
 
 
 }
