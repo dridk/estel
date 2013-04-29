@@ -64,7 +64,7 @@ void LifeFilterWidget::refresh()
     {
 
         QStandardItem * rootItem  = new QStandardItem;
-        rootItem->setText(life->name() + QString(" (%1)").arg(mEngineView->engine()->lifeCount(life->name())));
+        rootItem->setText(life->name() + QString(" (%1)").arg(mEngineView->engine()->count()));
         rootItem->setData(life->name());
         rootItem->setCheckable(true);
         rootItem->setEditable(false);
@@ -76,24 +76,12 @@ void LifeFilterWidget::refresh()
         {
             QStandardItem * item  = new QStandardItem;
 
-            double means = qRound(mEngineView->engine()->genesMeans(gene.name(),life->name()) * 100) /100;
-            double sd    = mEngineView->engine()->genesVariance(gene.name(),life->name());
-
 
             item->setText(gene.name());
             item->setData(gene.name());
             item->setCheckable(true);
             item->setEditable(false);
             item->setCheckState(Qt::Checked);
-
-            QStandardItem * meansItem = new QStandardItem;
-            QStandardItem * sdItem = new QStandardItem;
-
-            meansItem->setText("mean: "+QString::number(means));
-            sdItem->setText("sd: "+QString::number(sd));
-
-            item->appendRow(meansItem);
-            item->appendRow(sdItem);
 
 
             geneFilter.append(gene.name());

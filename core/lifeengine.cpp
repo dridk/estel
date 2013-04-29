@@ -62,10 +62,23 @@ QList<Life*> LifeEngine::lifes() const
     return mLifeList;
 }
 
+QList<Life *> LifeEngine::lifes(const QString &name) const
+{
+    return mNamedLifeList.value(name);
+}
+
+QList<Gene> LifeEngine::genes(const QString &name, const QString &lifeName) const
+{
+
+    return mNamedGeneList[lifeName][name];
+}
+
 void LifeEngine::clear()
 {
     mLifeList.clear();
     mPosLifeList.clear();
+    mNamedLifeList.clear();
+    mNamedGeneList.clear();
     emit changed();
 
 }
@@ -127,6 +140,9 @@ void LifeEngine::makeCache()
     {
         int index =  mColumns * life->x() + life->y();
         mPosLifeList.insert(index, life);
+        mNamedLifeList[life->name()].append(life);
+        foreach (Gene gene, life->genom().genes())
+            mNamedGeneList[life->name()][gene.name()].append(gene);
     }
 
 }
@@ -245,16 +261,6 @@ QObject *LifeEngine::lifeAt(int x, int y)
         return NULL;
 }
 
-int LifeEngine::lifeCount(const QString &lifeName) const
-{
-    //    int pop = 0;
-    //    foreach (Life * life, lifes())
-    //    {
-    //        if (life->name() == lifeName)
-    //            pop++;
-    //    }
-    //    return pop;
-}
 
 int LifeEngine::geneCount(const QString &geneName, const QString &lifeName) const
 {
@@ -342,6 +348,21 @@ QPixmap LifeEngine::toPixmap() const
 int LifeEngine::count() const
 {
     return mLifeList.count();
+}
+
+int LifeEngine::count(const QString &lifeName) const
+{
+    return mNamedLifeList[lifeName].count();
+}
+
+const QStringList &LifeEngine::lifeNames() const
+{
+    return mNamedLifeList.keys();
+}
+
+const QStringList &LifeEngine::geneNames(const QString &lifeName) const
+{
+    return mNamedGeneList[lifeName].keys();
 }
 
 const QStringList &LifeEngine::lifeFilter() const

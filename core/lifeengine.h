@@ -41,6 +41,11 @@ public:
     //! \return return all lifes
     Q_INVOKABLE QList<Life*> lifes() const;
 
+    //! \return return all lifes by named
+    Q_INVOKABLE QList<Life*> lifes(const QString& name) const;
+
+    //! \return return all genes by names and life names
+    Q_INVOKABLE QList<Gene> genes(const QString& name, const QString& lifeName) const;
 
     //! \return lifes count
     Q_INVOKABLE int population();
@@ -69,7 +74,6 @@ public:
     //! \return Life* if life exist, otherwise return NULL
     Q_INVOKABLE QObject* lifeAt(int x, int y);
 
-    int lifeCount(const QString& lifeName) const;
     int geneCount(const QString& geneName,  const QString& lifeName) const;
     double genesMeans(const QString& geneName, const QString& lifeName) ;
     double genesVariance(const QString& geneName, const QString& lifeName) ;
@@ -77,8 +81,10 @@ public:
     QPixmap toPixmap() const;
 
     int count() const;
+    int count(const QString& lifeName) const;
 
-
+    const QStringList& lifeNames() const;
+    const QStringList& geneNames(const QString& lifeName) const;
 
     const QStringList& lifeFilter() const ;
     const QStringList& geneFilter() const ;
@@ -117,8 +123,9 @@ signals:
 private:
     QList<Life*> mLifeList;
     QHash<int, Life*> mPosLifeList;
+    QHash<QString, QList<Life*> > mNamedLifeList;
+    QHash<QString, QHash<QString, QList<Gene> > > mNamedGeneList;
 
-    QHash<int, Life*> mC;
 
     int mRows;
     int mColumns;
@@ -126,6 +133,7 @@ private:
     LifeScriptEngine * mScriptEngine;
     QStringList mLifeFilter;
     QStringList mGeneFilter;
+
 
 
 
