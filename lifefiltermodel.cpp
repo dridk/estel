@@ -5,6 +5,7 @@ LifeFilterModel::LifeFilterModel(QObject *parent) :
 {
 
     mEngine = NULL;
+    mHeaderNames <<"Lifes"<<"Genes";
 
 }
 
@@ -26,6 +27,19 @@ QVariant LifeFilterModel::data(const QModelIndex &index, int role) const
 {
     if (!mEngine)
         return QVariant();
+
+    if (role == Qt::CheckStateRole)
+    {
+        if (index.column() == 0)
+        {
+            if (mLifeDisabled.contains(index.row()))
+                return Qt::Unchecked;
+            else
+                return Qt::Checked;
+
+
+        }
+    }
     
     if ( role == Qt::DisplayRole)
     {
@@ -51,6 +65,22 @@ bool LifeFilterModel::setData(const QModelIndex &index, const QVariant &value, i
         mGeneSelected[lifeName] = value.toString();
         return true;
     }
+
+    if ( index.column() == 0 && role == Qt::CheckStateRole)
+    {
+
+        if (mLifeDisabled.contains(index.row())) {
+            mLifeDisabled.removeAll(index.row());
+            return true;
+        }
+        else
+        {
+            mLifeDisabled.append(index.row());
+            return true;
+        }
+    }
+
+
     return false;
 
 }
@@ -60,8 +90,23 @@ Qt::ItemFlags LifeFilterModel::flags(const QModelIndex &index) const
 {
     if (index.column() == 1)
         return Qt::ItemIsEditable|Qt::ItemIsEnabled|Qt::ItemIsSelectable;
-    else return QAbstractTableModel::flags(index);
 
+    if ( index.column() == 0)
+        return Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemNeverHasChildren;
+
+
+    return QAbstractTableModel::flags(index);
+
+}
+
+QVariant LifeFilterModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+    {
+        return mHeaderNames.at(section);
+    }
+
+    return QVariant();
 }
 
 void LifeFilterModel::setLifeEngine(LifeEngine *engine)

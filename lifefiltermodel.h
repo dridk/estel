@@ -13,6 +13,7 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
 
     void setLifeEngine(LifeEngine * engine);
@@ -28,6 +29,8 @@ public slots:
 private:
     LifeEngine * mEngine;
     QHash<QString, QString> mGeneSelected;
+    QList<int> mLifeDisabled;
+    QStringList mHeaderNames;
 
 
 };

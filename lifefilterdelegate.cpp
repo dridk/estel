@@ -11,19 +11,17 @@ QWidget * LifeFilterDelegate::createEditor(QWidget *parent, const QStyleOptionVi
     if (index.column() == 1) {
         if (mEngine)
         {
-             QString lifeName  = index.model()->index(index.row(),0).data().toString();
+            QString lifeName  = index.model()->index(index.row(),0).data().toString();
             QComboBox * box = new QComboBox(parent);
             foreach (QString geneName , mEngine->geneNames(lifeName))
             {
                 box->addItem(geneName);
             }
 
-           return box;
+            return box;
         }
     }
-
-    else
-        return QStyledItemDelegate::createEditor(parent,option,index);
+    return QStyledItemDelegate::createEditor(parent,option,index);
 }
 
 void LifeFilterDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
