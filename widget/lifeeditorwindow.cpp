@@ -100,6 +100,8 @@ LifeEditorWindow::LifeEditorWindow(QWidget *parent) :
 
     clear();
 
+    mEditor->setPlainText("function main()\n{\nreturn true;\n}");
+
 
 }
 
