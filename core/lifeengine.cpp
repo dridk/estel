@@ -27,15 +27,14 @@ bool LifeEngine::addLife(Life *life)
 {
     if (life->x() > mRows ||life->x()<0 || life->y() > mColumns || life->y()<0)
     {
-        //qDebug()<<"life pos out of grid";
+        qDebug()<<"life pos out of grid";
         return false;
     }
 
     if (hasLife(life->x(), life->y())) {
-        //qDebug()<<"life already set for this position "<<life->pos();
+        qDebug()<<"life already set for this position "<<life->pos();
         return false;
     }
-
 
     mLifeList.append(life);
     life->setEngine(this);
@@ -69,7 +68,6 @@ QList<Life *> LifeEngine::lifes(const QString &name) const
 
 QList<Gene> LifeEngine::genes(const QString &name, const QString &lifeName) const
 {
-
     return mNamedGeneList[lifeName][name];
 }
 
@@ -355,12 +353,12 @@ int LifeEngine::count(const QString &lifeName) const
     return mNamedLifeList[lifeName].count();
 }
 
-const QStringList &LifeEngine::lifeNames() const
+QStringList LifeEngine::lifeNames() const
 {
     return mNamedLifeList.keys();
 }
 
-const QStringList &LifeEngine::geneNames(const QString &lifeName) const
+ QStringList LifeEngine::geneNames(const QString &lifeName) const
 {
     return mNamedGeneList[lifeName].keys();
 }

@@ -11,7 +11,7 @@ LifeEngineView::LifeEngineView(QWidget *parent):
     setContextMenuPolicy(Qt::ActionsContextMenu);
 
     connect(action,SIGNAL(triggered()),this,SLOT(refresh()));
-    connect(this,SIGNAL(cellClicked(QPoint)),this,SLOT(selectLife(QPoint)));
+//    connect(this,SIGNAL(cellClicked(QPoint)),this,SLOT(selectLife(QPoint)));
 
 
 }

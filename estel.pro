@@ -43,7 +43,9 @@ SOURCES += main.cpp\
     widget/gridview.cpp \
     widget/bottomtoolbar.cpp \
     core/lifeenginethread.cpp \
-    widget/estelbrowserwidget.cpp
+    widget/estelbrowserwidget.cpp \
+    lifefiltermodel.cpp \
+    lifefilterdelegate.cpp
 
 
 HEADERS  += gene.h \
@@ -77,7 +79,9 @@ HEADERS  += gene.h \
     widget/gridview.h \
     widget/bottomtoolbar.h \
     core/lifeenginethread.h \
-    widget/estelbrowserwidget.h
+    widget/estelbrowserwidget.h \
+    lifefiltermodel.h \
+    lifefilterdelegate.h
 
 
 INCLUDEPATH+= core qxtjson widget script jsedit

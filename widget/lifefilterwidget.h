@@ -30,6 +30,8 @@
 #include <QTreeView>
 #include <QStandardItemModel>
 #include "lifeengineview.h"
+#include "lifefiltermodel.h"
+#include "lifefilterdelegate.h"
 class LifeFilterWidget : public QTreeView
 {
     Q_OBJECT
@@ -46,7 +48,8 @@ protected slots:
 
 private:
     LifeEngineView * mEngineView;
-    QStandardItemModel * mModel;
+    LifeFilterModel * mModel;
+    LifeFilterDelegate * mDelegate;
     
 
 };

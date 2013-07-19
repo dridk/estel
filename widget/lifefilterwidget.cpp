@@ -30,15 +30,13 @@ LifeFilterWidget::LifeFilterWidget(QWidget *parent) :
     QTreeView(parent)
 {
     mEngineView = NULL;
-    mModel = new QStandardItemModel;
-    setModel(mModel);
+    mModel = new LifeFilterModel;
+    mDelegate = new LifeFilterDelegate;
 
     setWindowTitle("Life filter");
 
-
     QAction * refreshAction = new QAction("refresh",this);
-    connect(refreshAction,SIGNAL(triggered()),this,SLOT(refresh()));
-    connect(mModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(itemChanged(QStandardItem*)));
+    connect(refreshAction,SIGNAL(triggered()),mModel,SLOT(refresh()));
     addAction(refreshAction);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -48,62 +46,68 @@ LifeFilterWidget::LifeFilterWidget(QWidget *parent) :
 void LifeFilterWidget::setEngineView(LifeEngineView *view)
 {
     mEngineView = view;
-    connect(mEngineView->engine(),SIGNAL(changed()),this,SLOT(refresh()));
+    mModel->setLifeEngine(mEngineView->engine());
+    mDelegate->setLifeEngine(mEngineView->engine());
+
+    setModel(mModel);
+    setItemDelegate(mDelegate);
+
+    connect(mEngineView->engine(),SIGNAL(changed()),mModel,SLOT(refresh()));
 }
 
 void LifeFilterWidget::refresh()
 {
-    mModel->clear();
-    QHash<QString,Life*> lifes;
-    QStringList lifeFilter;
-    QStringList geneFilter;
-    foreach (Life * life,mEngineView->engine()->lifes())
-        lifes.insert(life->name(),life);
+    //    mModel->clear();
+    //    QHash<QString,Life*> lifes;
+    //    QStringList lifeFilter;
+    //    QStringList geneFilter;
+    //    foreach (Life * life,mEngineView->engine()->lifes())
+    //        lifes.insert(life->name(),life);
 
-    foreach (Life * life, lifes.values())
-    {
+    //    foreach (Life * life, lifes.values())
+    //    {
 
-        QStandardItem * rootItem  = new QStandardItem;
-        rootItem->setText(life->name() + QString(" (%1)").arg(mEngineView->engine()->count()));
-        rootItem->setData(life->name());
-        rootItem->setCheckable(true);
-        rootItem->setEditable(false);
-        rootItem->setCheckState(Qt::Checked);
-        lifeFilter.append(life->name());
-
-
-        foreach (Gene gene, life->genom().genes())
-        {
-            QStandardItem * item  = new QStandardItem;
+    //        QStandardItem * rootItem  = new QStandardItem;
+    //        rootItem->setText(life->name() + QString(" (%1)").arg(mEngineView->engine()->count()));
+    //        rootItem->setData(life->name());
+    //        rootItem->setCheckable(true);
+    //        rootItem->setEditable(false);
+    //        rootItem->setCheckState(Qt::Checked);
+    //        lifeFilter.append(life->name());
 
 
-            item->setText(gene.name());
-            item->setData(gene.name());
-            item->setCheckable(true);
-            item->setEditable(false);
-            item->setCheckState(Qt::Checked);
+    //        foreach (Gene gene, life->genom().genes())
+    //        {
+    //            QStandardItem * item  = new QStandardItem;
 
 
-            geneFilter.append(gene.name());
-            QPixmap pix(16,16);
-            pix.fill(Qt::transparent);
-            QPainter paint(&pix);
-            paint.setRenderHint(QPainter::Antialiasing,true);
-            paint.setBrush(QBrush(gene.rootColor()));
-            paint.setPen(Qt::NoPen);
-            paint.drawEllipse(QRect(0,0,15,15));
-            item->setIcon(QIcon(pix));
-
-            rootItem->appendRow(item);
-        }
+    //            item->setText(gene.name());
+    //            item->setData(gene.name());
+    //            item->setCheckable(true);
+    //            item->setEditable(false);
+    //            item->setCheckState(Qt::Checked);
 
 
-        mModel->appendRow(rootItem);
-    }
+    //            geneFilter.append(gene.name());
+    //            QPixmap pix(16,16);
+    //            pix.fill(Qt::transparent);
+    //            QPainter paint(&pix);
+    //            paint.setRenderHint(QPainter::Antialiasing,true);
+    //            paint.setBrush(QBrush(gene.rootColor()));
+    //            paint.setPen(Qt::NoPen);
+    //            paint.drawEllipse(QRect(0,0,15,15));
+    //            item->setIcon(QIcon(pix));
+
+    //            rootItem->appendRow(item);
+    //        }
 
 
-    mEngineView->engine()->setLifeFilter(lifeFilter);
-    mEngineView->engine()->setGeneFilter(geneFilter);
+    //        mModel->appendRow(rootItem);
+    //    }
+
+
+    //    mEngineView->engine()->setLifeFilter(lifeFilter);
+    //    mEngineView->engine()->setGeneFilter(geneFilter);
 
 
 
@@ -113,30 +117,30 @@ void LifeFilterWidget::refresh()
 void LifeFilterWidget::itemChanged(QStandardItem *item)
 {
 
-    if (mEngineView == NULL)
-        return;
+    //    if (mEngineView == NULL)
+    //        return;
 
-    for (int i=0; i<item->rowCount(); ++i)
-        item->child(i)->setEnabled(item->checkState() == Qt::Checked);
+    //    for (int i=0; i<item->rowCount(); ++i)
+    //        item->child(i)->setEnabled(item->checkState() == Qt::Checked);
 
-    QStringList lifeFilter;
-    QStringList geneFilter;
+    //    QStringList lifeFilter;
+    //    QStringList geneFilter;
 
-    for (int i=0; i<mModel->rowCount(); ++i)
-    {
+    //    for (int i=0; i<mModel->rowCount(); ++i)
+    //    {
 
-        if (mModel->item(i)->checkState() == Qt::Checked)
-        {
-            lifeFilter<<mModel->item(i)->data().toString();
-            for (int j=0; j<mModel->item(i)->rowCount(); ++j) {
-                if (mModel->item(i)->child(j)->checkState() == Qt::Checked)
-                    geneFilter<<mModel->item(i)->child(j)->data().toString();
+    //        if (mModel->item(i)->checkState() == Qt::Checked)
+    //        {
+    //            lifeFilter<<mModel->item(i)->data().toString();
+    //            for (int j=0; j<mModel->item(i)->rowCount(); ++j) {
+    //                if (mModel->item(i)->child(j)->checkState() == Qt::Checked)
+    //                    geneFilter<<mModel->item(i)->child(j)->data().toString();
 
-            }
-        }
-    }
+    //            }
+    //        }
+    //    }
 
-    mEngineView->engine()->setLifeFilter(lifeFilter);
-    mEngineView->engine()->setGeneFilter(geneFilter);
-    mEngineView->refresh();
+    //    mEngineView->engine()->setLifeFilter(lifeFilter);
+    //    mEngineView->engine()->setGeneFilter(geneFilter);
+    //    mEngineView->refresh();
 }

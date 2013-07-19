@@ -83,8 +83,8 @@ public:
     int count() const;
     int count(const QString& lifeName) const;
 
-    const QStringList& lifeNames() const;
-    const QStringList& geneNames(const QString& lifeName) const;
+    QStringList lifeNames() const;
+    QStringList geneNames(const QString& lifeName) const;
 
     const QStringList& lifeFilter() const ;
     const QStringList& geneFilter() const ;
@@ -121,9 +121,13 @@ signals:
     void progress(int value,const QString& message = QString());
 
 private:
+    //list of mLifes....
     QList<Life*> mLifeList;
+    // caching life position...
     QHash<int, Life*> mPosLifeList;
+    //caching life names
     QHash<QString, QList<Life*> > mNamedLifeList;
+    //caching life genom ?
     QHash<QString, QHash<QString, QList<Gene> > > mNamedGeneList;
 
 
